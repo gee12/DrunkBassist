@@ -5,14 +5,18 @@ import com.gee12.drunkbassist.util.SystemUiHider;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PointF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -65,6 +69,9 @@ public class MainActivity extends Activity implements SensorEventListener {
         mSensorManager.registerListener(this, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
+    private int randomMoveCounter = 0;
+    private PointF randomOffset = new PointF();
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         float [] values = event.values;
@@ -74,18 +81,34 @@ public class MainActivity extends Activity implements SensorEventListener {
                 drawView.setAccelerometerXY(event.values[SensorManager.AXIS_X],
                         event.values[SensorManager.AXIS_Y]);
                 //
-                onHeroPositionChanged(event.values[SensorManager.DATA_X],
+                heroPositionChange(event.values[SensorManager.DATA_X],
                         event.values[SensorManager.DATA_Y]);
+                //
+                randomHeroMove();
             }
             break;
         }
     }
 
+    public void randomHeroMove() {
 
-    public void onHeroPositionChanged(float accX, float accY) {
+        if (randomMoveCounter-- > 0) {
+            drawView.setHeroOffset(randomOffset.x, randomOffset.y);
+        } else {
+            Random rand = new Random();
+            randomMoveCounter = rand.nextInt(50);
+            randomOffset = new PointF(
+                    rand.nextFloat() * 4 - 2,
+                    rand.nextFloat() * 4 - 2
+            );
+        }
+
+    }
+
+    public void heroPositionChange(float accX, float accY) {
         float dAccX = oldAccX - accX;
         float dAccY = oldAccY - accY;
-        drawView.setHeroShift(-dAccY, -dAccX);
+        drawView.setHeroOffset(-dAccY, -dAccX);
     }
 
     @Override
@@ -97,4 +120,23 @@ public class MainActivity extends Activity implements SensorEventListener {
         Intent intent = new Intent(MainActivity.this, StartActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            //
+            super.onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
