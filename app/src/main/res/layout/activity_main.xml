@@ -1,0 +1,108 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#0099cc" tools:context=".MainActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, com.gee12.drunkbassist.DrawView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+
+    <TableLayout
+        android:id="@+id/TableLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/crossfireView"
+            android:src="@drawable/crossfire" />
+
+        <TableRow    android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/row_force"
+            android:layout_margin="5dip">
+            <TextView    android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/label_force"
+                android:text="Force:"
+                android:gravity="right"></TextView>
+            <TextView    android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:id="@+id/value_force"
+                android:text="-"
+                android:layout_marginLeft="5dip"></TextView>
+        </TableRow>
+        <TableRow    android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:id="@+id/row_x"
+            android:layout_margin="5dip">
+            <TextView    android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X:"
+                android:id="@+id/label_x"
+                android:gravity="right"></TextView>
+            <TextView    android:layout_height="wrap_content"
+                android:text="-"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:id="@+id/value_x"
+                android:layout_marginLeft="5dip"></TextView>
+        </TableRow>
+        <TableRow    android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:id="@+id/row_y"
+            android:layout_margin="5dip">
+            <TextView    android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Y:"
+                android:id="@+id/label_y"
+                android:gravity="right"></TextView>
+            <TextView    android:layout_height="wrap_content"
+                android:text="-"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:id="@+id/value_y"
+                android:layout_marginLeft="5dip"></TextView>
+        </TableRow>
+        <TableRow    android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:id="@+id/row_z"
+            android:layout_margin="5dip">
+            <TextView    android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Z:"
+                android:id="@+id/label_z"
+                android:gravity="right"></TextView>
+            <TextView    android:layout_height="wrap_content"
+                android:text="-"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:id="@+id/value_z"
+                android:layout_marginLeft="5dip"></TextView>
+        </TableRow>
+    </TableLayout>
+
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay" android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <Button android:id="@+id/dummy_button" style="?metaButtonBarButtonStyle"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="@string/dummy_button"
+                android:onClick="onClickMenuButton" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>
