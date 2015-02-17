@@ -67,6 +67,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    
     public void draw(Canvas canvas) {
         if (canvas == null) return;
 
