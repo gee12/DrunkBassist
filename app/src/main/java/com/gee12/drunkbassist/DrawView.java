@@ -33,9 +33,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
         getHolder().addCallback(this);
 
-        hero = new Hero(
-                BitmapFactory.decodeResource(getResources(), R.drawable.crossfire),
-                new PointF());
+        hero = new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.crossfire));
     }
 
     @Override
@@ -79,6 +77,10 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         hero.degree = degree;
     }
 
+    public void setHeroPoints(int points) {
+        hero.points = points;
+    }
+
     public void draw(Canvas canvas) {
         if (canvas == null) return;
 
@@ -96,7 +98,8 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText(String.format("x=%1.3f", accX), 10, 10, p);
         canvas.drawText(String.format("y=%1.3f", accY), 10, 30, p);
 
-        canvas.drawText(String.format("y=%d", hero.degree), getWidth()/2, 10, p);
+        canvas.drawText(String.format("points=%d", hero.points), getWidth()/2, 10, p);
+        canvas.drawText(String.format("alc=%d", hero.degree), getWidth()-30, 10, p);
     }
 
     public void onHeroOutOfScene(Canvas canvas) {
@@ -104,6 +107,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         p.setStyle(Paint.Style.FILL);
         if (!sceneOuterRectF.contains(heroDestRectF)) {
             //
+
             listener.onFinish();
 
 //            canvas.drawColor(Color.RED);
@@ -157,11 +161,6 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
         public void setRunning(boolean running) {
             this.running = running;
-        }
-
-        public Rect getCanvasRect() {
-            if (canvas == null) return null;
-            return canvas.getClipBounds();
         }
 
         @Override

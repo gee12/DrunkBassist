@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -16,7 +16,8 @@ public class FinishActivity extends Activity {
 
     private boolean isRecord = false;
     int points;
-    TextView nameTextField;
+    EditText nameTextField;
+    TextView pointsLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +25,13 @@ public class FinishActivity extends Activity {
 
         setContentView(R.layout.activity_finish);
 
-        nameTextField = (TextView)findViewById(R.id.textfield_name);
+        nameTextField = (EditText)findViewById(R.id.textfield_name);
+        pointsLabel = (TextView)findViewById(R.id.label_points);
 
         // get points
-        //Intent intent = getIntent();
-        //points = intent.getExtras().getInt(MainActivity.POINTS, 0);
+        Intent intent = getIntent();
+        points = intent.getExtras().getInt(MainActivity.POINTS, 0);
+        pointsLabel.setText(String.valueOf(points));
 
         // define minPoints
         int minPoints = 0;
@@ -53,8 +56,10 @@ public class FinishActivity extends Activity {
             addNewRecord(getUserName(), points);
         }
         //
+        finish();
         Intent mainIntent = new Intent(FinishActivity.this, MainActivity.class);
         startActivity(mainIntent);
+
     }
 
     public void onClickMenuButton(View view) {
@@ -62,7 +67,15 @@ public class FinishActivity extends Activity {
             addNewRecord(getUserName(), points);
         }
         //
+        finish();
         Intent menuIntent = new Intent(FinishActivity.this, MenuActivity.class);
         startActivity(menuIntent);
+
     }
+
+    @Override
+    public void onBackPressed(){
+        //super.onBackPressed();
+    }
+
 }

@@ -25,13 +25,6 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="НАСТРОЙКИ"
-        android:id="@+id/button_options"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:text="РАЗРАБОТЧИК"
         android:id="@+id/button_developer"
         android:layout_gravity="center_horizontal" />
@@ -41,5 +34,6 @@
         android:layout_height="wrap_content"
         android:text="ВЫЙТИ"
         android:id="@+id/button_quit"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="onClickExitButton" />
 </LinearLayout>

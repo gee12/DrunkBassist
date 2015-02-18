@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import java.util.List;
 import java.util.Random;
@@ -30,7 +29,8 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
 
     public final static String POINTS = "com.gee12.drunkbassist.POINTS";
     public final static int MSEC = 3000;
-    public final static int MSEC_MAX = MSEC * 100;
+    public final static int MSEC_MAX = MSEC * 20;
+    public final static int POINTS_FOR_DEGREE = 10;
 
     private SensorManager mSensorManager;
     private Sensor mAccelerometerSensor;
@@ -38,12 +38,12 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
     private float oldAccX=0, oldAccY=0;
     private int points = 0;
     private int degree = 0;
+    DegreeTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setContentView(R.layout.activity_main);
         drawView = new DrawView(this, this);
         setContentView(drawView);
 
@@ -63,7 +63,8 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
         }
 
         //
-        //new DegreeTimer(MSEC_MAX, MSEC).start();
+        timer = new DegreeTimer(MSEC_MAX, MSEC);
+        timer.start();
     }
 
 
@@ -84,14 +85,14 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        float [] values = event.values;
+        float[] values = event.values;
         switch(event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER: {
                 //
-                drawView.setAccelerometerXY(event.values[SensorManager.AXIS_X],
+                drawView.setAccelerometerXY(values[SensorManager.AXIS_X],
                         event.values[SensorManager.AXIS_Y]);
                 //
-                heroPositionChange(event.values[SensorManager.DATA_X],
+                heroPositionChange(values[SensorManager.DATA_X],
                         event.values[SensorManager.DATA_Y]);
                 //
                 randomHeroMove();
@@ -125,6 +126,10 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
         drawView.setHeroDegree(degree);
     }
 
+    public void heroPointsChange(int points) {
+        drawView.setHeroPoints(points);
+    }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
@@ -152,12 +157,19 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
 
     @Override
     public void onFinish() {
-        // to FinishActivity
-        Intent finishIntent = new Intent(MainActivity.this, MenuActivity.class);
-        // send points
-        //finishIntent.putExtra(POINTS, points);
-        startActivity(finishIntent);
+        timer.cancel();
 
+        // to FinishActivity
+        Intent finishIntent = new Intent(MainActivity.this, FinishActivity.class);
+        // send points
+        finishIntent.putExtra(POINTS, points);
+        startActivity(finishIntent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed(){
+        //super.onBackPressed();
     }
 
     public class DegreeTimer extends CountDownTimer {
@@ -172,6 +184,7 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
 
         public void onTick(long millisUntilFinished) {
             heroDegreeChange(degree++);
+            heroPointsChange(points+=POINTS_FOR_DEGREE);
         }
     }
 }
