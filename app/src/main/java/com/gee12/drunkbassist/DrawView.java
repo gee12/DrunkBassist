@@ -20,14 +20,17 @@ import android.view.SurfaceView;
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     private DrawThread drawThread;
+    private HeroListener listener;
     private float accX=0.f, accY=0.f;
     private Hero hero;
     private RectF sceneOuterRectF,
             sceneInnerRectF,
             heroDestRectF;
 
-    public DrawView(Context context) {
+    public DrawView(Context context, HeroListener listener) {
         super(context);
+        this.listener = listener;
+
         getHolder().addCallback(this);
 
         hero = new Hero(
@@ -72,6 +75,10 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                 pos.x + Hero.HERO_WIDTH, pos.y + Hero.HERO_HEIGHT);
     }
 
+    public void setHeroDegree(int degree) {
+        hero.degree = degree;
+    }
+
     public void draw(Canvas canvas) {
         if (canvas == null) return;
 
@@ -88,17 +95,22 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
         canvas.drawText(String.format("x=%1.3f", accX), 10, 10, p);
         canvas.drawText(String.format("y=%1.3f", accY), 10, 30, p);
+
+        canvas.drawText(String.format("y=%d", hero.degree), getWidth()/2, 10, p);
     }
 
     public void onHeroOutOfScene(Canvas canvas) {
         Paint p = new Paint();
         p.setStyle(Paint.Style.FILL);
         if (!sceneOuterRectF.contains(heroDestRectF)) {
-              canvas.drawColor(Color.RED);
-            p.setColor(Color.LTGRAY);
-            canvas.drawRect(sceneOuterRectF, p);
-            p.setColor(Color.WHITE);
-            canvas.drawRect(sceneInnerRectF, p);
+            //
+            listener.onFinish();
+
+//            canvas.drawColor(Color.RED);
+//            p.setColor(Color.LTGRAY);
+//            canvas.drawRect(sceneOuterRectF, p);
+//            p.setColor(Color.WHITE);
+//            canvas.drawRect(sceneInnerRectF, p);
 
         } else if (!sceneInnerRectF.contains(heroDestRectF)) {
 

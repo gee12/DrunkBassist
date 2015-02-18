@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="СТАРТ"
-        android:id="@+id/button"
+        android:id="@+id/button_start"
         android:layout_gravity="center_horizontal"
         android:enabled="true"
         android:onClick="onClickStartButton" />
@@ -18,7 +18,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="РЕКОРДЫ"
-        android:id="@+id/button2"
+        android:id="@+id/button_records"
         android:layout_gravity="center_horizontal"
         android:enabled="true" />
 
@@ -26,13 +26,20 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="НАСТРОЙКИ"
-        android:id="@+id/button3"
+        android:id="@+id/button_options"
         android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="РАЗРАБОТЧИК"
-        android:id="@+id/button4"
+        android:id="@+id/button_developer"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="ВЫЙТИ"
+        android:id="@+id/button_quit"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

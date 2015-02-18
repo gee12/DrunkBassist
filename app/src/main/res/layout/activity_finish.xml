@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="25dp">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow android:layout_weight="3">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/string1"
+                    android:id="@+id/label1"
+                    android:layout_gravity="center_vertical|right"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/string_points"
+                    android:id="@+id/label_points"
+                    android:layout_gravity="center"
+                    android:padding="20dp"
+                    android:textSize="50sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/string2"
+                    android:id="@+id/label2"
+                    android:layout_gravity="left|center_vertical"
+                    android:textSize="24sp" />
+        </TableRow>
+
+        <TableRow android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/textfield_name"
+                android:hint="@string/your_name"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+
+        </TableRow>
+
+        <TableRow android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/replay"
+                android:id="@+id/button_replay"
+                android:onClick="onClickReplayButton"
+                android:layout_weight="3" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/menu"
+                android:id="@+id/button_menu"
+                android:onClick="onClickMenuButton"
+                android:layout_weight="1" />
+
+        </TableRow>
+    </TableLayout>
+
+
+
+</LinearLayout>

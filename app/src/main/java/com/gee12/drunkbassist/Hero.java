@@ -14,14 +14,17 @@ public class Hero {
 
     public Bitmap bitmap;
     public PointF pos;
+    public int degree;
 
     public Hero() {
         this.bitmap = null;
         this.pos = new PointF();
+        this.degree = 0;
     }
 
     public Hero(Bitmap bitmap, PointF pos) {
         this.bitmap = bitmap;
         this.pos = pos;
+        this.degree = 0;
     }
 }

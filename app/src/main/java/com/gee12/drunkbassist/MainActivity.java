@@ -11,6 +11,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,19 +26,25 @@ import java.util.Random;
  *
  * @see SystemUiHider
  */
-public class MainActivity extends Activity implements SensorEventListener {
+public class MainActivity extends Activity implements SensorEventListener, HeroListener {
+
+    public final static String POINTS = "com.gee12.drunkbassist.POINTS";
+    public final static int MSEC = 3000;
+    public final static int MSEC_MAX = MSEC * 100;
 
     private SensorManager mSensorManager;
     private Sensor mAccelerometerSensor;
     private DrawView drawView;
     private float oldAccX=0, oldAccY=0;
+    private int points = 0;
+    private int degree = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //setContentView(R.layout.activity_main);
-        drawView = new DrawView(this);
+        drawView = new DrawView(this, this);
         setContentView(drawView);
 
         // accelerometer
@@ -54,6 +61,9 @@ public class MainActivity extends Activity implements SensorEventListener {
                 }
             }
         }
+
+        //
+        //new DegreeTimer(MSEC_MAX, MSEC).start();
     }
 
 
@@ -98,8 +108,8 @@ public class MainActivity extends Activity implements SensorEventListener {
             Random rand = new Random();
             randomMoveCounter = rand.nextInt(50);
             randomOffset = new PointF(
-                    rand.nextFloat() * 4 - 2,
-                    rand.nextFloat() * 4 - 2
+                    rand.nextFloat() * degree - degree/2.f,
+                    rand.nextFloat() * degree - degree/2.f
             );
         }
 
@@ -111,14 +121,13 @@ public class MainActivity extends Activity implements SensorEventListener {
         drawView.setHeroOffset(-dAccY, -dAccX);
     }
 
+    public void heroDegreeChange(int degree) {
+        drawView.setHeroDegree(degree);
+    }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
-
-    public void onClickMenuButton(View view) {
-        Intent intent = new Intent(MainActivity.this, StartActivity.class);
-        startActivity(intent);
     }
 
     @Override
@@ -131,12 +140,38 @@ public class MainActivity extends Activity implements SensorEventListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            //
-            super.onBackPressed();
+        if (id == R.id.action_menu) {
+            // to MenuActivity
+            Intent menuIntent = new Intent(MainActivity.this, MenuActivity.class);
+            startActivity(menuIntent);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFinish() {
+        // to FinishActivity
+        Intent finishIntent = new Intent(MainActivity.this, MenuActivity.class);
+        // send points
+        //finishIntent.putExtra(POINTS, points);
+        startActivity(finishIntent);
+
+    }
+
+    public class DegreeTimer extends CountDownTimer {
+
+        public DegreeTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onFinish() {
+        }
+
+        public void onTick(long millisUntilFinished) {
+            heroDegreeChange(degree++);
+        }
+    }
 }
