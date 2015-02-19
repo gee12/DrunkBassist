@@ -1,32 +1,91 @@
 package com.gee12.drunkbassist;
 
 import android.graphics.Bitmap;
-import android.graphics.PointF;
 
 /**
  * Created by Иван on 17.02.2015.
  */
-public class Hero {
+public class Hero extends Model {
 
-    public static int HERO_WIDTH = 30;
-    public static int HERO_HEIGHT = 30;
+    public enum HeroFrames {
+        STAND(0),
+        MOVE1(1),
+        MOVE2(2),
+        AT_THE_EDGE1(3),
+        AT_THE_EDGE2(4);
 
-    public Bitmap bitmap;
-    public PointF pos;
-    public int degree;
-    public int points;
+        private int frame;
+
+        HeroFrames(int col) {
+            this.frame = col;
+        }
+
+        public int getColor() {
+            return frame;
+        }
+
+//        public static HeroStatus valueOf(int col) {
+//            for (HeroStatus status : values()) {
+//                if (status.getColor() == col)
+//                    return status;
+//            }
+//            return null;
+//        }
+    }
+
+    private int curFrame;
+    private int degree;
+    private int points;
 
     public Hero() {
-        this.bitmap = null;
-        this.pos = new PointF();
-        this.degree = 0;
-        this.points = 0;
+        super();
+        init(0, 0, 0);
     }
 
     public Hero(Bitmap bitmap) {
-        this.bitmap = bitmap;
-        this.pos = new PointF();
-        this.degree = 0;
-        this.points = 0;
+        super(bitmap);
+        init(0, 0, 0);
     }
+
+    public Hero(Bitmap bitmap, int destWidth, int destHeight) {
+        super(bitmap, destWidth, destHeight);
+        init(0, 0, 0);
+    }
+
+    private void init(int curFrame, int degree, int points) {
+        this.curFrame = curFrame;
+        this.degree = degree;
+        this.points = points;
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    // set
+
+    public void setCurFrame(int curFrame) {
+        this.curFrame = curFrame;
+    }
+
+    public void setPoints(int points) {
+        this.degree = points;
+    }
+
+    public void setDegree(int degree) {
+        this.degree = degree;
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    // get
+
+    public int getCurFrame() {
+        return curFrame;
+    }
+
+    public int getDegree() {
+        return degree;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
 }

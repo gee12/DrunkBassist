@@ -1,39 +1,31 @@
 package com.gee12.drunkbassist;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import static com.gee12.drunkbassist.ModelsManager.*;
 
 
 /**
  * Created by Иван on 16.02.2015.
  */
-@TargetApi(9)
+
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     private DrawThread drawThread;
-    private HeroListener listener;
-    private float accX=0.f, accY=0.f;
-    private Hero hero;
-    private RectF sceneOuterRectF,
-            sceneInnerRectF,
-            heroDestRectF;
+//    private HeroListener listener;
+//    private RectF sceneOuterRectF,
+//            sceneInnerRectF;
 
     public DrawView(Context context, HeroListener listener) {
         super(context);
-        this.listener = listener;
-
+//        this.listener = listener;
         getHolder().addCallback(this);
-
-        hero = new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.crossfire));
     }
 
     @Override
@@ -44,41 +36,11 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
         //
         PointF startPos = new PointF(getWidth() / 2, getHeight() / 2);
-        hero.pos = startPos;
+        hero.setPosition(startPos);
         //
-        heroDestRectF = getGeroDestRectF(startPos);
+//        sceneOuterRectF = new RectF(20, 20, getWidth() - 20, getHeight() - 20);
         //
-        sceneOuterRectF = new RectF(20, 20, getWidth() - 20, getHeight() - 20);
-        //
-        sceneInnerRectF = new RectF(40, 40, getWidth() - 40, getHeight() - 40);
-    }
-
-    public void setAccelerometerXY(float x, float y) {
-        accX = x;
-        accY = y;
-    }
-
-    public void setHeroPosition(float x, float y) {
-        hero.pos.set(x, y);
-        heroDestRectF = getGeroDestRectF(hero.pos);
-    }
-
-    public void setHeroOffset(float dx, float dy) {
-        hero.pos.offset(dx, dy);
-        heroDestRectF = getGeroDestRectF(hero.pos);
-    }
-
-    public RectF getGeroDestRectF(PointF pos) {
-        return new RectF(pos.x, pos.y,
-                pos.x + Hero.HERO_WIDTH, pos.y + Hero.HERO_HEIGHT);
-    }
-
-    public void setHeroDegree(int degree) {
-        hero.degree = degree;
-    }
-
-    public void setHeroPoints(int points) {
-        hero.points = points;
+//        sceneInnerRectF = new RectF(40, 40, getWidth() - 40, getHeight() - 40);
     }
 
     public void draw(Canvas canvas) {
@@ -87,50 +49,46 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         Paint p = new Paint();
         p.setStyle(Paint.Style.FILL);
 
-
-        // on scane
-        onHeroOutOfScene(canvas);
-
+        //scene
+        ModelsManager.scene.drawModel(canvas, p);
+        // drink
+        ModelsManager.drink.drawModel(canvas, p);
         // hero
-        canvas.drawBitmap(hero.bitmap, new Rect(0, 0, hero.bitmap.getWidth(), hero.bitmap.getHeight()),
-                heroDestRectF, p);
+        ModelsManager.hero.drawModel(canvas, p);
 
-        canvas.drawText(String.format("x=%1.3f", accX), 10, 10, p);
-        canvas.drawText(String.format("y=%1.3f", accY), 10, 30, p);
-
-        canvas.drawText(String.format("points=%d", hero.points), getWidth()/2, 10, p);
-        canvas.drawText(String.format("alc=%d", hero.degree), getWidth()-30, 10, p);
+        canvas.drawText(String.format("points=%d", hero.getPoints()), 10, 10, p);
+        canvas.drawText(String.format("alc=%d", hero.getDegree()), getWidth()-30, 10, p);
     }
 
-    public void onHeroOutOfScene(Canvas canvas) {
-        Paint p = new Paint();
-        p.setStyle(Paint.Style.FILL);
-        if (!sceneOuterRectF.contains(heroDestRectF)) {
-            //
-
-            listener.onFinish();
-
-//            canvas.drawColor(Color.RED);
+//    public void onHeroOutOfScene(Canvas canvas) {
+//        Paint p = new Paint();
+//        p.setStyle(Paint.Style.FILL);
+//        if (!sceneOuterRectF.contains(hero.getDestRectF())) {
+//            //
+//
+//            listener.onFinish();
+//
+////            canvas.drawColor(Color.RED);
+////            p.setColor(Color.LTGRAY);
+////            canvas.drawRect(sceneOuterRectF, p);
+////            p.setColor(Color.WHITE);
+////            canvas.drawRect(sceneInnerRectF, p);
+//
+//        } else if (!sceneInnerRectF.contains(hero.getDestRectF())) {
+//
+//            canvas.drawColor(Color.GRAY);
+//            p.setColor(Color.RED);
+//            canvas.drawRect(sceneOuterRectF, p);
+//            p.setColor(Color.WHITE);
+//            canvas.drawRect(sceneInnerRectF, p);
+//        } else {
+//            canvas.drawColor(Color.GRAY);
 //            p.setColor(Color.LTGRAY);
 //            canvas.drawRect(sceneOuterRectF, p);
 //            p.setColor(Color.WHITE);
 //            canvas.drawRect(sceneInnerRectF, p);
-
-        } else if (!sceneInnerRectF.contains(heroDestRectF)) {
-
-            canvas.drawColor(Color.GRAY);
-            p.setColor(Color.RED);
-            canvas.drawRect(sceneOuterRectF, p);
-            p.setColor(Color.WHITE);
-            canvas.drawRect(sceneInnerRectF, p);
-        } else {
-            canvas.drawColor(Color.GRAY);
-            p.setColor(Color.LTGRAY);
-            canvas.drawRect(sceneOuterRectF, p);
-            p.setColor(Color.WHITE);
-            canvas.drawRect(sceneInnerRectF, p);
-        }
-    }
+//        }
+//    }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
