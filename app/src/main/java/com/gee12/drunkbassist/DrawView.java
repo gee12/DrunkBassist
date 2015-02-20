@@ -2,9 +2,8 @@ package com.gee12.drunkbassist;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
-import android.graphics.RectF;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -18,29 +17,29 @@ import static com.gee12.drunkbassist.ModelsManager.*;
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     private DrawThread drawThread;
-//    private HeroListener listener;
-//    private RectF sceneOuterRectF,
-//            sceneInnerRectF;
+    public String text = "";
+    public float accX=0.0f, accY=0.0f;
 
-    public DrawView(Context context, HeroListener listener) {
+    public DrawView(Context context) {
         super(context);
-//        this.listener = listener;
         getHolder().addCallback(this);
+
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+
+        //
+//        load(this.getResources(), getWidth(), getHeight());
+
+        //
         drawThread = new DrawThread(getHolder());
         drawThread.setRunning(true);
         drawThread.start();
 
         //
-        PointF startPos = new PointF(getWidth() / 2, getHeight() / 2);
-        hero.setPosition(startPos);
-        //
-//        sceneOuterRectF = new RectF(20, 20, getWidth() - 20, getHeight() - 20);
-        //
-//        sceneInnerRectF = new RectF(40, 40, getWidth() - 40, getHeight() - 40);
+//        PointF startPos = new PointF(getWidth() / 2, getHeight() / 2);
+//        hero.setPosition(startPos);
     }
 
     public void draw(Canvas canvas) {
@@ -55,9 +54,15 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         ModelsManager.drink.drawModel(canvas, p);
         // hero
         ModelsManager.hero.drawModel(canvas, p);
-
-        canvas.drawText(String.format("points=%d", hero.getPoints()), 10, 10, p);
+        //text
+        p.setColor(Color.RED);
+        canvas.drawText(String.format("points=%d", hero.getPoints()), getWidth()/2, 10, p);
         canvas.drawText(String.format("alc=%d", hero.getDegree()), getWidth()-30, 10, p);
+
+        canvas.drawText(text, getWidth()/2, getHeight()/2, p);
+
+        canvas.drawText(String.format("accX=%f", accX), 10, 10, p);
+        canvas.drawText(String.format("accY=%f", accY), 10, 30, p);
     }
 
 //    public void onHeroOutOfScene(Canvas canvas) {

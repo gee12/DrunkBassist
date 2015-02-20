@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
  */
 public class Drink extends Model {
 
+    public final static int DEF_MSEC = 5000;
+
     public int degree;
     public int points;
     public int msec;
@@ -21,16 +23,15 @@ public class Drink extends Model {
     public Drink(Bitmap bitmap, int destWidth, int destHeight, int degree) {
         super(bitmap, destWidth, destHeight);
         this.degree = degree;
-        this.points = degree;
-        this.msec = degree;
+        this.points = degree * 10;
+        this.msec = DEF_MSEC;
     }
 
     public Drink(Bitmap bitmap, int destWidth, int destHeight, int degree, int points, int msec) {
         super(bitmap, destWidth, destHeight);
         this.degree = degree;
         this.points = points;
-        this.msec = msec
-        ;
+        this.msec = msec;
     }
 
     public int getDegree() {

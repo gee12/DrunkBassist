@@ -13,12 +13,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.PowerManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewTreeObserver;
 
 import java.util.List;
 import java.util.Random;
-import java.util.TimerTask;
 
 import static com.gee12.drunkbassist.ModelsManager.*;
 
@@ -29,20 +30,19 @@ import static com.gee12.drunkbassist.ModelsManager.*;
  *
  * @see SystemUiHider
  */
-public class MainActivity extends Activity implements SensorEventListener, HeroListener {
+public class MainActivity extends Activity implements SensorEventListener {
 
     public final static String POINTS = "com.gee12.drunkbassist.POINTS";
-    //public final static int MSEC = 3000;
     public final static int MSEC_MAX = 60000;
-    //public final static int POINTS_FOR_DEGREE = 10;
-    public final static float POSITIONS_ROUND = 0.1f;
+    public final static float POSITIONS_ROUND = 2f;
 
     private SensorManager mSensorManager;
     private Sensor mAccelerometerSensor;
+    private PowerManager.WakeLock mWakeLock;
     private DrawView drawView;
     private float oldAccX=0, oldAccY=0;
-//    private int points = 0;
-//    private int degree = 0;
+    private int randomMoveCounter = 0;
+    private PointF randomOffset = new PointF();
     DegreeTimer timer;
 
     @Override
@@ -50,11 +50,26 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
         super.onCreate(savedInstanceState);
 
         //
-        load(this.getWindow().getDecorView());
-
-        //
-        drawView = new DrawView(this, this);
+        drawView = new DrawView(this);
         setContentView(drawView);
+
+        // event when view will be created (for getWidth and getHeight)
+        drawView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                drawView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                load(getResources(), drawView.getWidth(), drawView.getHeight());
+
+                // uncomment when will be several DRINKS
+//              timer = new DegreeTimer(MSEC_MAX, drinks[i].getMsec());
+                timer = new DegreeTimer(MSEC_MAX, drink.getMsec());
+                timer.start();
+
+                //
+                randomDrinkPosition();
+            }
+        });
 
         // accelerometer
         mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
@@ -71,29 +86,25 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
             }
         }
 
-        //
-        timer = new DegreeTimer(MSEC_MAX, drink.getMsec());
-        timer.start();
-
-        //
-        randomDrinkPosition();
+        // lock bright wake up
+//        PowerManager mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+//        mWakeLock = mPowerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "Brightness");
     }
-
 
     @Override
     protected void onPause() {
-        mSensorManager.unregisterListener(this);
         super.onPause();
+        mSensorManager.unregisterListener(this);
+//        mWakeLock.release();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mSensorManager.registerListener(this, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
-    }
+//        mWakeLock.acquire();
 
-    private int randomMoveCounter = 0;
-    private PointF randomOffset = new PointF();
+    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -101,10 +112,17 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
         switch(event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER: {
                 //
+                randomHeroOffset();
+                //
                 onAccelerometerChanged(values[SensorManager.DATA_X],
                         event.values[SensorManager.DATA_Y]);
                 //
-                randomHeroOffset();
+                onHeroPositionStatus();
+                //
+                onHeroDrinking();
+                //
+                drawView.accX = values[SensorManager.DATA_X];
+                drawView.accY = values[SensorManager.DATA_Y];
             }
             break;
         }
@@ -117,29 +135,32 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
     }
 
     public void randomHeroOffset() {
-
+        // offset hero position, while counter > 0
         if (randomMoveCounter-- > 0) {
             // add random offset
             updateHeroOffset(randomOffset.x, randomOffset.y);
         } else {
-            Random rand = new Random();
-            randomMoveCounter = rand.nextInt(50);
-            // new random offset from hero alcoholic intoxication (degree)
+            // hero alcoholic intoxication (degree)
             int degree = hero.getDegree();
-            randomOffset = new PointF(
-                    rand.nextFloat() * degree - degree/2.f,
-                    rand.nextFloat() * degree - degree/2.f
-            );
+            if (degree > 0) {
+                Random rand = new Random();
+                // new random delay
+                randomMoveCounter = rand.nextInt(10);// * degree);
+                // new random offset
+                randomOffset = new PointF(
+                        (float) Math.sqrt(rand.nextFloat() * degree - degree / 2.f),
+                        (float) Math.sqrt(rand.nextFloat() * degree - degree / 2.f));
+            }
         }
 
     }
 
     public void updateHeroOffset(float dx, float dy) {
         hero.setOffset(dx, dy);
+    }
 
-        onHeroDrinking();
-
-        SceneMask.HitStatus status = mask.hitStatus(hero.getPosition());
+    public void onHeroPositionStatus() {
+        SceneMask.HitStatus status = mask.hitStatus(hero.getCenter());
         switch(status) {
             case IN_SCENE:
                 break;
@@ -148,39 +169,46 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
                 break;
 
             case OUT_FROM_SCENE:
-                onFinish();
+                //onFinish();
                 break;
         }
+        drawView.text = status.toString();
     }
 
     public void onHeroDrinking() {
         // if (hero.pos ~= drink.pos)
-        if (hero.getPos().x - drink.getPos().x < POSITIONS_ROUND
-                && hero.getPos().y - drink.getPos().y < POSITIONS_ROUND) {
+        if (Math.abs(hero.getCenter().x - drink.getCenter().x) < POSITIONS_ROUND
+                && Math.abs(hero.getCenter().y - drink.getCenter().y) < POSITIONS_ROUND) {
+//        if (hero.getCenter().x > 229 && hero.getCenter().x < 231) {
             // hero drinking !!
+
+            drawView.text = "ПОПАЛ";
+
             hero.setDegree(hero.getDegree() + drink.getDegree());
             hero.setPoints(hero.getPoints() + drink.getPoints());
             //
-            //drink.setVisible(false);
+            drink.setVisible(false);
             timer.cancel();
 
-            //drink.setVisible(true);
+            // uncomment when will be several DRINKS
+//            timer = new DegreeTimer(MSEC_MAX, drinks[i].getMsec());
             timer.start();
             randomDrinkPosition();
+            drink.setVisible(true);
         }
     }
 
     public void randomDrinkPosition() {
-        RectF destRectF = drink.getDestRectF();
+        RectF destRectF = mask.getDestRectF();
         Random rand = new Random();
-        PointF pos;
         do {
-            pos = new PointF(
+            PointF pos = new PointF(
                     rand.nextFloat() * destRectF.width() + destRectF.left,
-                    rand.nextFloat() * destRectF.height() + destRectF.bottom
+                    rand.nextFloat() * destRectF.height() + destRectF.top
             );
-        } while (mask.hitStatus(pos) != SceneMask.HitStatus.IN_SCENE);
-        drink.setPosition(pos);
+            drink.setPosition(pos);
+        } while (mask.hitStatus(drink.getCenter()) != SceneMask.HitStatus.IN_SCENE);
+
     }
 
     @Override
@@ -208,24 +236,21 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
         return super.onOptionsItemSelected(item);
     }
 
-    class DrinkTimerTask extends TimerTask {
+    public void onFinish() {
+        timer.cancel();
 
-        @Override
-        public void run() {
+        // to FinishActivity
+        Intent finishIntent = new Intent(MainActivity.this, FinishActivity.class);
+        // send points
+        finishIntent.putExtra(POINTS, hero.getPoints());
+        startActivity(finishIntent);
+        finish();
+    }
 
-//            runOnUiThread(new Runnable() {
-//
-//                @Override
-//                public void run() {
-//
-//                }
-//            });
-        }
-
-//        @Override
-//        public boolean cancel() {
-//            return super.cancel();
-//        }
+    @Override
+    public void onBackPressed(){
+        //super.onBackPressed();
+        finish();
     }
 
     public class DegreeTimer extends CountDownTimer {
@@ -245,21 +270,24 @@ public class MainActivity extends Activity implements SensorEventListener, HeroL
 
     }
 
-    @Override
-    public void onFinish() {
-        timer.cancel();
-
-        // to FinishActivity
-        Intent finishIntent = new Intent(MainActivity.this, FinishActivity.class);
-        // send points
-        finishIntent.putExtra(POINTS, hero.getPoints());
-        startActivity(finishIntent);
-        finish();
-    }
-
-    @Override
-    public void onBackPressed(){
-        //super.onBackPressed();
-    }
+//    class DrinkTimerTask extends TimerTask {
+//
+//        @Override
+//        public void run() {
+//
+////            runOnUiThread(new Runnable() {
+////
+////                @Override
+////                public void run() {
+////
+////                }
+////            });
+//        }
+//
+////        @Override
+////        public boolean cancel() {
+////            return super.cancel();
+////        }
+//    }
 
 }

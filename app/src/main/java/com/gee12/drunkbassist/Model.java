@@ -16,12 +16,13 @@ public class Model {
     protected int destWidth;
     protected int destHeight;
     private PointF pos;
+    private PointF center;
     protected Rect srcRect;
     protected RectF destRectF;
     protected boolean isVisible;
 
     public Model() {
-        this(null, 0, 0, new PointF());
+        init(null, 0, 0, new PointF());
     }
 
     public Model(Bitmap bitmap) {
@@ -42,7 +43,9 @@ public class Model {
         this.destHeight = destHeight;
         this.pos = pos;
         this.srcRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        resetCenter(pos);
         resetDestRectF(pos);
+        this.isVisible = true;
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -60,18 +63,20 @@ public class Model {
         destRectF = new RectF(pos.x, pos.y,
                 pos.x + destWidth, pos.y + destHeight);
     }
-    public void setPosition(PointF pos) {
-        this.pos = pos;
-        resetDestRectF(pos);
+
+    public void resetCenter(PointF pos) {
+        center = new PointF(pos.x + destWidth/2.f, pos.y + destHeight/2.f);
     }
 
-    public void setPosition(float x, float y) {
-        pos.set(x, y);
+    public void setPosition(PointF pos) {
+        this.pos = pos;
+        resetCenter(pos);
         resetDestRectF(pos);
     }
 
     public void setOffset(float dx, float dy) {
         pos.offset(dx, dy);
+        resetCenter(pos);
         resetDestRectF(pos);
     }
 
@@ -85,10 +90,6 @@ public class Model {
 
     public void setDestHeight(int destHeight) {
         this.destHeight = destHeight;
-    }
-
-    public void setDestRectF(RectF destRectF) {
-        this.destRectF = destRectF;
     }
 
     public void setVisible(boolean isVisible) {
@@ -124,6 +125,10 @@ public class Model {
 
     public PointF getPos() {
         return pos;
+    }
+
+    public PointF getCenter() {
+        return center;
     }
 
     public boolean isVisible() {

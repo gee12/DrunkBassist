@@ -1,6 +1,7 @@
 package com.gee12.drunkbassist;
 
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 
 /**
  * Created by Иван on 17.02.2015.
@@ -52,6 +53,11 @@ public class Hero extends Model {
         init(0, 0, 0);
     }
 
+    public Hero(Bitmap bitmap, int destWidth, int destHeight, PointF pos) {
+        super(bitmap, destWidth, destHeight, pos);
+        init(0, 0, 0);
+    }
+
     private void init(int curFrame, int degree, int points) {
         this.curFrame = curFrame;
         this.degree = degree;
@@ -66,7 +72,7 @@ public class Hero extends Model {
     }
 
     public void setPoints(int points) {
-        this.degree = points;
+        this.points = points;
     }
 
     public void setDegree(int degree) {

@@ -10,9 +10,11 @@ import android.graphics.PointF;
 public class SceneMask extends Scene {
 
     public enum HitStatus {
-        IN_SCENE(Color.BLACK),
+        IN_SCENE(Color.GREEN),
         AT_THE_EDGE(Color.RED),
-        OUT_FROM_SCENE(Color.WHITE);
+        OUT_FROM_SCENE(Color.BLACK),
+        OUT_FROM_SCREEN(-2),
+        NONE(-1);
 
         private int color;
 
@@ -29,7 +31,7 @@ public class SceneMask extends Scene {
                 if (status.getColor() == col)
                     return status;
             }
-            return null;
+            return NONE;
         }
     }
 
@@ -43,13 +45,18 @@ public class SceneMask extends Scene {
 
     public SceneMask(Bitmap bitmap, int destWidth, int destHeight) {
         // scale mask bitmap to screen dimension
-        this.bitmap = Bitmap.createScaledBitmap(bitmap, destWidth, destHeight, false);
-        init(bitmap, destWidth, destHeight, new PointF());
+        super(Bitmap.createScaledBitmap(bitmap, destWidth, destHeight, false), destWidth, destHeight);
     }
 
-    public HitStatus hitStatus(PointF heroPos) {
-        if (heroPos == null) return HitStatus.OUT_FROM_SCENE;
-        int pixel = bitmap.getPixel((int)(heroPos.x + 0.5), (int)(heroPos.y + 0.5));
+    public HitStatus hitStatus(PointF pos) {
+        if (pos == null)
+            return HitStatus.NONE;
+        int x = (int)(pos.x + 0.5);
+        int y = (int)(pos.y + 0.5);
+        if (x < 0 || y < 0 || x >= bitmap.getWidth() || y >= bitmap.getHeight())
+            return HitStatus.OUT_FROM_SCREEN;
+
+        int pixel = bitmap.getPixel(x, y);
         return HitStatus.valueOf(pixel);
     }
 
