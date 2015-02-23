@@ -48,7 +48,7 @@ public class SceneMask extends Scene {
         super(Bitmap.createScaledBitmap(bitmap, destWidth, destHeight, false), destWidth, destHeight);
     }
 
-    public HitStatus hitStatus(PointF pos) {
+    public HitStatus getHitStatus(PointF pos) {
         if (pos == null)
             return HitStatus.NONE;
         int x = (int)(pos.x + 0.5);

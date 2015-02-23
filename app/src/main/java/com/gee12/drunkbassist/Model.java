@@ -7,6 +7,8 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import java.util.Random;
+
 /**
  * Created by Иван on 19.02.2015.
  */
@@ -15,8 +17,8 @@ public class Model {
     protected Bitmap bitmap;
     protected int destWidth;
     protected int destHeight;
-    private PointF pos;
-    private PointF center;
+    protected PointF pos;
+    protected PointF center;
     protected Rect srcRect;
     protected RectF destRectF;
     protected boolean isVisible;
@@ -52,9 +54,29 @@ public class Model {
     //
 
     public void drawModel(Canvas canvas, Paint p) {
-        if (canvas == null && !isVisible) return;
+        if (canvas == null || !isVisible) return;
         canvas.drawBitmap(bitmap, srcRect, destRectF, p);
     }
+
+    public boolean isSamePositions(Model other, float exp) {
+        return (Math.abs(this.center.x - other.getCenter().x) < exp
+                && Math.abs(this.center.y - other.getCenter().y) < exp);
+    }
+
+    public void setRandomPositionInScene(SceneMask mask) {
+        if (mask == null) return;
+
+        RectF destRectF = mask.getDestRectF();
+        Random rand = new Random();
+        do {
+            PointF pos = new PointF(
+                    rand.nextFloat() * destRectF.width() + destRectF.left,
+                    rand.nextFloat() * destRectF.height() + destRectF.top
+            );
+            setPosition(pos);
+        } while (mask.getHitStatus(center) != SceneMask.HitStatus.IN_SCENE);
+    }
+
 
     /////////////////////////////////////////////////////////////////////////
     // set

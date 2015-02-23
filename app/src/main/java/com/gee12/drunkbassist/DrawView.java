@@ -18,7 +18,6 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     private DrawThread drawThread;
     public String text = "";
-    public float accX=0.0f, accY=0.0f;
 
     public DrawView(Context context) {
         super(context);
@@ -28,18 +27,9 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-
-        //
-//        load(this.getResources(), getWidth(), getHeight());
-
-        //
         drawThread = new DrawThread(getHolder());
         drawThread.setRunning(true);
         drawThread.start();
-
-        //
-//        PointF startPos = new PointF(getWidth() / 2, getHeight() / 2);
-//        hero.setPosition(startPos);
     }
 
     public void draw(Canvas canvas) {
@@ -51,18 +41,17 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         //scene
         ModelsManager.scene.drawModel(canvas, p);
         // drink
-        ModelsManager.drink.drawModel(canvas, p);
+        ModelsManager.getCurDrink().drawModel(canvas, p);
+        // food
+        ModelsManager.getCurFood().drawModel(canvas, p);
         // hero
         ModelsManager.hero.drawModel(canvas, p);
         //text
         p.setColor(Color.RED);
         canvas.drawText(String.format("points=%d", hero.getPoints()), getWidth()/2, 10, p);
-        canvas.drawText(String.format("alc=%d", hero.getDegree()), getWidth()-30, 10, p);
+        canvas.drawText(String.format("alc=%d", hero.getDegree()), getWidth()-40, 10, p);
 
-        canvas.drawText(text, getWidth()/2, getHeight()/2, p);
-
-        canvas.drawText(String.format("accX=%f", accX), 10, 10, p);
-        canvas.drawText(String.format("accY=%f", accY), 10, 30, p);
+        canvas.drawText(text, 10, 10, p);
     }
 
 //    public void onHeroOutOfScene(Canvas canvas) {

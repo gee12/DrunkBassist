@@ -56,10 +56,9 @@ public class FinishActivity extends Activity {
             addNewRecord(getUserName(), points);
         }
         //
-        finish();
-        Intent mainIntent = new Intent(FinishActivity.this, MainActivity.class);
+        Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
-
+        finish();
     }
 
     public void onClickMenuButton(View view) {
@@ -67,15 +66,22 @@ public class FinishActivity extends Activity {
             addNewRecord(getUserName(), points);
         }
         //
+        toMenuActivity();
         finish();
-        Intent menuIntent = new Intent(FinishActivity.this, MenuActivity.class);
-        startActivity(menuIntent);
-
     }
 
     @Override
     public void onBackPressed(){
-        //super.onBackPressed();
+        toMenuActivity();
+        super.onBackPressed();
+    }
+
+    private void toMenuActivity() {
+        Intent menuIntent = new Intent(this, MenuActivity.class);
+        menuIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        menuIntent.putExtra("finishApplication", true);
+        startActivity(menuIntent);
+//        finish();
     }
 
 }

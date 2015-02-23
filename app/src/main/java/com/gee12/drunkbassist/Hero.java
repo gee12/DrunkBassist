@@ -34,9 +34,9 @@ public class Hero extends Model {
 //        }
     }
 
-    private int curFrame;
-    private int degree;
-    private int points;
+    protected int curFrame;
+    protected int degree;
+    protected int points;
 
     public Hero() {
         super();
@@ -62,6 +62,16 @@ public class Hero extends Model {
         this.curFrame = curFrame;
         this.degree = degree;
         this.points = points;
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+
+    public void addPoints(int points) {
+        this.points += points;
+    }
+
+    public void addDegree(int degree) {
+        this.degree += degree;
     }
 
     /////////////////////////////////////////////////////////////////////////
