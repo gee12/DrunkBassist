@@ -2,12 +2,9 @@ package com.gee12.drunkbassist;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import static com.gee12.drunkbassist.ModelsManager.*;
 
 
 /**
@@ -22,7 +19,6 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     public DrawView(Context context) {
         super(context);
         getHolder().addCallback(this);
-
     }
 
     @Override
@@ -35,54 +31,27 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         if (canvas == null) return;
 
+        //scene
+        ModelsManager.Scene.drawModel(canvas);
+        // drink
+        ModelsManager.getCurDrink().drawModel(canvas);
+        // food
+        ModelsManager.getCurFood().drawModel(canvas);
+        // hero
+        ModelsManager.Hero.drawModel(canvas);
+        // indicators
+        IndicatorsManager.Points.drawModel(canvas);
+        IndicatorsManager.Bonus.drawModel(canvas);
+        IndicatorsManager.Degree.drawModel(canvas);
+
+        IndicatorsManager.PointsInc.drawModel(canvas);
+        IndicatorsManager.DegreeInc.drawModel(canvas);
+
         Paint p = new Paint();
         p.setStyle(Paint.Style.FILL);
-
-        //scene
-        ModelsManager.scene.drawModel(canvas, p);
-        // drink
-        ModelsManager.getCurDrink().drawModel(canvas, p);
-        // food
-        ModelsManager.getCurFood().drawModel(canvas, p);
-        // hero
-        ModelsManager.hero.drawModel(canvas, p);
-        //text
-        p.setColor(Color.RED);
-        canvas.drawText(String.format("points=%d", hero.getPoints()), getWidth()/2, 10, p);
-        canvas.drawText(String.format("alc=%d", hero.getDegree()), getWidth()-40, 10, p);
-
         canvas.drawText(text, 10, 10, p);
     }
 
-//    public void onHeroOutOfScene(Canvas canvas) {
-//        Paint p = new Paint();
-//        p.setStyle(Paint.Style.FILL);
-//        if (!sceneOuterRectF.contains(hero.getDestRectF())) {
-//            //
-//
-//            listener.onFinish();
-//
-////            canvas.drawColor(Color.RED);
-////            p.setColor(Color.LTGRAY);
-////            canvas.drawRect(sceneOuterRectF, p);
-////            p.setColor(Color.WHITE);
-////            canvas.drawRect(sceneInnerRectF, p);
-//
-//        } else if (!sceneInnerRectF.contains(hero.getDestRectF())) {
-//
-//            canvas.drawColor(Color.GRAY);
-//            p.setColor(Color.RED);
-//            canvas.drawRect(sceneOuterRectF, p);
-//            p.setColor(Color.WHITE);
-//            canvas.drawRect(sceneInnerRectF, p);
-//        } else {
-//            canvas.drawColor(Color.GRAY);
-//            p.setColor(Color.LTGRAY);
-//            canvas.drawRect(sceneOuterRectF, p);
-//            p.setColor(Color.WHITE);
-//            canvas.drawRect(sceneInnerRectF, p);
-//        }
-//    }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {

@@ -6,7 +6,7 @@ import android.graphics.PointF;
 /**
  * Created by Иван on 19.02.2015.
  */
-public class Scene extends Model {
+public class Scene extends BitmapModel {
 
 
     public Scene() {

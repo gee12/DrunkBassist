@@ -6,7 +6,7 @@ import android.graphics.PointF;
 /**
  * Created by Иван on 17.02.2015.
  */
-public class Hero extends Model {
+public class Hero extends BitmapModel {
 
     public enum HeroFrames {
         STAND(0),
@@ -35,43 +35,34 @@ public class Hero extends Model {
     }
 
     protected int curFrame;
-    protected int degree;
-    protected int points;
 
     public Hero() {
         super();
-        init(0, 0, 0);
+        init(0);
     }
 
     public Hero(Bitmap bitmap) {
         super(bitmap);
-        init(0, 0, 0);
+        init(0);
+    }
+
+    public Hero(Bitmap bitmap, PointF pos) {
+        super(bitmap, pos);
+        init(0);
     }
 
     public Hero(Bitmap bitmap, int destWidth, int destHeight) {
         super(bitmap, destWidth, destHeight);
-        init(0, 0, 0);
+        init(0);
     }
 
     public Hero(Bitmap bitmap, int destWidth, int destHeight, PointF pos) {
         super(bitmap, destWidth, destHeight, pos);
-        init(0, 0, 0);
+        init(0);
     }
 
-    private void init(int curFrame, int degree, int points) {
+    private void init(int curFrame) {
         this.curFrame = curFrame;
-        this.degree = degree;
-        this.points = points;
-    }
-
-    /////////////////////////////////////////////////////////////////////////
-
-    public void addPoints(int points) {
-        this.points += points;
-    }
-
-    public void addDegree(int degree) {
-        this.degree += degree;
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -81,13 +72,6 @@ public class Hero extends Model {
         this.curFrame = curFrame;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public void setDegree(int degree) {
-        this.degree = degree;
-    }
 
     /////////////////////////////////////////////////////////////////////////
     // get
@@ -95,13 +79,4 @@ public class Hero extends Model {
     public int getCurFrame() {
         return curFrame;
     }
-
-    public int getDegree() {
-        return degree;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
 }

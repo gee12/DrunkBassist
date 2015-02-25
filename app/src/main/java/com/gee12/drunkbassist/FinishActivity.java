@@ -28,7 +28,7 @@ public class FinishActivity extends Activity {
         nameTextField = (EditText)findViewById(R.id.textfield_name);
         pointsLabel = (TextView)findViewById(R.id.label_points);
 
-        // get points
+        // get Points
         Intent intent = getIntent();
         points = intent.getExtras().getInt(MainActivity.POINTS, 0);
         pointsLabel.setText(String.valueOf(points));

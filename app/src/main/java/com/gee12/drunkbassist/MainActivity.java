@@ -3,7 +3,6 @@ package com.gee12.drunkbassist;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PointF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -35,10 +34,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     private DrawView drawView;
     private float oldAccX=0, oldAccY=0;
     private int randomMoveCounter = 0;
-    private PointF randomOffset = new PointF();
     private float offsetStep = 1 - OFFSTEP_STEP_INC;
-//    private boolean isneedChangeDrinkPos;
-//    private boolean isneedChangeFoodPos;
 
     private Timer mTimer;
     private MyTimerTask mMyTimerTask;
@@ -59,6 +55,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
                 // load and init models
                 ModelsManager.load(getResources(), drawView.getWidth(), drawView.getHeight());
+                IndicatorsManager.load(getResources(), drawView.getWidth(), drawView.getHeight());
 
                 //
                 if (mTimer != null) {
@@ -67,9 +64,6 @@ public class MainActivity extends Activity implements SensorEventListener {
                 mTimer = new Timer();
                 mMyTimerTask = new MyTimerTask();
                 mMyTimerTask.start();
-
-                nextRandomDrink();
-//                nextRandomFood();
             }
         });
 
@@ -98,8 +92,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         mSensorManager.unregisterListener(this);
         mMyTimerTask.cancel();
         mTimer.cancel();
-//        mMyTimerTask = null;
-//        mTimer = null;
     }
 
     @Override
@@ -111,6 +103,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (mMyTimerTask == null) return;
+
         float[] values = event.values;
         switch(event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER: {
@@ -132,23 +126,23 @@ public class MainActivity extends Activity implements SensorEventListener {
     public void onAccelerometerChanged(float accX, float accY) {
         float dAccX = oldAccX - accX;
         float dAccY = oldAccY - accY;
-//        updateHeroOffset(-dAccY, -dAccX);
+        ModelsManager.Hero.offset(-dAccY, -dAccX);
     }
 
     public void randomHeroOffset() {
-        // offset hero position, while counter > 0
+        // offset Hero position, while counter > 0
         if (randomMoveCounter-- > 0) {
             // add random offset
-            updateHeroOffset(randomOffset.x, randomOffset.y);
+            ModelsManager.Hero.offset();
         } else {
-            // hero alcoholic intoxication (degree)
-            int degree = ModelsManager.hero.getDegree();
+            // Hero alcoholic intoxication (degree)
+            int degree = IndicatorsManager.Degree.getValue();
             if (degree > 0) {
                 Random rand = new Random();
                 // new random delay
                 randomMoveCounter = rand.nextInt(degree);
                 // new random offset
-                randomOffset = new PointF(
+                ModelsManager.Hero.setOffsetStep(
                         rand.nextFloat() * offsetStep - offsetStep / 2.f,
                         rand.nextFloat() * offsetStep - offsetStep / 2.f);
             }
@@ -156,12 +150,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     }
 
-    public void updateHeroOffset(float dx, float dy) {
-        ModelsManager.hero.setOffset(dx, dy);
-    }
-
     public void onHeroPositionStatus() {
-        SceneMask.HitStatus status = ModelsManager.mask.getHitStatus(ModelsManager.hero.getCenter());
+        SceneMask.HitStatus status = ModelsManager.Mask.getHitStatus(ModelsManager.Hero.getCenter());
         switch(status) {
             case IN_SCENE:
                 break;
@@ -173,20 +163,22 @@ public class MainActivity extends Activity implements SensorEventListener {
                 onFinish();
                 break;
         }
-//        drawView.text = status.toString();
     }
 
 
     public void onHeroDrinking() {
         Drink drink = ModelsManager.getCurDrink();
-        // if (hero.pos ~= drink.pos)
-        if (mMyTimerTask != null
-                && mMyTimerTask.isStarted()
-                && ModelsManager.hero.isSamePositions(drink, POSITIONS_ROUND)) {
-            // hero drinking !!
-            ModelsManager.hero.addDegree(drink.getDegree());
-            ModelsManager.hero.addPoints(drink.getPoints());
+        // if (Hero.pos ~= Drink.pos)
+        if (ModelsManager.Hero.isSamePositions(drink, POSITIONS_ROUND)) {
+            // Hero drinking !!
+            int pointsInc = drink.getPoints() + IndicatorsManager.Bonus.getValue();
+            int degreeInc = drink.getDegree();
+            IndicatorsManager.Points.addValue(pointsInc);
+            IndicatorsManager.Degree.addValue(degreeInc);
             offsetStep += OFFSTEP_STEP_INC;
+            //
+            IndicatorsManager.PointsInc.initBeforeDisplay(pointsInc);
+            IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc);
             //
             nextRandomDrink();
         }
@@ -194,34 +186,43 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     public void onHeroEating() {
         Food food = ModelsManager.getCurFood();
-        // if (hero.pos ~= food.pos)
-        if (mMyTimerTask != null
-                && mMyTimerTask.isStarted() && mMyTimerTask.isFoodDisplay()
-                && ModelsManager.hero.isSamePositions(food, POSITIONS_ROUND)) {
-            // hero eating !!
-            ModelsManager.hero.addDegree(food.getDegree());
+        // if (Hero.pos ~= Food.pos)
+        if (mMyTimerTask.isFoodDisplay()
+                && ModelsManager.Hero.isSamePositions(food, POSITIONS_ROUND)) {
+            // Hero eating !!
+            int degreeInc = food.getDegree();
+            IndicatorsManager.Degree.addValue(degreeInc);
             offsetStep -= OFFSTEP_STEP_INC;
+            //
+            IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc);
 
             mMyTimerTask.setFoodDisplay(false);
-//            nextRandomFood();
         }
     }
 
     public void nextRandomDrink() {
         Drink curDrink = ModelsManager.nextRandomDrink();
-        curDrink.setRandomPositionInScene(ModelsManager.mask);
+        curDrink.setRandomPositionInScene(ModelsManager.Mask);
         //
-        mMyTimerTask.setCurDrinkStartTime();
+        curDrink.resetDestDimension();
+        curDrink.setOffsetStepFromMsec();
+        //
+        curDrink.setStartTime();
     }
 
     public void nextRandomFood() {
         Food curFood = ModelsManager.nextRandomFood();
-        curFood.setRandomPositionInScene(ModelsManager.mask);
+        curFood.setRandomPositionInScene(ModelsManager.Mask);
+        //
+        curFood.resetDestDimension();
+        curFood.setOffsetStepFromMsec();
+        //
+        curFood.setStartTime();
+        curFood.setVisible(true);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
     @Override
@@ -263,8 +264,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     public void onFinish() {
         // to FinishActivity
         Intent finishIntent = new Intent(MainActivity.this, FinishActivity.class);
-        // send points
-        finishIntent.putExtra(POINTS, ModelsManager.hero.getPoints());
+        // send Points
+        finishIntent.putExtra(POINTS, IndicatorsManager.Points.getValue());
         startActivity(finishIntent);
         // FINISH
         finish();
@@ -273,40 +274,63 @@ public class MainActivity extends Activity implements SensorEventListener {
     class MyTimerTask extends TimerTask {
 
         private long curTime;
-        private long curDrinkStartTime;
-        private long curFoodStartTime;
         private long delayBetweenFoodStartTime;
-        private boolean isStarted;
         private int delayBetweenFoods;
         private boolean isFoodDisplay;
 
         public void start() {
             curTime = System.currentTimeMillis();
-            isStarted = false;
             setFoodDisplay(false);
-            // delay and repeat even 1 ms
-//            mTimer.schedule(mMyTimerTask, DELAY_DEFORE_DRINKING_MSEC, 1);
+            nextRandomDrink();
+            // start delay 0 ms and repeat even 1 ms
+            mTimer.schedule(mMyTimerTask, 0, 1);
         }
 
         @Override
         public void run() {
-            isStarted = true;
-
 
             runOnUiThread(new Runnable() {
 
                 @Override
                 public void run() {
+                    Drink curDrink = ModelsManager.getCurDrink();
+                    Food curFood = ModelsManager.getCurFood();
                     long curTime = System.currentTimeMillis();
                     // drink
-                    if (curTime - curDrinkStartTime >= ModelsManager.getCurDrink().getMsec()) {
+                    if (curTime - curDrink.getStartTime() >= curDrink.getMsec()) {
                         nextRandomDrink();
+                    } else {
+                        IndicatorsManager.Bonus.setValue((int) ((curDrink.getStartTime() + curDrink.getMsec() - curTime) / 100.));
+                        curDrink.makeCenterOffset();
                     }
                     // food
-                    if (isFoodDisplay && curTime - curFoodStartTime >= ModelsManager.getCurFood().getMsec()) {
+                    if (isFoodDisplay && curTime - curFood.getStartTime() >= curFood.getMsec()) {
                         setFoodDisplay(false);
                     } else if (!isFoodDisplay && curTime - delayBetweenFoodStartTime >= delayBetweenFoods) {
                         setFoodDisplay(true);
+                    } else if (isFoodDisplay) {
+                        curFood.makeCenterOffset();
+                    }
+
+                    TextModel pointsInc = IndicatorsManager.PointsInc;
+                    TextModel degreeInc = IndicatorsManager.DegreeInc;
+                    // points increment
+                    if (pointsInc.isVisible()) {
+                        if (curTime - pointsInc.getStartTime() >= pointsInc.getMsec()) {
+                            pointsInc.setVisible(false);
+                        } else {
+                            pointsInc.incDelta(pointsInc.getOffsetStep().x);
+                            pointsInc.setTextAlpha((int)pointsInc.getDelta());
+                        }
+                    }
+                    // degree increment
+                    if (degreeInc.isVisible()) {
+                        if (curTime - degreeInc.getStartTime() >= degreeInc.getMsec()) {
+                            degreeInc.setVisible(false);
+                        } else {
+                            degreeInc.incDelta(degreeInc.getOffsetStep().x);
+                            degreeInc.setTextAlpha((int)degreeInc.getDelta());
+                        }
                     }
                 }
             });
@@ -320,30 +344,15 @@ public class MainActivity extends Activity implements SensorEventListener {
                 ModelsManager.getCurFood().setVisible(false);
             } else {
                 isFoodDisplay = true;
-                setCurFoodStartTime();
                 nextRandomFood();
-                ModelsManager.getCurFood().setVisible(true);
             }
-        }
-
-        public void setCurDrinkStartTime() {
-            this.curDrinkStartTime = System.currentTimeMillis();
-        }
-
-        public void setCurFoodStartTime() {
-            this.curFoodStartTime = System.currentTimeMillis();
         }
 
         public void setRandomDelayBetweenFoods() {
             int interval = Food.BETWEEN_DELAY_MAX_MSEC - Food.BETWEEN_DELAY_MIN_MSEC;
-//            delayBetweenFoods = 2000;
             delayBetweenFoods = (interval > 0)
                     ? new Random().nextInt(interval) + Food.BETWEEN_DELAY_MIN_MSEC
                     : Food.BETWEEN_DELAY_MIN_MSEC;
-        }
-
-        public boolean isStarted() {
-            return isStarted;
         }
 
         public boolean isFoodDisplay() {

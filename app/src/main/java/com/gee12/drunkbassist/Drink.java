@@ -5,19 +5,15 @@ import android.graphics.Bitmap;
 /**
  * Created by Иван on 19.02.2015.
  */
-public class Drink extends Model {
-
-    public final static int DEF_MSEC = 5000;
+public class Drink extends BitmapModel {
 
     protected int degree;
     protected int points;
-    protected int msec;
 
     public Drink() {
         super();
         this.degree = 0;
         this.points = 0;
-        this.msec = 0;
     }
 
     public Drink(Bitmap bitmap, int degree, int points, int msec) {
@@ -28,10 +24,9 @@ public class Drink extends Model {
     }
 
     public Drink(Bitmap bitmap, int destWidth, int destHeight, int degree, int points, int msec) {
-        super(bitmap, destWidth, destHeight);
+        super(bitmap, destWidth, destHeight, msec);
         this.degree = degree;
         this.points = points;
-        this.msec = msec;
     }
 
     public int getDegree() {
@@ -42,7 +37,4 @@ public class Drink extends Model {
         return points;
     }
 
-    public int getMsec() {
-        return msec;
-    }
 }

@@ -17,7 +17,7 @@
                     android:text="@string/string1"
                     android:id="@+id/label1"
                     android:layout_gravity="center_vertical|right"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
                     android:id="@+id/label_points"
                     android:layout_gravity="center"
                     android:padding="20dp"
-                    android:textSize="50sp" />
+                    android:textSize="48sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                     android:text="@string/string2"
                     android:id="@+id/label2"
                     android:layout_gravity="left|center_vertical"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
         </TableRow>
 
         <TableRow android:layout_width="match_parent"
