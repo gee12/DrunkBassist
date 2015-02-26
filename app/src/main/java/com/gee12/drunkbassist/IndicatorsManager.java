@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PointF;
 
+import com.gee12.drunkbassist.struct.TextModel;
+
 /**
  * Created by Иван on 24.02.2015.
  */

@@ -1,4 +1,4 @@
-package com.gee12.drunkbassist;
+package com.gee12.drunkbassist.struct;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -58,6 +58,10 @@ public abstract class Model {
 
     public void setStartTime() {
         this.startTime = System.currentTimeMillis();
+    }
+
+    public void setStartTime(long pauseTime) {
+        this.startTime = System.currentTimeMillis() - pauseTime;
     }
 
     /////////////////////////////////////////////////////////////////////////

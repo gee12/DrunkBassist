@@ -1,4 +1,4 @@
-package com.gee12.drunkbassist;
+package com.gee12.drunkbassist.struct;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

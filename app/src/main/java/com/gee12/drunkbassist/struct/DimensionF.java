@@ -1,4 +1,4 @@
-package com.gee12.drunkbassist;
+package com.gee12.drunkbassist.struct;
 
 /**
  * Created by Иван on 25.02.2015.

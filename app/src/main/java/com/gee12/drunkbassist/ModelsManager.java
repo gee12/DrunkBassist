@@ -4,6 +4,12 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 
+import com.gee12.drunkbassist.struct.Drink;
+import com.gee12.drunkbassist.struct.Food;
+import com.gee12.drunkbassist.struct.Hero;
+import com.gee12.drunkbassist.struct.Scene;
+import com.gee12.drunkbassist.struct.SceneMask;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,8 +19,8 @@ import java.util.Random;
  */
 public class ModelsManager {
 
-    public static Hero Hero;
-    public static Scene Scene;
+    public static com.gee12.drunkbassist.struct.Hero Hero;
+    public static com.gee12.drunkbassist.struct.Scene Scene;
     public static SceneMask Mask;
     public static List<Drink> Drinks;
     public static List<Food> Foods;

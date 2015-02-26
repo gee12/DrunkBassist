@@ -13,6 +13,11 @@ import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
+import com.gee12.drunkbassist.struct.Drink;
+import com.gee12.drunkbassist.struct.Food;
+import com.gee12.drunkbassist.struct.SceneMask;
+import com.gee12.drunkbassist.struct.TextModel;
+
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
@@ -61,9 +66,13 @@ public class MainActivity extends Activity implements SensorEventListener {
                 if (mTimer != null) {
                     mTimer.cancel();
                 }
+                //
                 mTimer = new Timer();
                 mMyTimerTask = new MyTimerTask();
-                mMyTimerTask.start();
+//                if (mMyTimerTask != null) {
+                    mMyTimerTask.start();
+//                }
+
             }
         });
 
@@ -87,18 +96,34 @@ public class MainActivity extends Activity implements SensorEventListener {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mSensorManager.unregisterListener(this);
+    protected void onDestroy() {
+        super.onDestroy();
         mMyTimerTask.cancel();
         mTimer.cancel();
     }
 
+
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//    if (mMyTimerTask != null)
+//            mMyTimerTask.setRunning(false);
+//    }
+
+    @Override
+    protected void onPause() {
+        if (mMyTimerTask != null)
+            mMyTimerTask.setRunning(false);
+        super.onPause();
+        mSensorManager.unregisterListener(this);
+    }
+
     @Override
     protected void onResume() {
+        if (mMyTimerTask != null)
+            mMyTimerTask.setRunning(true);
         super.onResume();
         mSensorManager.registerListener(this, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
-
     }
 
     @Override
@@ -207,7 +232,8 @@ public class MainActivity extends Activity implements SensorEventListener {
         curDrink.resetDestDimension();
         curDrink.setOffsetStepFromMsec();
         //
-        curDrink.setStartTime();
+//        curDrink.setStartTime();
+        curDrink.setStartTime(mMyTimerTask.getPauseTime());
     }
 
     public void nextRandomFood() {
@@ -217,7 +243,8 @@ public class MainActivity extends Activity implements SensorEventListener {
         curFood.resetDestDimension();
         curFood.setOffsetStepFromMsec();
         //
-        curFood.setStartTime();
+//        curFood.setStartTime();
+        curFood.setStartTime(mMyTimerTask.getPauseTime());
         curFood.setVisible(true);
     }
 
@@ -273,13 +300,17 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     class MyTimerTask extends TimerTask {
 
-        private long curTime;
+        private long pauseTime;
+        private long tempTime;
         private long delayBetweenFoodStartTime;
         private int delayBetweenFoods;
         private boolean isFoodDisplay;
+        private boolean isRunning;
 
         public void start() {
-            curTime = System.currentTimeMillis();
+            isRunning = true;
+            pauseTime = 0;
+            tempTime = 0;
             setFoodDisplay(false);
             nextRandomDrink();
             // start delay 0 ms and repeat even 1 ms
@@ -288,35 +319,35 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         @Override
         public void run() {
-
             runOnUiThread(new Runnable() {
-
                 @Override
                 public void run() {
-                    Drink curDrink = ModelsManager.getCurDrink();
-                    Food curFood = ModelsManager.getCurFood();
-                    long curTime = System.currentTimeMillis();
+                    if (!isRunning) return;
+
+                    long gameTime = System.currentTimeMillis() - pauseTime;
+
                     // drink
-                    if (curTime - curDrink.getStartTime() >= curDrink.getMsec()) {
+                    Drink curDrink = ModelsManager.getCurDrink();
+                    if (gameTime - curDrink.getStartTime() >= curDrink.getMsec()) {
                         nextRandomDrink();
                     } else {
-                        IndicatorsManager.Bonus.setValue((int) ((curDrink.getStartTime() + curDrink.getMsec() - curTime) / 100.));
+                        IndicatorsManager.Bonus.setValue((int) ((curDrink.getStartTime() + curDrink.getMsec() - gameTime) / 100.));
                         curDrink.makeCenterOffset();
                     }
                     // food
-                    if (isFoodDisplay && curTime - curFood.getStartTime() >= curFood.getMsec()) {
+                    Food curFood = ModelsManager.getCurFood();
+                    if (isFoodDisplay && gameTime - curFood.getStartTime() >= curFood.getMsec()) {
                         setFoodDisplay(false);
-                    } else if (!isFoodDisplay && curTime - delayBetweenFoodStartTime >= delayBetweenFoods) {
+                    } else if (!isFoodDisplay && gameTime - delayBetweenFoodStartTime >= delayBetweenFoods) {
                         setFoodDisplay(true);
                     } else if (isFoodDisplay) {
                         curFood.makeCenterOffset();
                     }
 
-                    TextModel pointsInc = IndicatorsManager.PointsInc;
-                    TextModel degreeInc = IndicatorsManager.DegreeInc;
                     // points increment
+                    TextModel pointsInc = IndicatorsManager.PointsInc;
                     if (pointsInc.isVisible()) {
-                        if (curTime - pointsInc.getStartTime() >= pointsInc.getMsec()) {
+                        if (gameTime - pointsInc.getStartTime() >= pointsInc.getMsec()) {
                             pointsInc.setVisible(false);
                         } else {
                             pointsInc.incDelta(pointsInc.getOffsetStep().x);
@@ -324,8 +355,9 @@ public class MainActivity extends Activity implements SensorEventListener {
                         }
                     }
                     // degree increment
+                    TextModel degreeInc = IndicatorsManager.DegreeInc;
                     if (degreeInc.isVisible()) {
-                        if (curTime - degreeInc.getStartTime() >= degreeInc.getMsec()) {
+                        if (gameTime - degreeInc.getStartTime() >= degreeInc.getMsec()) {
                             degreeInc.setVisible(false);
                         } else {
                             degreeInc.incDelta(degreeInc.getOffsetStep().x);
@@ -355,8 +387,23 @@ public class MainActivity extends Activity implements SensorEventListener {
                     : Food.BETWEEN_DELAY_MIN_MSEC;
         }
 
+        public void setRunning(boolean isRun) {
+            this.isRunning = isRun;
+            if (!isRun) {
+                tempTime = System.currentTimeMillis();
+            } else if (isRun && tempTime != 0) {
+                tempTime = System.currentTimeMillis() - tempTime;
+                pauseTime += tempTime;
+                tempTime = 0;
+            }
+        }
+
         public boolean isFoodDisplay() {
             return isFoodDisplay;
+        }
+
+        public long getPauseTime() {
+            return pauseTime;
         }
     }
 }
