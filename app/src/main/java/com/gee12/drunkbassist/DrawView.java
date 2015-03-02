@@ -13,8 +13,8 @@ import android.view.SurfaceView;
 
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private DrawThread drawThread;
-    public String text = "";
+    public DrawThread drawThread;
+    public static String text = "";
 
     public DrawView(Context context) {
         super(context);
@@ -23,11 +23,15 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        drawThread = new DrawThread(getHolder());
+        if (drawThread != null) {
+            drawThread.onStop();
+        }
+        drawThread = new DrawThread(this);
         drawThread.setRunning(true);
         drawThread.start();
     }
 
+    @Override
     public void draw(Canvas canvas) {
         if (canvas == null) return;
 
@@ -49,7 +53,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
         Paint p = new Paint();
         p.setStyle(Paint.Style.FILL);
-        canvas.drawText(text, 10, 10, p);
+        canvas.drawText(text, getWidth()/2, getHeight()/2, p);
     }
 
 
@@ -59,48 +63,6 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry = true;
-        drawThread.setRunning(false);
-        while (retry) {
-            try {
-                drawThread.join();
-                retry = false;
-            } catch (InterruptedException e) {
-            }
-        }
+        drawThread.onStop();
     }
-
-    public class DrawThread extends Thread {
-
-        private boolean running = false;
-        private SurfaceHolder surfaceHolder;
-        Canvas canvas;
-
-        public DrawThread(SurfaceHolder surfaceHolder) {
-            this.surfaceHolder = surfaceHolder;
-        }
-
-        public void setRunning(boolean running) {
-            this.running = running;
-        }
-
-        @Override
-        public void run() {
-            while (running) {
-                canvas = null;
-                try {
-                    canvas = surfaceHolder.lockCanvas(null);
-                    if (canvas == null)
-                        continue;
-                    //
-                    draw(canvas);
-                } finally {
-                    if (canvas != null) {
-                        surfaceHolder.unlockCanvasAndPost(canvas);
-                    }
-                }
-            }
-        }
-    }
-
 }

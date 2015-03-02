@@ -2,15 +2,12 @@ package com.gee12.drunkbassist.struct;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PointF;
 
 /**
  * Created by Иван on 24.02.2015.
  */
 public abstract class Model {
 
-    protected PointF pos;
-    protected PointF offsetStep;
     protected boolean isVisible;
     protected Paint paint;
     protected int msec;
@@ -23,26 +20,6 @@ public abstract class Model {
 
     /////////////////////////////////////////////////////////////////////////
     // set
-
-    public void setPosition(PointF pos) {
-        this.pos = pos;
-    }
-
-    public void offset(float dx, float dy) {
-        pos.offset(dx, dy);
-    }
-
-    public void offset() {
-        pos.offset(offsetStep.x, offsetStep.y);
-    }
-
-    public void setOffsetStep(PointF offsetStep) {
-        this.offsetStep = offsetStep;
-    }
-
-    public void setOffsetStep(float x, float y) {
-        this.offsetStep.set(x, y);
-    }
 
     public void setVisible(boolean isVisible) {
         this.isVisible = isVisible;
@@ -67,14 +44,6 @@ public abstract class Model {
     /////////////////////////////////////////////////////////////////////////
     // get
 
-    public PointF getPosition() {
-        return pos;
-    }
-
-    public PointF getPos() {
-        return pos;
-    }
-
     public boolean isVisible() {
         return isVisible;
     }
@@ -91,7 +60,4 @@ public abstract class Model {
         return startTime;
     }
 
-    public PointF getOffsetStep() {
-        return offsetStep;
-    }
 }

@@ -9,9 +9,11 @@ import android.graphics.PointF;
  */
 public class TextModel extends Model {
 
+    protected PointF pos;
     protected int value;
     protected String format;
-    protected float delta;
+    protected PointF step;
+    protected float accumulation;
 
     public TextModel(int value, String format, PointF pos, Paint p, int msec) {
         init(value, format, pos, p, msec);
@@ -31,15 +33,17 @@ public class TextModel extends Model {
         this.paint = p;
         this.isVisible = true;
         this.msec = msec;
+        this.step = new PointF(0, 0);
+        this.accumulation = 0;
     }
 
-    public void initBeforeDisplay(int value) {
+    public void initBeforeDisplay(int value, long pauseTime) {
         setVisible(true);
         setValue(value);
-        setStartTime();
+        setStartTime(pauseTime);
         setTextAlpha(255);
-        this.offsetStep = new PointF(-getStepFromMsec(255), 0);
-        this.delta = 255;
+        this.step = new PointF(-getStepFromMsec(255), 0);
+        this.accumulation = 255;
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -49,13 +53,23 @@ public class TextModel extends Model {
         if (canvas == null || !isVisible) return;
         canvas.drawText(String.format(format, value), pos.x, pos.y, paint);
     }
+    public void setPosition(PointF pos) {
+        this.pos = pos;
+    }
+
+    public void offset(float dx, float dy) {
+        pos.offset(dx, dy);
+    }
+    public PointF getPosition() {
+        return pos;
+    }
 
     public float getStepFromMsec(int divident) {
         return divident / (float) (msec);
     }
 
-    public void incDelta(float step) {
-        this.delta += step;
+    public void incAccumulation(float step) {
+        this.accumulation += step;
     }
 
     public void setTextSize(float size) {
@@ -68,13 +82,13 @@ public class TextModel extends Model {
     */
     public void setTextAlpha(int alpha) {
         if (alpha < 0 || alpha > 255) return;
-        this.paint.setAlpha(alpha);
+        paint.setAlpha(alpha);
     }
 
     public void offsetTextSize(float dSize) {
         float oldSize = this.paint.getTextSize();
         if (oldSize + dSize < 0) return;
-        this.paint.setTextSize(oldSize + dSize);
+        paint.setTextSize(oldSize + dSize);
     }
 
     public void offsetTextAlpha(int dAlpha) {
@@ -102,8 +116,12 @@ public class TextModel extends Model {
         return format;
     }
 
-    public float getDelta() {
-        return delta;
+    public float getAccumulation() {
+        return accumulation;
+    }
+
+    public PointF getStep() {
+        return step;
     }
 
 }

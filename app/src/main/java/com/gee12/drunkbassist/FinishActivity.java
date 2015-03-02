@@ -30,7 +30,7 @@ public class FinishActivity extends Activity {
 
         // get Points
         Intent intent = getIntent();
-        points = intent.getExtras().getInt(MainActivity.POINTS, 0);
+        points = intent.getExtras().getInt(MainActivity.EXTRA_POINTS, 0);
         pointsLabel.setText(String.valueOf(points));
 
         // define minPoints
@@ -72,16 +72,15 @@ public class FinishActivity extends Activity {
 
     @Override
     public void onBackPressed(){
+//        super.onBackPressed();
         toMenuActivity();
-        super.onBackPressed();
+        finish();
     }
 
     private void toMenuActivity() {
         Intent menuIntent = new Intent(this, MenuActivity.class);
         menuIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        menuIntent.putExtra("finishApplication", true);
         startActivity(menuIntent);
-//        finish();
     }
 
 }

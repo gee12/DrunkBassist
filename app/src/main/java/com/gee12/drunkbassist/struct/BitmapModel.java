@@ -4,8 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.graphics.RectF;
+
+import com.gee12.drunkbassist.MyMatrix;
 
 import java.util.Random;
 
@@ -15,10 +16,8 @@ import java.util.Random;
 public class BitmapModel extends Model {
 
     protected Bitmap bitmap;
-    protected DimensionF destDimenF;
     protected PointF centerF;
-    protected Rect srcRect;
-    protected RectF destRectF;
+    protected MyMatrix matrix;
 
     public BitmapModel() {
         init(null, 0, 0, new PointF(), 0);
@@ -49,16 +48,16 @@ public class BitmapModel extends Model {
     }
 
     public void init(Bitmap bitmap, int destWidth, int destHeight, PointF pos, int msec) {
-        this.pos = pos;
+//        this.pos = pos;
         this.bitmap = bitmap;
-        this.destDimenF = new DimensionF(destWidth, destHeight);
-        this.srcRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        resetCenter(pos);
-        resetDestRectF(pos);
+        this.matrix = new MyMatrix();
+        matrix.srcRect.setDimension(getSrcDimension());
+        setDestDimension(destWidth, destHeight);
+        setPosition(pos);
+        resetCenter();
         this.isVisible = true;
         this.paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
-        this.offsetStep = new PointF();
         this.msec = msec;
     }
 
@@ -67,117 +66,136 @@ public class BitmapModel extends Model {
 
     public void drawModel(Canvas canvas) {
         if (canvas == null || !isVisible) return;
-        canvas.drawBitmap(bitmap, srcRect, destRectF, paint);
+        canvas.drawBitmap(bitmap, matrix.createMatrix(), paint);
+
     }
 
     public boolean isSamePositions(BitmapModel other, float exp) {
+        return (Math.abs(this.getPosition().x - other.getPosition().x) < exp
+                && Math.abs(this.getPosition().y - other.getPosition().y) < exp);
+    }
+
+    public boolean isSameCentres(BitmapModel other, float exp) {
         return (Math.abs(this.centerF.x - other.getCenter().x) < exp
                 && Math.abs(this.centerF.y - other.getCenter().y) < exp);
+    }
+
+    public static boolean isSamePositions(PointF pos1, PointF pos2, float exp) {
+        return (Math.abs(pos1.x - pos2.x) < exp
+                && Math.abs(pos1.y - pos2.y) < exp);
     }
 
     public void setRandomPositionInScene(SceneMask mask) {
         if (mask == null) return;
 
-        RectF destRectF = mask.getDestRectF();
+        RectF maskRect = mask.getMatrix().getDestRect();
         Random rand = new Random();
         do {
-            PointF pos = new PointF(
-                    rand.nextFloat() * destRectF.width() + destRectF.left,
-                    rand.nextFloat() * destRectF.height() + destRectF.top
+            PointF newPos = new PointF(
+//                    rand.nextFloat() * mask.getDestDimension().width + mask.getPosition().x,
+//                    rand.nextFloat() * mask.getDestDimension().height + mask.getPosition().y
+                    rand.nextFloat() * maskRect.width() + maskRect.left,
+                    rand.nextFloat() * maskRect.height() + maskRect.top
             );
-            setPosition(pos);
+            setPosition(newPos);
         } while (mask.getHitStatus(centerF) != SceneMask.HitStatus.IN_SCENE);
+    }
+
+    public void rotate(float angle) {
+        matrix.setRotate(angle);
+    }
+
+    public void skew(float kx, float ky) {
+        matrix.setSkew(kx, ky);
     }
 
     /////////////////////////////////////////////////////////////////////////
     // reset
 
-    public void resetDestRectF(PointF pos) {
-        destRectF = new RectF(pos.x, pos.y,
-                pos.x + destDimenF.width, pos.y + destDimenF.height);
-    }
-
-    public void resetCenter(PointF pos) {
-        centerF = new PointF(pos.x + destDimenF.width/2.f, pos.y + destDimenF.height/2.f);
+    public void resetCenter() {
+        centerF = new PointF(matrix.destRect.centerX(), matrix.destRect.centerY());
     }
 
     public void resetDestDimension() {
-        this.destDimenF = new DimensionF(bitmap.getWidth(), bitmap.getHeight());
+        matrix.setDestRectDimension(getSrcDimension());
+    }
+
+    public DimensionF getSrcDimension() {
+        return new DimensionF(bitmap.getWidth(), bitmap.getHeight());
     }
 
     /////////////////////////////////////////////////////////////////////////
     // set
 
-    @Override
+    public void setPivotPoint(float x, float y) {
+        matrix.setPivot(x, y);
+    }
+
     public void setPosition(PointF pos) {
-        this.pos = pos;
-        resetCenter(pos);
-        resetDestRectF(pos);
+        matrix.offsetDestRectTo(pos.x, pos.y);
+        resetCenter();
     }
 
-    @Override
-    public void offset(float dx, float dy) {
-        pos.offset(dx, dy);
-        resetCenter(pos);
-        resetDestRectF(pos);
+    public void setDestDimension(float width, float height) {
+        matrix.setDestRectDimension(width, height);
+        resetCenter();
     }
 
-    @Override
-    public void offset() {
-        pos.offset(offsetStep.x, offsetStep.y);
-        resetCenter(pos);
-        resetDestRectF(pos);
+    public void offsetPosition(float dx, float dy) {
+        matrix.offsetDestRect(dx, dy);
+        resetCenter();
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public void offsetPosition() {
+        matrix.offsetDestRect();
+        resetCenter();
     }
 
-    public void setDestDimension(int w, int h) {
-        this.destDimenF.set(w, h);
+    public void setTransStep(PointF transStep) {
+        matrix.setTransStep(transStep);
     }
 
-    public void offsetDestDimension(int dw, int dh) {
-        this.destDimenF.offset(dw, dh);
+    public void setScaleStepFromMsec(int delta) {
+        DimensionF srcDim = getSrcDimension();
+        float dx = srcDim.width / (float)(msec + delta);
+        float dy = srcDim.height / (float)(msec + delta);
+        matrix.setScaleStep(dx, dy);
     }
 
-    public void setOffsetStepFromMsec() {
-        int d = 250;
-        float dx = destDimenF.width / (float)(msec + d);
-        float dy = destDimenF.height / (float)(msec + d);
-        setOffsetStep(dx, dy);
+    public void offsetSkew(float dx, float dy) {
+        matrix.setSkew(dx, dy);
     }
 
     /*
     * Offset model with center position
     */
-    public void makeCenterOffset() {
-        float dx = offsetStep.x;
-        float dy = offsetStep.y;
-        this.destDimenF.offset(-dx, -dy);
-        offset(dx/2.f, dy/2.f);
+    public void makeCenterScale() {
+        PointF scaleStep = matrix.getScaleStep();
+        float dx = scaleStep.x;
+        float dy = scaleStep.y;
+        matrix.destRect.inset(dx, dy);
     }
 
     /////////////////////////////////////////////////////////////////////////
     // get
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public PointF getPivotPoint() {
+        return matrix.getPivot();
     }
 
-    public RectF getDestRectF() {
-        return destRectF;
-    }
-
-    public Rect getSrcRect() {
-        return srcRect;
+    public PointF getPosition() {
+        return matrix.getDestRect().leftTop;
     }
 
     public DimensionF getDestDimension() {
-        return destDimenF;
+        return matrix.getDestRect().getDimension();
     }
 
     public PointF getCenter() {
         return centerF;
+    }
+
+    public MyMatrix getMatrix() {
+        return matrix;
     }
 }
