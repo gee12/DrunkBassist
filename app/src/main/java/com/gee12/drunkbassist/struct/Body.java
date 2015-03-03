@@ -43,10 +43,10 @@ public class Body extends BitmapModel {
 
     private void init() {
         this.limbs = new ArrayList<>();
-        DimensionF destDim = getDestDimension();
-        split = Bitmap.createBitmap((int)destDim.width, (int)destDim.height,
-                Bitmap.Config.ARGB_8888);
-        bodyCanvas = new Canvas(split);
+//        DimensionF destDim = getDestDimension();
+//        split = Bitmap.createBitmap((int)destDim.width, (int)destDim.height,
+//                Bitmap.Config.ARGB_8888);
+//        bodyCanvas = new Canvas(split);
     }
 
     public void addLimb(Limb limb) {
@@ -56,9 +56,15 @@ public class Body extends BitmapModel {
     public void drawModel(Canvas canvas) {
         if (canvas == null || !isVisible) return;
 
+        DimensionF destDim = getDestDimension();
+        split = Bitmap.createBitmap((int)destDim.width, (int)destDim.height,
+                Bitmap.Config.ARGB_8888);
+        bodyCanvas = new Canvas(split);
+
         for(Limb limb : limbs) {
             limb.drawModel(bodyCanvas);
         }
+
         canvas.drawBitmap(split, matrix.createMatrix(), paint);
     }
 

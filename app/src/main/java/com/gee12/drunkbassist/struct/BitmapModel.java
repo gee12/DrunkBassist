@@ -113,6 +113,8 @@ public class BitmapModel extends Model {
     // reset
 
     public void resetCenter() {
+//        RectF destRect = matrix.getDestRect();
+//        centerF = new PointF((destRect.left + destRect.right)/2.f, (destRect.top + destRect.bottom)/2.f);
         centerF = new PointF(matrix.destRect.centerX(), matrix.destRect.centerY());
     }
 
@@ -138,6 +140,12 @@ public class BitmapModel extends Model {
 
     public void setDestDimension(float width, float height) {
         matrix.setDestRectDimension(width, height);
+        resetCenter();
+    }
+
+    public void insetDestRect(float dx, float dy) {
+        matrix.destRect.inset(dx, dy);
+        // ?!
         resetCenter();
     }
 
@@ -171,9 +179,7 @@ public class BitmapModel extends Model {
     */
     public void makeCenterScale() {
         PointF scaleStep = matrix.getScaleStep();
-        float dx = scaleStep.x;
-        float dy = scaleStep.y;
-        matrix.destRect.inset(dx, dy);
+        insetDestRect(scaleStep.x, scaleStep.y);
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -197,5 +203,11 @@ public class BitmapModel extends Model {
 
     public MyMatrix getMatrix() {
         return matrix;
+    }
+
+    public PointF getAbsPivotPoint() {
+        PointF pivot = getPivotPoint();
+        PointF pos = getPosition();
+        return new PointF(pos.x + pivot.x, pos.y + pivot.y);
     }
 }

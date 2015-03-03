@@ -42,7 +42,7 @@ public class ModelsManager {
                 viewHeight/2 - heroBitmap.getHeight()/2);
         Hero = new Hero(heroBitmap, heroPos);
         Hero.setPivotPoint(heroBitmap.getWidth()/4,
-                heroBitmap.getHeight()-5);
+                heroBitmap.getHeight());
         Hero.initLimbs(res);
 
         // SCENE, MASK

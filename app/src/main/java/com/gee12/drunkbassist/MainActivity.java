@@ -44,7 +44,6 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        handler = this;
         //
         drawView = new DrawView(this);
         setContentView(drawView);
@@ -54,6 +53,8 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
             @Override
             public void onGlobalLayout() {
                 drawView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                handler = MainActivity.this;
 
                 // load and init models
                 ModelsManager.load(getResources(), drawView.getWidth(), drawView.getHeight());
@@ -122,9 +123,9 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
     public void onAccelerometerChanged(float accX, float accY) {
         float dAccX = oldAccX - accX;
         float dAccY = oldAccY - accY;
-        mGameTimerTask.setHeroOffset(-dAccY, -dAccX);
+        ModelsManager.Hero.setHeroOffset(-dAccY, -dAccX);
         // !
-        ModelsManager.Hero.offsetSkew(dAccY/20.0f, 0);
+        ModelsManager.Hero.offsetSkew(dAccY/15.0f, 0);
     }
 
     @Override

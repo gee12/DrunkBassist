@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import com.gee12.drunkbassist.IndicatorsManager;
+
 /**
  * Created by Иван on 24.02.2015.
  */
@@ -122,6 +124,42 @@ public class TextModel extends Model {
 
     public PointF getStep() {
         return step;
+    }
+
+
+    public static void onPointsIncAnimate(long gameTime) {
+        TextModel pointsInc = IndicatorsManager.PointsInc;
+        if (pointsInc.isVisible()) {
+            if (gameTime - pointsInc.getStartTime() >= pointsInc.getMsec()) {
+                pointsInc.setVisible(false);
+            } else {
+                pointsInc.incAccumulation(pointsInc.getStep().x);
+                pointsInc.setTextAlpha((int)pointsInc.getAccumulation());
+            }
+        }
+    }
+
+    public static void onDegreeIncAnimate(long gameTime) {
+        TextModel degreeInc = IndicatorsManager.DegreeInc;
+        if (degreeInc.isVisible()) {
+            if (gameTime - degreeInc.getStartTime() >= degreeInc.getMsec()) {
+                degreeInc.setVisible(false);
+            } else {
+                degreeInc.incAccumulation(degreeInc.getStep().x);
+                degreeInc.setTextAlpha((int) degreeInc.getAccumulation());
+            }
+        }
+    }
+
+    public void onAnimate(long gameTime) {
+        if (isVisible) {
+            if (gameTime - startTime >= msec) {
+                setVisible(false);
+            } else {
+                incAccumulation(step.x);
+                setTextAlpha((int) accumulation);
+            }
+        }
     }
 
 }
