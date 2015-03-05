@@ -1,10 +1,8 @@
-package com.gee12.drunkbassist;
+package com.gee12.drunkbassist.struct;
 
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
-
-import com.gee12.drunkbassist.struct.DimensionF;
 
 /**
  * Created by Иван on 02.03.2015.

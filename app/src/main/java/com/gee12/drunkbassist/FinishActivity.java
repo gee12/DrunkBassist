@@ -22,7 +22,6 @@ public class FinishActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_finish);
 
         nameTextField = (EditText)findViewById(R.id.textfield_name);
@@ -40,6 +39,9 @@ public class FinishActivity extends Activity {
             isRecord = true;
             nameTextField.setVisibility(View.VISIBLE);
         }
+
+        //
+//        SoundManager.playSound(SoundManager.BackMenuSound);
     }
 
     public String getUserName() {
@@ -59,6 +61,9 @@ public class FinishActivity extends Activity {
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
         finish();
+
+        // sound
+//        SoundManager.stopSound(SoundManager.BackMenuSound);
     }
 
     public void onClickMenuButton(View view) {
@@ -79,8 +84,14 @@ public class FinishActivity extends Activity {
 
     private void toMenuActivity() {
         Intent menuIntent = new Intent(this, MenuActivity.class);
-        menuIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        menuIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        menuIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(menuIntent);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }

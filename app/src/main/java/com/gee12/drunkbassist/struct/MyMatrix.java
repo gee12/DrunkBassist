@@ -1,9 +1,7 @@
-package com.gee12.drunkbassist;
+package com.gee12.drunkbassist.struct;
 
 import android.graphics.Matrix;
 import android.graphics.PointF;
-
-import com.gee12.drunkbassist.struct.DimensionF;
 
 /**
  * Created by Иван on 01.03.2015.
@@ -45,7 +43,7 @@ public class MyMatrix extends Matrix {
     public Matrix createMatrix() {
         reset();
         setRectToRect(srcRect, destRect, ScaleToFit.FILL);
-        postRotate(rotate, pivot.x, pivot.y);
+        preRotate(rotate, pivot.x, pivot.y);
         preSkew(skew.x, skew.y, pivot.x, pivot.y);
         return this;
     }

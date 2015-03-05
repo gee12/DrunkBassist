@@ -9,6 +9,7 @@ import android.graphics.PointF;
 import com.gee12.drunkbassist.IndicatorsManager;
 import com.gee12.drunkbassist.ModelsManager;
 import com.gee12.drunkbassist.R;
+import com.gee12.drunkbassist.sound.SoundManager;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,16 +24,18 @@ public class Hero extends Body {
         LEFT_LEG_UP,
         RIGHT_LEG_UP
     }
-//    public static int MOVE_MAX_COUNTER = 50;
-    public final static float POSITIONS_ROUND = 10f;
-    public final static float OFFSTEP_STEP_INC = 0.03f;
-    public static int LEG_UP_LENGTH = 5;
-    public static int MOVE_DIST = 10;
-//
-//    protected HeroFrames curFrame;
-//    protected int moveCounter = MOVE_MAX_COUNTER;
 
+    public static final float POSITIONS_ROUND = 10f;
+    public static final float OFFSTEP_STEP_INC = 0.03f;
+    public static final float AT_THE_EDGE_ANGLE = 15;
+    public static final int LEG_UP_LENGTH = 5;
+    public static final int MOVE_DIST = 10;
     public Limb lLeg;
+
+    //    protected int moveCounter = MOVE_MAX_COUNTER;
+//    protected HeroFrames curFrame;
+//
+//    public static int MOVE_MAX_COUNTER = 50;
     public Limb rLeg;
     public Limb body;
     public Limb head;
@@ -42,6 +45,7 @@ public class Hero extends Body {
 
     private int randomMoveCounter = 0;
     private float offsetStep = 0;
+    SceneMask.PositionStatus positonStatus;
 
 
     public Hero() {
@@ -96,18 +100,30 @@ public class Hero extends Body {
     }
 
     /////////////////////////////////////////////////////////////////////////
-    // set
-    long heroLastStand = 0;
+    //
 
-    public void onHeroStand(long gameTime) {
+    public void heroOnScene() {
+        if (positonStatus != SceneMask.PositionStatus.ON_SCENE) {
+            rotate(0);
+            positonStatus = SceneMask.PositionStatus.ON_SCENE;
+        }
 
+    }
+
+    public void heroAtTheEdge(int viewWidth) {
+        if (positonStatus != SceneMask.PositionStatus.AT_THE_EDGE) {
+            float angle = (getPosition().x < viewWidth/2) ? -AT_THE_EDGE_ANGLE : AT_THE_EDGE_ANGLE;
+            rotate(angle);
+            positonStatus = SceneMask.PositionStatus.AT_THE_EDGE;
+        }
     }
 
     public void setHeroOffset(float dx, float dy) {
         offsetPosition(dx, dy);
-
         // skew
 //        ModelsManager.Hero.offsetSkew(-dx/20.0f, 0);
+        // on stand
+//        isSmallOffset = (Math.abs(dx) < SMALL_OFFSET_MAX && Math.abs(dy) < SMALL_OFFSET_MAX);
 
         onHeroLegs(dx, dy);
     }
@@ -137,6 +153,39 @@ public class Hero extends Body {
         }
     }
 
+    public static final float SMALL_OFFSET_MAX = 3;
+    public static final int TIKS_TO_STAND = 100;
+    private boolean isSmallOffset;
+    private long heroStandCounter = 0;
+
+    public void onHeroStand() {
+        if (isSmallOffset) {
+            if (heroStandCounter++ > TIKS_TO_STAND) {
+                heroStand();
+                heroStandCounter = 0;
+            }
+        } else {
+            heroStandCounter = 0;
+        }
+    }
+
+    public void heroStand() {
+        switch(curHeroStand) {
+            case STAND:
+                break;
+            case LEFT_LEG_UP:
+                lLeg.offsetPosition(0, LEG_UP_LENGTH);
+                break;
+            case RIGHT_LEG_UP:
+                rLeg.offsetPosition(0, LEG_UP_LENGTH);
+                break;
+        }
+        // other animation
+        // ...
+
+        curHeroStand = Stands.STAND;
+    }
+
     public void onHeroDrinking(long pauseTime) {
         Drink drink = ModelsManager.getCurDrink();
         // if (Hero.pos ~= Drink.pos)
@@ -152,6 +201,10 @@ public class Hero extends Body {
             IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc, pauseTime);
             //
             ModelsManager.nextRandomDrink(pauseTime);
+            // sound
+            SoundManager.playSound(SoundManager.DrinkingSound);
+            // slow down the back sound
+            SoundManager.offsetSoundRate(SoundManager.BackMainSound, -SoundManager.RATE_CHANGE_STEP);
         }
     }
 
@@ -168,6 +221,8 @@ public class Hero extends Body {
             IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc, pauseTime);
 
             Food.setFoodDisplay(pauseTime, false);
+            // sound
+            SoundManager.playSound(SoundManager.EatingSound);
         }
     }
 

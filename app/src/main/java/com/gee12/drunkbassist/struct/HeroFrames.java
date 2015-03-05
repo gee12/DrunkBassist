@@ -1,8 +1,10 @@
-package com.gee12.drunkbassist;
+package com.gee12.drunkbassist.struct;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.gee12.drunkbassist.R;
 
 /**
  * Created by Иван on 03.03.2015.

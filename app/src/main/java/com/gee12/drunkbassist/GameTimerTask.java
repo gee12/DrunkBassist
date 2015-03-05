@@ -52,17 +52,13 @@ class GameTimerTask extends TimerTask {
                 //
                 ModelsManager.Hero.randomHeroOffset();
                 onHeroPositionStatus();
-                ModelsManager.Hero.onHeroStand(gameTime);
+                ModelsManager.Hero.onHeroStand();
                 ModelsManager.Hero.onHeroDrinking(pauseTime);
                 ModelsManager.Hero.onHeroEating(pauseTime);
 
                 // animation
-//                Drink.onDrinkAnimate(gameTime, pauseTime);
-//                Food.onFoodAnimate(gameTime, pauseTime);
                 ModelsManager.getCurDrink().onAnimate(gameTime, pauseTime);
                 ModelsManager.getCurFood().onAnimate(gameTime, pauseTime);
-//                TextModel.onPointsIncAnimate(gameTime);
-//                TextModel.onDegreeIncAnimate(gameTime);
                 IndicatorsManager.PointsInc.onAnimate(gameTime);
                 IndicatorsManager.DegreeInc.onAnimate(gameTime);
 //            }
@@ -70,12 +66,15 @@ class GameTimerTask extends TimerTask {
     }
 
     public void onHeroPositionStatus() {
-        SceneMask.HitStatus status = ModelsManager.Mask.getHitStatus(ModelsManager.Hero.getAbsPivotPoint());
+        SceneMask.PositionStatus status = ModelsManager.Mask.getHitStatus(ModelsManager.Hero.getAbsPivotPoint());
         switch(status) {
-            case IN_SCENE:
+            case ON_SCENE:
+                ModelsManager.Hero.heroOnScene();
                 break;
 
             case AT_THE_EDGE:
+                int width = MainActivity.getInstance().getWindow().getDecorView().getWidth();
+                ModelsManager.Hero.heroAtTheEdge(width);
                 break;
 
             case OUT_FROM_SCENE:

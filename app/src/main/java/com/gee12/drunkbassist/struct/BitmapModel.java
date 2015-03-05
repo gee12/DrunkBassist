@@ -6,8 +6,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
-import com.gee12.drunkbassist.MyMatrix;
-
 import java.util.Random;
 
 /**
@@ -98,7 +96,7 @@ public class BitmapModel extends Model {
                     rand.nextFloat() * maskRect.height() + maskRect.top
             );
             setPosition(newPos);
-        } while (mask.getHitStatus(centerF) != SceneMask.HitStatus.IN_SCENE);
+        } while (mask.getHitStatus(centerF) != SceneMask.PositionStatus.ON_SCENE);
     }
 
     public void rotate(float angle) {

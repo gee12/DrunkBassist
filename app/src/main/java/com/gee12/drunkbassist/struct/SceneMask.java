@@ -9,8 +9,8 @@ import android.graphics.PointF;
  */
 public class SceneMask extends Scene {
 
-    public enum HitStatus {
-        IN_SCENE(Color.GREEN),
+    public enum PositionStatus {
+        ON_SCENE(Color.GREEN),
         AT_THE_EDGE(Color.RED),
         OUT_FROM_SCENE(Color.BLACK),
         OUT_FROM_SCREEN(-2),
@@ -18,7 +18,7 @@ public class SceneMask extends Scene {
 
         private int color;
 
-        HitStatus(int col) {
+        PositionStatus(int col) {
             this.color = col;
         }
 
@@ -26,8 +26,8 @@ public class SceneMask extends Scene {
             return color;
         }
 
-        public static HitStatus valueOf(int col) {
-            for (HitStatus status : values()) {
+        public static PositionStatus valueOf(int col) {
+            for (PositionStatus status : values()) {
                 if (status.getColor() == col)
                     return status;
             }
@@ -48,16 +48,16 @@ public class SceneMask extends Scene {
         super(Bitmap.createScaledBitmap(bitmap, destWidth, destHeight, false), destWidth, destHeight);
     }
 
-    public HitStatus getHitStatus(PointF pos) {
+    public PositionStatus getHitStatus(PointF pos) {
         if (pos == null)
-            return HitStatus.NONE;
+            return PositionStatus.NONE;
         int x = (int)(pos.x + 0.5);
         int y = (int)(pos.y + 0.5);
         if (x < 0 || y < 0 || x >= bitmap.getWidth() || y >= bitmap.getHeight())
-            return HitStatus.OUT_FROM_SCREEN;
+            return PositionStatus.OUT_FROM_SCREEN;
 
         int pixel = bitmap.getPixel(x, y);
-        return HitStatus.valueOf(pixel);
+        return PositionStatus.valueOf(pixel);
     }
 
 }
