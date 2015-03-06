@@ -27,9 +27,10 @@ public class Hero extends Body {
 
     public static final float POSITIONS_ROUND = 10f;
     public static final float OFFSTEP_STEP_INC = 0.03f;
-    public static final float AT_THE_EDGE_ANGLE = 15;
-    public static final int LEG_UP_LENGTH = 5;
-    public static final int MOVE_DIST = 10;
+    public static final float ANGLE_AT_THE_EDGE = 15;
+    public static final float ANGLE_OUT_OF_SCENE = 90;
+    public static final int LEG_VERTICAL_OFFSET = 5;
+    public static final int MIN_MOVE_DIST = 10;
     public Limb lLeg;
 
     //    protected int moveCounter = MOVE_MAX_COUNTER;
@@ -42,6 +43,7 @@ public class Hero extends Body {
 
     private Stands curHeroStand = Stands.STAND;
     private PointF moveMeter = new PointF();
+    private boolean isCanMove = true;
 
     private int randomMoveCounter = 0;
     private float offsetStep = 0;
@@ -112,13 +114,29 @@ public class Hero extends Body {
 
     public void heroAtTheEdge(int viewWidth) {
         if (positonStatus != SceneMask.PositionStatus.AT_THE_EDGE) {
-            float angle = (getPosition().x < viewWidth/2) ? -AT_THE_EDGE_ANGLE : AT_THE_EDGE_ANGLE;
+            float angle = (getPosition().x < viewWidth/2) ? -ANGLE_AT_THE_EDGE : ANGLE_AT_THE_EDGE;
             rotate(angle);
             positonStatus = SceneMask.PositionStatus.AT_THE_EDGE;
         }
     }
 
+    public void heroOutOfScene(int viewWidth) {
+        if (positonStatus != SceneMask.PositionStatus.OUT_FROM_SCENE) {
+            float angle = (getPosition().x < viewWidth/2) ? -ANGLE_OUT_OF_SCENE : ANGLE_OUT_OF_SCENE;
+            rotate(angle);
+
+            isCanMove = false;
+
+            // sound
+            SoundManager.SnoreSound.play();
+
+            positonStatus = SceneMask.PositionStatus.OUT_FROM_SCENE;
+        }
+    }
+
     public void setHeroOffset(float dx, float dy) {
+        if (!isCanMove) return;
+
         offsetPosition(dx, dy);
         // skew
 //        ModelsManager.Hero.offsetSkew(-dx/20.0f, 0);
@@ -130,24 +148,24 @@ public class Hero extends Body {
 
     public void onHeroLegs(float dx, float dy) {
         moveMeter.offset(dx, dy);
-        if (moveMeter.x > MOVE_DIST || moveMeter.y > MOVE_DIST ||
-                moveMeter.x < -MOVE_DIST || moveMeter.y < -MOVE_DIST) {
+        if (moveMeter.x > MIN_MOVE_DIST || moveMeter.y > MIN_MOVE_DIST ||
+                moveMeter.x < -MIN_MOVE_DIST || moveMeter.y < -MIN_MOVE_DIST) {
             moveMeter = new PointF();
 
             switch(curHeroStand) {
                 case STAND:
                     curHeroStand = Stands.LEFT_LEG_UP;
-                    lLeg.offsetPosition(0, -LEG_UP_LENGTH);
+                    lLeg.offsetPosition(0, -LEG_VERTICAL_OFFSET);
                     break;
                 case LEFT_LEG_UP:
                     curHeroStand = Stands.RIGHT_LEG_UP;
-                    lLeg.offsetPosition(0, LEG_UP_LENGTH);
-                    rLeg.offsetPosition(0, -LEG_UP_LENGTH);
+                    lLeg.offsetPosition(0, LEG_VERTICAL_OFFSET);
+                    rLeg.offsetPosition(0, -LEG_VERTICAL_OFFSET);
                     break;
                 case RIGHT_LEG_UP:
                     curHeroStand = Stands.LEFT_LEG_UP;
-                    lLeg.offsetPosition(0, -LEG_UP_LENGTH);
-                    rLeg.offsetPosition(0, LEG_UP_LENGTH);
+                    lLeg.offsetPosition(0, -LEG_VERTICAL_OFFSET);
+                    rLeg.offsetPosition(0, LEG_VERTICAL_OFFSET);
                     break;
             }
         }
@@ -174,10 +192,10 @@ public class Hero extends Body {
             case STAND:
                 break;
             case LEFT_LEG_UP:
-                lLeg.offsetPosition(0, LEG_UP_LENGTH);
+                lLeg.offsetPosition(0, LEG_VERTICAL_OFFSET);
                 break;
             case RIGHT_LEG_UP:
-                rLeg.offsetPosition(0, LEG_UP_LENGTH);
+                rLeg.offsetPosition(0, LEG_VERTICAL_OFFSET);
                 break;
         }
         // other animation
@@ -202,9 +220,9 @@ public class Hero extends Body {
             //
             ModelsManager.nextRandomDrink(pauseTime);
             // sound
-            SoundManager.playSound(SoundManager.DrinkingSound);
+            SoundManager.DrinkingSound.play();
             // slow down the back sound
-            SoundManager.offsetSoundRate(SoundManager.BackMainSound, -SoundManager.RATE_CHANGE_STEP);
+            SoundManager.MainBackSound.offsetRate(-SoundManager.RATE_CHANGE_STEP);
         }
     }
 
@@ -222,7 +240,7 @@ public class Hero extends Body {
 
             Food.setFoodDisplay(pauseTime, false);
             // sound
-            SoundManager.playSound(SoundManager.EatingSound);
+            SoundManager.EatingSound.play();
         }
     }
 

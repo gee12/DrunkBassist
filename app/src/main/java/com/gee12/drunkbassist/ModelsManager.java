@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 
+import com.gee12.drunkbassist.sound.SoundManager;
 import com.gee12.drunkbassist.struct.Drink;
 import com.gee12.drunkbassist.struct.Food;
 import com.gee12.drunkbassist.struct.Hero;
@@ -90,6 +91,9 @@ public class ModelsManager {
         curDrink.setScaleStepFromMsec(GameTimerTask.SCALE_DELTA);
         //
         curDrink.setStartTime(pauseTime);
+
+        // sound
+        SoundManager.DrinkSound.play();
     }
 
     public static void nextRandomFood(long pauseTime) {
@@ -102,6 +106,9 @@ public class ModelsManager {
         //
         curFood.setStartTime(pauseTime);
         curFood.setVisible(true);
+
+        // sound
+        SoundManager.FoodSound.play();
     }
 
 }

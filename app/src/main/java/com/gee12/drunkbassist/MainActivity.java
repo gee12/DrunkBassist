@@ -25,6 +25,7 @@ import java.util.Timer;
 public class MainActivity extends Activity implements SensorEventListener, GameListener {
 
     public final static String EXTRA_POINTS = "com.gee12.drunkbassist.POINTS";
+    public final static String EXTRA_DEGREE = "com.gee12.drunkbassist.DEGREE";
     public final static String EXTRA_STATE = "com.gee12.drunkbassist.STATE";
     public final static int EXTRA_STATE_PAUSE = 1;
 
@@ -45,7 +46,7 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
         super.onCreate(savedInstanceState);
         //
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //
         this.drawView = new DrawView(this);
@@ -117,13 +118,13 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
 
         // sound
         if (!isStarted) {
-            SoundManager.startPlayMainBackSound();
+            SoundManager.startMainBackSound();
         } else {
             SoundManager.resumeMainBackSound();
         }
 
-//        SoundManager.resumeSound(SoundManager.StartMainSound);
-//        SoundManager.resumeSound(SoundManager.BackMainSound);
+//        SoundManager.resumeSound(SoundManager.MainStartBackSound);
+//        SoundManager.resumeSound(SoundManager.MainBackSound);
     }
 
     @Override
@@ -178,8 +179,8 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
 
     private void toMenuActivity() {
         // sound
-//        SoundManager.pauseSound(SoundManager.StartMainSound);
-//        SoundManager.pauseSound(SoundManager.BackMainSound);
+//        SoundManager.pauseSound(SoundManager.MainStartBackSound);
+//        SoundManager.pauseSound(SoundManager.MainBackSound);
 
         Intent menuIntent = new Intent(this, MenuActivity.class);
         menuIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -191,13 +192,14 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
     @Override
     public void onFinish() {
         // sound
-//        SoundManager.stopSound(SoundManager.StartMainSound);
-//        SoundManager.stopSound(SoundManager.BackMainSound);
+//        SoundManager.stopSound(SoundManager.MainStartBackSound);
+//        SoundManager.stopSound(SoundManager.MainBackSound);
 
         Intent finishIntent = new Intent(this, FinishActivity.class);
         finishIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         // send Points
         finishIntent.putExtra(EXTRA_POINTS, IndicatorsManager.Points.getValue());
+        finishIntent.putExtra(EXTRA_DEGREE, IndicatorsManager.Degree.getValue());
         startActivity(finishIntent);
         // FINISH
         finish();

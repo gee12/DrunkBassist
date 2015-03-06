@@ -1,8 +1,13 @@
 package com.gee12.drunkbassist;
 
+import android.os.Handler;
+
+import com.gee12.drunkbassist.sound.SoundManager;
+import com.gee12.drunkbassist.sound.TimerSound;
 import com.gee12.drunkbassist.struct.Food;
 import com.gee12.drunkbassist.struct.SceneMask;
 
+import java.util.Random;
 import java.util.TimerTask;
 
 /**
@@ -11,11 +16,15 @@ import java.util.TimerTask;
 class GameTimerTask extends TimerTask {
 
     public final static int SCALE_DELTA = 1000;
+    public final static int DELAY_BEFORE_FINISH = 2000;
+    public final static int RANDOM_SOUND_DELAY_MAX = 10000;
 
     private GameListener gameListener;
     private long pauseTime;
     private long tempTime;
     private boolean isRunning;
+    private int viewWidth;
+    private Handler handler;
 
     long seconds = 0;
     long fps = 0;
@@ -23,11 +32,12 @@ class GameTimerTask extends TimerTask {
 
     public GameTimerTask(GameListener listener) {
         this.gameListener = listener;
+        this.viewWidth = MainActivity.getInstance().getWindow().getDecorView().getWidth();
+        this.handler = new Handler();
         isRunning = true;
         pauseTime = 0;
         tempTime = 0;
         Food.setFoodDisplay(pauseTime, false);
-//            nextRandomDrink();
     }
 
     @Override
@@ -52,9 +62,10 @@ class GameTimerTask extends TimerTask {
                 //
                 ModelsManager.Hero.randomHeroOffset();
                 onHeroPositionStatus();
-                ModelsManager.Hero.onHeroStand();
+//                ModelsManager.Hero.onHeroStand();
                 ModelsManager.Hero.onHeroDrinking(pauseTime);
                 ModelsManager.Hero.onHeroEating(pauseTime);
+                onRandomSounds(gameTime, pauseTime);
 
                 // animation
                 ModelsManager.getCurDrink().onAnimate(gameTime, pauseTime);
@@ -73,14 +84,55 @@ class GameTimerTask extends TimerTask {
                 break;
 
             case AT_THE_EDGE:
-                int width = MainActivity.getInstance().getWindow().getDecorView().getWidth();
-                ModelsManager.Hero.heroAtTheEdge(width);
+                ModelsManager.Hero.heroAtTheEdge(viewWidth);
                 break;
 
             case OUT_FROM_SCENE:
-                setRunning(false);
-                gameListener.onFinish();
+
+                ModelsManager.Hero.heroOutOfScene(viewWidth);
+                // finish game after delay
+                handler.postDelayed(finishGame, DELAY_BEFORE_FINISH);
+
                 break;
+        }
+    }
+
+    private Runnable finishGame = new Runnable() {
+        @Override
+        public void run() {
+            setRunning(false);
+            gameListener.onFinish();
+            handler.removeCallbacks(finishGame);
+        }
+
+    };
+
+    public void onRandomSounds(long gameTime, long pauseTime) {
+        int degree = IndicatorsManager.Degree.getValue();
+        int degreeRound = (int)(degree / 10) * 10;
+        switch (degreeRound) {
+            case 200:
+//                onPlayTimerSound(SoundManager.PigSound, gameTime, pauseTime);
+            case 160:
+//                onPlayTimerSound(SoundManager.Кашель, gameTime, pauseTime);
+            case 130:
+//                onPlayTimerSound(SoundManager.Икота, gameTime, pauseTime);
+            case 100:
+//                onPlayTimerSound(SoundManager.Пук, gameTime, pauseTime);
+            case 50:
+                onPlayTimerSound(SoundManager.BurpSound, gameTime, pauseTime);
+        }
+    }
+
+    public void onPlayTimerSound(TimerSound sound, long gameTime, long pauseTime) {
+        if (sound.isNeedToPlay()) {
+            sound.onPlay(gameTime);
+        } else {
+            // play now
+//            sound.play();
+            // and play after random delay every time
+            int msec = new Random().nextInt(RANDOM_SOUND_DELAY_MAX);
+            sound.setTimer(msec, pauseTime);
         }
     }
 
