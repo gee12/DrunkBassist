@@ -10,8 +10,12 @@ import com.gee12.drunkbassist.ModelsManager;
  */
 public class Drink extends BitmapModel {
 
+    public static final float SCALE_KOEF = 0.5f;
+
     protected int degree;
     protected int points;
+    protected float scaleKoef = SCALE_KOEF;
+    protected boolean isNeedBonus = false;
 
     public Drink() {
         super();
@@ -53,11 +57,25 @@ public class Drink extends BitmapModel {
 
     public void onAnimate(long gameTime, long pauseTime) {
         if (gameTime - startTime >= msec) {
-            ModelsManager.nextRandomDrink(pauseTime);
+//            ModelsManager.nextRandomDrink(pauseTime);
+
+            setScaleStepFromMsec(scaleKoef *= -1);
+            setStartTime(pauseTime);
+            isNeedBonus = false;
         } else {
-            IndicatorsManager.Bonus.setValue((int) ((startTime + msec - gameTime) / 100.));
+            if (isNeedBonus) {
+                IndicatorsManager.Bonus.setValue((int) ((startTime + msec - gameTime) / 100.));
+            }
             makeCenterScale();
         }
+    }
+
+    public void resetFood(long pauseTime) {
+        setRandomPositionInScene(ModelsManager.Mask);
+        resetDestDimension();
+        setScaleStepFromMsec(scaleKoef);
+        setStartTime(pauseTime);
+        isNeedBonus = true;
     }
 
 }

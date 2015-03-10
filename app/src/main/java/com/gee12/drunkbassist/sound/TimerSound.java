@@ -47,7 +47,6 @@ public class TimerSound extends Sound {
         if (isNeedToPlay && gameTime - startTime >= msec) {
             play();
             isNeedToPlay = false;
-
         }
     }
 

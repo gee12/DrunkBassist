@@ -84,6 +84,13 @@ public class Sound {
         }
     }
 
+    public void setRate(float rate) {
+        if (soundPool != null && streamId > 0) {
+            this.rate = rate;
+            soundPool.setRate(streamId, rate);
+        }
+    }
+
     public void setRate(SoundPool soundPool, float rate) {
         if (soundPool != null && streamId > 0) {
             this.rate = rate;

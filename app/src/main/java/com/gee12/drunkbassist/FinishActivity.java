@@ -14,14 +14,12 @@ import com.gee12.drunkbassist.sound.SoundManager;
  */
 public class FinishActivity extends Activity {
 
-    public static String DEFAULT_USER_NAME = "Неизвестный";
+    public static final String DEFAULT_USER_NAME = "Неизвестный";
 
-    private boolean isRecord = false;
-    private int points;
-    private int degree;
-    EditText nameTextField;
-    TextView pointsLabel;
-    TextView degreeLabel;
+    private EditText nameTextField;
+    private TextView pointsLabel;
+    private TextView degreeLabel;
+    private Record record;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,19 +30,20 @@ public class FinishActivity extends Activity {
         degreeLabel = (TextView)findViewById(R.id.label_degree);
         nameTextField = (EditText)findViewById(R.id.textfield_name);
 
+        record = new Record();
         // get points and degree
         Intent intent = getIntent();
-        points = intent.getExtras().getInt(MainActivity.EXTRA_POINTS, 0);
-        degree = intent.getExtras().getInt(MainActivity.EXTRA_DEGREE, 0);
+        record.setPoints(intent.getExtras().getInt(MainActivity.EXTRA_POINTS, 0));
+        record.setDegree(intent.getExtras().getInt(MainActivity.EXTRA_DEGREE, 0));
         // set values
-        pointsLabel.setText(String.valueOf(points));
-        degreeLabel.setText(String.valueOf(degree));
+        pointsLabel.setText(String.valueOf(record.getPoints()));
+        degreeLabel.setText(String.valueOf(record.getDegree()));
 
-        // define minPoints
-        int minPoints = 0;
+        if (RecordsManager.isRecord(record.getPoints())) {
+            // RECORD !
 
-        if (points > minPoints) {
-            isRecord = true;
+            // ... print message
+
             nameTextField.setVisibility(View.VISIBLE);
         }
 
@@ -52,47 +51,33 @@ public class FinishActivity extends Activity {
 //        SoundManager.playSound(SoundManager.MenuBackSound);
     }
 
-    protected void onRecord() {
-        if (isRecord) {
-            addNewRecord(getUserName(), points);
-        }
-    }
-
     public String getUserName() {
         String name = nameTextField.getText().toString();
         return (name.isEmpty()) ? DEFAULT_USER_NAME : name;
     }
 
-    public void addNewRecord(String name, int points) {
-
-    }
-
     public void onClickReplayButton(View view) {
-        onRecord();
         //
-        Intent mainIntent = new Intent(this, MainActivity.class);
-        startActivity(mainIntent);
+        toMainActivity();
         finish();
-
-        // sound
-        SoundManager.SnoreSound.stop();
     }
 
     public void onClickMenuButton(View view) {
-        onRecord();
         //
         toMenuActivity();
         finish();
-
-        // sound
-        SoundManager.SnoreSound.stop();
     }
 
     @Override
     public void onBackPressed(){
-//        super.onBackPressed();
         toMenuActivity();
-        finish();
+        super.onBackPressed();
+//        finish();
+    }
+
+    private void toMainActivity() {
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        startActivity(mainIntent);
     }
 
     private void toMenuActivity() {
@@ -105,6 +90,10 @@ public class FinishActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        // record
+        record.setName(getUserName());
+        RecordsManager.onNewRecord(record);
+        // sound
+        SoundManager.SnoreSound.stop();
     }
 }

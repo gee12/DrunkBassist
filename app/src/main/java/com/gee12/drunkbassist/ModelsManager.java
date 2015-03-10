@@ -33,12 +33,7 @@ public class ModelsManager {
         if (res == null || viewWidth == 0 || viewHeight == 0) return;
 
         // HERO
-        // scale hero bitmap for limbs don't clip on the border (after rotate/skew)
         Bitmap heroBitmap = decodeBitmap(res, R.drawable.hero1);
-//        int widthExt = (int)(heroBitmap.getWidth() * 1.5);
-//        int heightExt = (int)(heroBitmap.getHeight() * 1.5);
-//        heroBitmap = Bitmap.createScaledBitmap(heroBitmap, widthExt, heightExt, false);
-
         PointF heroPos = new PointF(viewWidth/2 - heroBitmap.getWidth()/2,
                 viewHeight/2 - heroBitmap.getHeight()/2);
         Hero = new Hero(heroBitmap, heroPos);
@@ -84,13 +79,13 @@ public class ModelsManager {
 
     public static void nextRandomDrink(long pauseTime) {
         curDrinkIndex = new Random().nextInt(Drinks.size());
-        Drink curDrink = getCurDrink();
-        curDrink.setRandomPositionInScene(ModelsManager.Mask);
-        //
-        curDrink.resetDestDimension();
-        curDrink.setScaleStepFromMsec(GameTimerTask.SCALE_DELTA);
-        //
-        curDrink.setStartTime(pauseTime);
+        getCurDrink().resetFood(pauseTime);
+//        curDrink.setRandomPositionInScene(ModelsManager.Mask);
+//        //
+//        curDrink.resetDestDimension();
+//        curDrink.setScaleStepFromMsec(GameTimerTask.SCALE_KOEF);
+//        //
+//        curDrink.setStartTime(pauseTime);
 
         // sound
         SoundManager.DrinkSound.play();
@@ -98,14 +93,14 @@ public class ModelsManager {
 
     public static void nextRandomFood(long pauseTime) {
         curFoodIndex = new Random().nextInt(Foods.size());
-        Food curFood = getCurFood();
-        curFood.setRandomPositionInScene(ModelsManager.Mask);
-        //
-        curFood.resetDestDimension();
-        curFood.setScaleStepFromMsec(GameTimerTask.SCALE_DELTA);
-        //
-        curFood.setStartTime(pauseTime);
-        curFood.setVisible(true);
+        getCurFood().resetFood(pauseTime);
+//        curFood.setRandomPositionInScene(ModelsManager.Mask);
+//        //
+//        curFood.resetDestDimension();
+//        curFood.setScaleStepFromMsec(GameTimerTask.SCALE_KOEF);
+//        //
+//        curFood.setStartTime(pauseTime);
+//        curFood.setVisible(true);
 
         // sound
         SoundManager.FoodSound.play();

@@ -13,6 +13,7 @@ public class Food extends BitmapModel {
 
     public final static int BETWEEN_DELAY_MAX_MSEC = 10000;
     public final static int BETWEEN_DELAY_MIN_MSEC = 5000;
+    public final static float SCALE_KOEF = 0.7f;
 
     private static int delayBetweenFoods;
     private static long delayBetweenFoodStartTime;
@@ -40,18 +41,6 @@ public class Food extends BitmapModel {
 
     public int getDegree() {
         return degree;
-    }
-
-
-    public static void onFoodAnimate(long gameTime, long pauseTime) {
-        Food curFood = ModelsManager.getCurFood();
-        if (isFoodDisplay && gameTime - curFood.getStartTime() >= curFood.getMsec()) {
-            setFoodDisplay(pauseTime, false);
-        } else if (!isFoodDisplay && gameTime - delayBetweenFoodStartTime >= delayBetweenFoods) {
-            setFoodDisplay(pauseTime, true);
-        } else if (isFoodDisplay) {
-            curFood.makeCenterScale();
-        }
     }
 
     public void onAnimate(long gameTime, long pauseTime) {
@@ -82,6 +71,14 @@ public class Food extends BitmapModel {
         delayBetweenFoods = (interval > 0)
                 ? new Random().nextInt(interval) + Food.BETWEEN_DELAY_MIN_MSEC
                 : Food.BETWEEN_DELAY_MIN_MSEC;
+    }
+
+    public void resetFood(long pauseTime) {
+        setRandomPositionInScene(ModelsManager.Mask);
+        resetDestDimension();
+        setScaleStepFromMsec(SCALE_KOEF);
+        setStartTime(pauseTime);
+        setVisible(true);
     }
 
     public static boolean isFoodDisplay() {

@@ -161,10 +161,17 @@ public class BitmapModel extends Model {
         matrix.setTransStep(transStep);
     }
 
-    public void setScaleStepFromMsec(int delta) {
+//    public void setScaleStepFromMsec(int delta) {
+//        DimensionF srcDim = getSrcDimension();
+//        float dx = srcDim.width / (float)(msec + delta);
+//        float dy = srcDim.height / (float)(msec + delta);
+//        matrix.setScaleStep(dx, dy);
+//    }
+
+    public void setScaleStepFromMsec(float koef) {
         DimensionF srcDim = getSrcDimension();
-        float dx = srcDim.width / (float)(msec + delta);
-        float dy = srcDim.height / (float)(msec + delta);
+        float dx = srcDim.width / (float)(msec) * koef;
+        float dy = srcDim.height / (float)(msec) * koef;
         matrix.setScaleStep(dx, dy);
     }
 

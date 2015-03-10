@@ -2,6 +2,7 @@ package com.gee12.drunkbassist;
 
 import android.os.Handler;
 
+import com.gee12.drunkbassist.sound.Sound;
 import com.gee12.drunkbassist.sound.SoundManager;
 import com.gee12.drunkbassist.sound.TimerSound;
 import com.gee12.drunkbassist.struct.Food;
@@ -13,11 +14,12 @@ import java.util.TimerTask;
 /**
  * Created by Иван on 02.03.2015.
  */
-class GameTimerTask extends TimerTask {
+public class GameTimerTask extends TimerTask {
 
-    public final static int SCALE_DELTA = 1000;
     public final static int DELAY_BEFORE_FINISH = 2000;
-    public final static int RANDOM_SOUND_DELAY_MAX = 10000;
+    public final static int RANDOM_SOUND_DELAY_MIN = 5000;
+    public final static int RANDOM_SOUND_DELAY_MAX = 15000;
+
 
     private GameListener gameListener;
     private long pauseTime;
@@ -34,10 +36,11 @@ class GameTimerTask extends TimerTask {
         this.gameListener = listener;
         this.viewWidth = MainActivity.getInstance().getWindow().getDecorView().getWidth();
         this.handler = new Handler();
-        isRunning = true;
-        pauseTime = 0;
-        tempTime = 0;
+        this.isRunning = true;
+        this.pauseTime = 0;
+        this.tempTime = 0;
         Food.setFoodDisplay(pauseTime, false);
+        ModelsManager.nextRandomDrink(pauseTime);
     }
 
     @Override
@@ -112,27 +115,29 @@ class GameTimerTask extends TimerTask {
         int degreeRound = (int)(degree / 10) * 10;
         switch (degreeRound) {
             case 200:
-//                onPlayTimerSound(SoundManager.PigSound, gameTime, pauseTime);
-            case 160:
-//                onPlayTimerSound(SoundManager.Кашель, gameTime, pauseTime);
-            case 130:
-//                onPlayTimerSound(SoundManager.Икота, gameTime, pauseTime);
+                setTimerSound(SoundManager.IiiSound, pauseTime);
+            case 150:
+                setTimerSound(SoundManager.HicSound, pauseTime);
             case 100:
-//                onPlayTimerSound(SoundManager.Пук, gameTime, pauseTime);
+                setTimerSound(SoundManager.BunchSound, pauseTime);
             case 50:
-                onPlayTimerSound(SoundManager.BurpSound, gameTime, pauseTime);
+                setTimerSound(SoundManager.BurpSound, pauseTime);
+        }
+        for (Sound sound : SoundManager.getSounds()) {
+            if (sound instanceof TimerSound) {
+                TimerSound timerSound = (TimerSound)sound;
+                if (timerSound.isNeedToPlay()) {
+                    timerSound.onPlay(gameTime);
+                }
+            }
         }
     }
 
-    public void onPlayTimerSound(TimerSound sound, long gameTime, long pauseTime) {
-        if (sound.isNeedToPlay()) {
-            sound.onPlay(gameTime);
-        } else {
-            // play now
-//            sound.play();
+    public void setTimerSound(TimerSound timerSound, long pauseTime) {
+        if (!timerSound.isNeedToPlay()) {
             // and play after random delay every time
-            int msec = new Random().nextInt(RANDOM_SOUND_DELAY_MAX);
-            sound.setTimer(msec, pauseTime);
+            int msec = new Random().nextInt(RANDOM_SOUND_DELAY_MAX - RANDOM_SOUND_DELAY_MIN) + RANDOM_SOUND_DELAY_MIN;
+            timerSound.setTimer(msec, pauseTime);
         }
     }
 

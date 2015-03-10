@@ -25,7 +25,7 @@ public class Hero extends Body {
         RIGHT_LEG_UP
     }
 
-    public static final float POSITIONS_ROUND = 10f;
+    public static final float POSITIONS_ROUND = 15f;
     public static final float OFFSTEP_STEP_INC = 0.03f;
     public static final float ANGLE_AT_THE_EDGE = 15;
     public static final float ANGLE_OUT_OF_SCENE = 90;
@@ -128,6 +128,7 @@ public class Hero extends Body {
             isCanMove = false;
 
             // sound
+            SoundManager.DownSound.play();
             SoundManager.SnoreSound.play();
 
             positonStatus = SceneMask.PositionStatus.OUT_FROM_SCENE;
@@ -161,11 +162,15 @@ public class Hero extends Body {
                     curHeroStand = Stands.RIGHT_LEG_UP;
                     lLeg.offsetPosition(0, LEG_VERTICAL_OFFSET);
                     rLeg.offsetPosition(0, -LEG_VERTICAL_OFFSET);
+
+                    SoundManager.Step2Sound.play();
                     break;
                 case RIGHT_LEG_UP:
                     curHeroStand = Stands.LEFT_LEG_UP;
                     lLeg.offsetPosition(0, -LEG_VERTICAL_OFFSET);
                     rLeg.offsetPosition(0, LEG_VERTICAL_OFFSET);
+
+                    SoundManager.Step1Sound.play();
                     break;
             }
         }
@@ -241,6 +246,8 @@ public class Hero extends Body {
             Food.setFoodDisplay(pauseTime, false);
             // sound
             SoundManager.EatingSound.play();
+            // speed up the back sound
+            SoundManager.MainBackSound.offsetRate(SoundManager.RATE_CHANGE_STEP);
         }
     }
 

@@ -32,7 +32,8 @@
                     android:text="@string/string_points"
                     android:id="@+id/label_points"
                     android:layout_gravity="center"
-                    android:padding="0dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:textSize="48sp" />
 
                 <TextView
