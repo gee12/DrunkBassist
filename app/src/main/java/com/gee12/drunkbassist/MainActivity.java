@@ -45,15 +45,12 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //
         this.drawView = new DrawView(this);
         setContentView(drawView);
 
         // event when view will be created (for getWidth and getHeight)
-
         // OR maybe use onWindowFocusChanged()
         drawView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -70,8 +67,6 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
                 mGameTimerTask = new GameTimerTask(MainActivity.this);
                 // start delay 0 ms and repeat even 1 ms
                 mTimer.schedule(mGameTimerTask, 0, 1);
-
-                //
             }
         });
 

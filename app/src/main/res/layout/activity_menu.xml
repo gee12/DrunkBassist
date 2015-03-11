@@ -24,7 +24,6 @@
         android:text="СТАРТ"
         android:id="@+id/button_start"
         android:layout_gravity="center_horizontal"
-        android:enabled="true"
         android:onClick="onClickStartButton" />
     <Button
         android:layout_width="fill_parent"
@@ -32,14 +31,15 @@
         android:text="РЕКОРДЫ"
         android:id="@+id/button_records"
         android:layout_gravity="center_horizontal"
-        android:enabled="true" />
+        android:onClick="onClickRecordsButton" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="РАЗРАБОТЧИК"
         android:id="@+id/button_developer"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="onClickDevButton" />
 
     <Button
         android:layout_width="fill_parent"

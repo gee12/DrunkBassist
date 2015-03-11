@@ -23,7 +23,7 @@ public class RecordsManager {
         prefs = sPrefs;
         records = new ArrayList<>();
 
-        resetMinPoints();
+        loadRecords();
     }
 
     protected static void loadRecords() {
@@ -31,7 +31,10 @@ public class RecordsManager {
             String key = APP_RECORD + String.valueOf(i);
             if (prefs.contains(key)) {
                 String value = prefs.getString(key, "");
-                addRecord(Record.parse(value));
+                Record rec = Record.parse(value);
+                if (rec != null) {
+                    addRecord(rec);
+                }
             }
         }
         resetMinPoints();
@@ -50,14 +53,14 @@ public class RecordsManager {
     }
 
     protected static void resetMinPoints() {
-        minPoints = (records.size() > 0) ? records.get(0).getPoints() : Integer.MAX_VALUE;
+        minPoints = (records.size() > 0) ? records.get(0).getPoints() : 0;
         for (Record rec : records) {
             minPoints = Math.min(minPoints, rec.getPoints());
         }
     }
 
     public static boolean isRecord(int points) {
-        return (points > minPoints);
+        return (records.size() < MAX_RECORD_NUM || points >= minPoints);
     }
 
     public static void onNewRecord(Record rec) {
@@ -66,9 +69,11 @@ public class RecordsManager {
         if (isRecord(rec.getPoints())) {
             //
             addRecord(rec);
-            saveRecords();
-            //
+            Collections.sort(records);
+            removeExtra();
             resetMinPoints();
+            //
+            saveRecords();
         }
     }
 
@@ -76,13 +81,23 @@ public class RecordsManager {
         if (rec == null) return;
 
         records.add(rec);
-        removeExtra();
-        Collections.sort(records);
     }
 
     protected static void removeExtra() {
         if (records.size() > MAX_RECORD_NUM) {
             records = records.subList(0, MAX_RECORD_NUM);
         }
+    }
+
+    public static void clearRecords() {
+        records.clear();
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public static List<Record> getRecords() {
+        return records;
     }
 }

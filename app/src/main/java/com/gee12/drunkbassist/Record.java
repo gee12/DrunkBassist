@@ -44,13 +44,14 @@ public class Record implements Comparable<Record> {
     public static Record parse(String s) {
         if (s == null) return null;
 
-        String[] parts = s.split(" ");
-        if (parts.length < 3) return null;
+        String[] parts = s.split("\t");
+        if (parts.length < 3)
+            return null;
         return new Record(parts[0], Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
     }
 
     public String toString() {
-        return String.format("%s %d %d", name, points, degree);
+        return String.format("%s\t%d\t%d", name, points, degree);
     }
 
     @Override
