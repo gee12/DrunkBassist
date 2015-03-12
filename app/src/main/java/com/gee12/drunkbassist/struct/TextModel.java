@@ -3,8 +3,7 @@ package com.gee12.drunkbassist.struct;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
-
-import com.gee12.drunkbassist.IndicatorsManager;
+import android.graphics.Typeface;
 
 /**
  * Created by Иван on 24.02.2015.
@@ -53,6 +52,8 @@ public class TextModel extends Model {
     @Override
     public void drawModel(Canvas canvas) {
         if (canvas == null || !isVisible) return;
+        Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
+        paint.setTypeface(tf);
         canvas.drawText(String.format(format, value), pos.x, pos.y, paint);
     }
     public void setPosition(PointF pos) {
@@ -127,29 +128,29 @@ public class TextModel extends Model {
     }
 
 
-    public static void onPointsIncAnimate(long gameTime) {
-        TextModel pointsInc = IndicatorsManager.PointsInc;
-        if (pointsInc.isVisible()) {
-            if (gameTime - pointsInc.getStartTime() >= pointsInc.getMsec()) {
-                pointsInc.setVisible(false);
-            } else {
-                pointsInc.incAccumulation(pointsInc.getStep().x);
-                pointsInc.setTextAlpha((int)pointsInc.getAccumulation());
-            }
-        }
-    }
-
-    public static void onDegreeIncAnimate(long gameTime) {
-        TextModel degreeInc = IndicatorsManager.DegreeInc;
-        if (degreeInc.isVisible()) {
-            if (gameTime - degreeInc.getStartTime() >= degreeInc.getMsec()) {
-                degreeInc.setVisible(false);
-            } else {
-                degreeInc.incAccumulation(degreeInc.getStep().x);
-                degreeInc.setTextAlpha((int) degreeInc.getAccumulation());
-            }
-        }
-    }
+//    public static void onPointsIncAnimate(long gameTime) {
+//        TextModel pointsInc = IndicatorsManager.PointsInc;
+//        if (pointsInc.isVisible()) {
+//            if (gameTime - pointsInc.getStartTime() >= pointsInc.getMsec()) {
+//                pointsInc.setVisible(false);
+//            } else {
+//                pointsInc.incAccumulation(pointsInc.getStep().x);
+//                pointsInc.setTextAlpha((int)pointsInc.getAccumulation());
+//            }
+//        }
+//    }
+//
+//    public static void onDegreeIncAnimate(long gameTime) {
+//        TextModel degreeInc = IndicatorsManager.DegreeInc;
+//        if (degreeInc.isVisible()) {
+//            if (gameTime - degreeInc.getStartTime() >= degreeInc.getMsec()) {
+//                degreeInc.setVisible(false);
+//            } else {
+//                degreeInc.incAccumulation(degreeInc.getStep().x);
+//                degreeInc.setTextAlpha((int) degreeInc.getAccumulation());
+//            }
+//        }
+//    }
 
     public void onAnimate(long gameTime) {
         if (isVisible) {

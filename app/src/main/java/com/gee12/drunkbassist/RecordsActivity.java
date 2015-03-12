@@ -17,6 +17,7 @@ import android.widget.TextView;
 public class RecordsActivity extends Activity/*extends ListActivity*/ {
 
     public static final int ROW_TEXT_SIZE = 22;
+    public static final int COL_MIN_WIDTH = 50;
 //    private ArrayAdapter<Record> arrayAdapter;
 
     private TableLayout tableLayout;
@@ -45,7 +46,7 @@ public class RecordsActivity extends Activity/*extends ListActivity*/ {
         name.setText(String.format("%d  %s", num ,rec.getName()));
         name.setTextColor(Color.BLACK);
         name.setTextSize(ROW_TEXT_SIZE);
-        name.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 4));
+        name.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 4));
         tr.addView(name);
         // points
         TextView points = new TextView(this);
@@ -53,6 +54,7 @@ public class RecordsActivity extends Activity/*extends ListActivity*/ {
         points.setTextColor(Color.BLACK);
         points.setTextSize(ROW_TEXT_SIZE);
         points.setGravity(Gravity.CENTER_HORIZONTAL);
+        points.setMinWidth(COL_MIN_WIDTH);
         points.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1));
         tr.addView(points);
         // degree
@@ -61,6 +63,7 @@ public class RecordsActivity extends Activity/*extends ListActivity*/ {
         degree.setTextColor(Color.BLACK);
         degree.setTextSize(ROW_TEXT_SIZE);
         degree.setGravity(Gravity.CENTER_HORIZONTAL);
+        degree.setMinWidth(COL_MIN_WIDTH);
         degree.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1));
         tr.addView(degree);
 

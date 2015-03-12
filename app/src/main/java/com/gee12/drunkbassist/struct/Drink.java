@@ -57,8 +57,6 @@ public class Drink extends BitmapModel {
 
     public void onAnimate(long gameTime, long pauseTime) {
         if (gameTime - startTime >= msec) {
-//            ModelsManager.nextRandomDrink(pauseTime);
-
             setScaleStepFromMsec(scaleKoef *= -1);
             setStartTime(pauseTime);
             isNeedBonus = false;

@@ -10,11 +10,11 @@ import com.gee12.drunkbassist.R;
  * Created by Иван on 03.03.2015.
  */
 public enum HeroFrames {
-    STAND(HeroStates.STAND, R.drawable.crossfire),
-    MOVE1(HeroStates.MOVE, R.drawable.crossfire),
-    MOVE2(HeroStates.MOVE, R.drawable.crossfire),
-    AT_THE_EDGE1(HeroStates.AT_THE_EDGE, R.drawable.crossfire),
-    AT_THE_EDGE2(HeroStates.AT_THE_EDGE, R.drawable.crossfire);
+//    STAND(HeroStates.STAND, R.drawable.hero),
+//    MOVE1(HeroStates.MOVE, R.drawable.hero),
+//    MOVE2(HeroStates.MOVE, R.drawable.hero),
+//    AT_THE_EDGE1(HeroStates.AT_THE_EDGE, R.drawable.hero),
+    AT_THE_EDGE2(HeroStates.AT_THE_EDGE, R.drawable.hero);
 
     public enum HeroStates {
         STAND,

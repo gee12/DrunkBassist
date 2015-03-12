@@ -84,6 +84,8 @@ public class FinishActivity extends Activity {
         Intent menuIntent = new Intent(this, MenuActivity.class);
 //        menuIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         menuIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        // send pause state value
+        menuIntent.putExtra(MenuActivity.EXTRA_STATE, MenuActivity.EXTRA_STATE_FINISH_GAME);
         startActivity(menuIntent);
     }
 

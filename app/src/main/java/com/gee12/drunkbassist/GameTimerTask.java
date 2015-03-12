@@ -45,9 +45,11 @@ public class GameTimerTask extends TimerTask {
 
     @Override
     public void run() {
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
+        if (MainActivity.getInstance() == null) return;
+
+        MainActivity.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 if (!isRunning) return;
 
                 long temp = System.currentTimeMillis() / 1000;
@@ -64,6 +66,7 @@ public class GameTimerTask extends TimerTask {
 
                 //
                 ModelsManager.Hero.randomHeroOffset();
+                ModelsManager.Hero.onTouchOffset();
                 onHeroPositionStatus();
 //                ModelsManager.Hero.onHeroStand();
                 ModelsManager.Hero.onHeroDrinking(pauseTime);
@@ -73,10 +76,10 @@ public class GameTimerTask extends TimerTask {
                 // animation
                 ModelsManager.getCurDrink().onAnimate(gameTime, pauseTime);
                 ModelsManager.getCurFood().onAnimate(gameTime, pauseTime);
-                IndicatorsManager.PointsInc.onAnimate(gameTime);
-                IndicatorsManager.DegreeInc.onAnimate(gameTime);
-//            }
-//        });
+//                IndicatorsManager.PointsInc.onAnimate(gameTime);
+//                IndicatorsManager.DegreeInc.onAnimate(gameTime);
+            }
+        });
     }
 
     public void onHeroPositionStatus() {
@@ -135,6 +138,8 @@ public class GameTimerTask extends TimerTask {
 
     public void setTimerSound(TimerSound timerSound, long pauseTime) {
         if (!timerSound.isNeedToPlay()) {
+            // play right now
+            timerSound.play();
             // and play after random delay every time
             int msec = new Random().nextInt(RANDOM_SOUND_DELAY_MAX - RANDOM_SOUND_DELAY_MIN) + RANDOM_SOUND_DELAY_MIN;
             timerSound.setTimer(msec, pauseTime);

@@ -1,5 +1,6 @@
 package com.gee12.drunkbassist;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -7,9 +8,14 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
@@ -26,8 +32,6 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
 
     public final static String EXTRA_POINTS = "com.gee12.drunkbassist.POINTS";
     public final static String EXTRA_DEGREE = "com.gee12.drunkbassist.DEGREE";
-    public final static String EXTRA_STATE = "com.gee12.drunkbassist.STATE";
-    public final static int EXTRA_STATE_PAUSE = 1;
 
     private static Activity instance;
     public static Activity getInstance() {
@@ -47,20 +51,30 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
         //
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //
-        this.drawView = new DrawView(this);
-        setContentView(drawView);
+//        this.drawView = new DrawView(this);
+//        setContentView(drawView);
+        setContentView(R.layout.activity_main);
+
+        this.drawView = (DrawView)findViewById(R.id.draw_view);
 
         // event when view will be created (for getWidth and getHeight)
         // OR maybe use onWindowFocusChanged()
         drawView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onGlobalLayout() {
                 drawView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 
                 MainActivity.this.instance = MainActivity.this;
+
+                Display disp = getWindowManager().getDefaultDisplay();
+                DisplayMetrics metrics = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) ?
+                        Utils.getNewMetrics(disp) : Utils.getMetrics(disp);
+
                 // load and init models
-                ModelsManager.load(getResources(), drawView.getWidth(), drawView.getHeight());
-                IndicatorsManager.load(getResources(), drawView.getWidth(), drawView.getHeight());
+                ModelsManager.load(getResources(), drawView.getWidth(), drawView.getHeight(), metrics.density);
+//                IndicatorsManager.load(getResources(), drawView.getWidth(), drawView.getHeight());
+                IndicatorsManager.load(getBaseContext(), findViewById(R.id.main_layout));
 
                 //
                 mTimer = new Timer();
@@ -114,12 +128,10 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
         // sound
         if (!isStarted) {
             SoundManager.startMainBackSound();
+            isStarted = true;
         } else {
             SoundManager.resumeMainBackSound();
         }
-
-//        SoundManager.resumeSound(SoundManager.MainStartBackSound);
-//        SoundManager.resumeSound(SoundManager.MainBackSound);
     }
 
     @Override
@@ -144,6 +156,53 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
         // !
         ModelsManager.Hero.offsetSkew(dAccY/15.0f, 0);
     }
+
+    public static final float STEP = 10f;
+
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        float dy = (keyCode == KeyEvent.KEYCODE_W) ? -STEP : (keyCode == KeyEvent.KEYCODE_S) ? STEP : 0;
+        float dx = (keyCode == KeyEvent.KEYCODE_A) ? -STEP : (keyCode == KeyEvent.KEYCODE_D) ? STEP : 0;
+        ModelsManager.Hero.setHeroOffset(dx, dy);
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        if (action == MotionEvent.ACTION_DOWN
+                || action == MotionEvent.ACTION_MOVE) {
+            ModelsManager.Hero.setTouchOffset(event.getX(), event.getY());
+        } else if (action == MotionEvent.ACTION_UP
+                || action == MotionEvent.ACTION_CANCEL) {
+            ModelsManager.Hero.setTouchOffset(0, 0);
+        }
+//        switch(action) {
+//            case MotionEvent.ACTION_DOWN:
+//                isTouchPressed = true;
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//
+//                break;
+//            case MotionEvent.ACTION_CANCEL:
+//
+//                break;
+//        }
+//        if (isTouchPressed) {
+//            int shotX = (int)event.getX();
+//            int shotY = (int)event.getY();
+//            // angle = Math.atan((double)(y - gameView.shotY) / (x - gameView.shotX));
+//            // x += mSpeed * Math.cos(angle);
+//            // y += mSpeed * Math.sin(angle);
+//            ModelsManager.Hero.setTouchOffset(dx, dy);
+//            return true;
+//        }
+        return super.onTouchEvent(event);
+    }
+
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -173,23 +232,15 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
     }
 
     private void toMenuActivity() {
-        // sound
-//        SoundManager.pauseSound(SoundManager.MainStartBackSound);
-//        SoundManager.pauseSound(SoundManager.MainBackSound);
-
         Intent menuIntent = new Intent(this, MenuActivity.class);
         menuIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         // send pause state value
-        menuIntent.putExtra(EXTRA_STATE, EXTRA_STATE_PAUSE);
+        menuIntent.putExtra(MenuActivity.EXTRA_STATE, MenuActivity.EXTRA_STATE_PAUSE);
         startActivity(menuIntent);
     }
 
     @Override
     public void onFinish() {
-        // sound
-//        SoundManager.stopSound(SoundManager.MainStartBackSound);
-//        SoundManager.stopSound(SoundManager.MainBackSound);
-
         Intent finishIntent = new Intent(this, FinishActivity.class);
         finishIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         // send Points

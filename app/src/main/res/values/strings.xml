@@ -19,5 +19,10 @@
     <string name="header_name">ИМЯ</string>
     <string name="header_points">ОЧКИ</string>
     <string name="header_degree">ГРАДУС</string>
+    <string name="start">СТАРТ</string>
+    <string name="records">РЕКОРДЫ</string>
+    <string name="dev">РАЗРАБОТЧИК</string>
+    <string name="exit">ВЫЙТИ</string>
+    <string name="return_to_game">ВЕРНУТЬСЯ</string>
 
 </resources>

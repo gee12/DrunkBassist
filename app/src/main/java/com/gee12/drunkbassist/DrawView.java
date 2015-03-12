@@ -1,8 +1,11 @@
 package com.gee12.drunkbassist;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Build;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -18,6 +21,27 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     public DrawView(Context context) {
         super(context);
+        getHolder().addCallback(this);
+
+//        ViewGroup lay = (ViewGroup)findViewById(R.id.main_layout2);
+//        TextView tv = new TextView(context);
+//        tv.setText("New textview");
+//        lay.addView(tv);
+    }
+
+    public DrawView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        getHolder().addCallback(this);
+    }
+
+    public DrawView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        getHolder().addCallback(this);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public DrawView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
         getHolder().addCallback(this);
     }
 
@@ -44,12 +68,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         // hero
         ModelsManager.Hero.drawModel(canvas);
         // indicators
-        IndicatorsManager.Points.drawModel(canvas);
-        IndicatorsManager.Bonus.drawModel(canvas);
-        IndicatorsManager.Degree.drawModel(canvas);
+//        IndicatorsManager.Points.drawModel(canvas);
+//        IndicatorsManager.Bonus.drawModel(canvas);
+//        IndicatorsManager.Degree.drawModel(canvas);
 
-        IndicatorsManager.PointsInc.drawModel(canvas);
-        IndicatorsManager.DegreeInc.drawModel(canvas);
+//        IndicatorsManager.PointsInc.drawModel(canvas);
+//        IndicatorsManager.DegreeInc.drawModel(canvas);
 
         Paint p = new Paint();
         p.setStyle(Paint.Style.FILL);

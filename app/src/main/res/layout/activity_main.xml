@@ -1,10 +1,94 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"  tools:context=".MainActivity">
+    android:layout_height="match_parent"  tools:context=".MainActivity"
+    android:id="@+id/main_layout">
+
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/scene"-->
+        <!--android:scaleType="centerCrop"/>-->
 
     <com.gee12.drunkbassist.DrawView
         android:id="@+id/draw_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ОЧКИ:"
+        android:id="@+id/label1"
+        android:layout_gravity="left|top"
+        android:textSize="20sp"
+        android:textColor="@color/indicators_color"
+        android:padding="10dp"
+        android:textStyle="bold" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:id="@+id/label_points"
+        android:layout_gravity="left|top"
+        android:textSize="36sp"
+        android:textColor="@color/indicators_color"
+        android:textStyle="bold"
+        android:paddingLeft="80dp"
+        android:paddingTop="0dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+0"
+        android:id="@+id/label_bonus"
+        android:layout_gravity="left|top"
+        android:textSize="20sp"
+        android:textColor="@color/indicators_color"
+        android:textStyle="bold"
+        android:paddingLeft="140dp"
+        android:paddingTop="10dp" />
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="+0"
+    android:id="@+id/label_points_inc"
+    android:layout_gravity="left|top"
+    android:textSize="48sp"
+    android:textColor="#FFFF0000"
+    android:textStyle="bold"
+    android:paddingLeft="10dp"
+    android:paddingTop="35dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="АЛК             %"
+        android:id="@+id/label2"
+        android:layout_gravity="right|top"
+        android:textSize="20sp"
+        android:textColor="@color/indicators_color"
+        android:padding="10dp"
+        android:textStyle="bold" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:id="@+id/label_degree"
+        android:layout_gravity="right|top"
+        android:textSize="36sp"
+        android:textColor="@color/indicators_color"
+        android:textStyle="bold"
+        android:paddingRight="30dp"
+        android:paddingTop="0dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+0"
+        android:id="@+id/label_degree_inc"
+        android:layout_gravity="right|top"
+        android:textSize="48sp"
+        android:textColor="#FFFF0000"
+        android:textStyle="bold"
+        android:paddingRight="10dp"
+        android:paddingTop="35dp" />
 </FrameLayout>

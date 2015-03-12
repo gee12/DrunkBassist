@@ -29,17 +29,17 @@ public class ModelsManager {
     private static int curDrinkIndex = 0;
     private static int curFoodIndex = 0;
 
-    public static void load(Resources res, int viewWidth, int viewHeight) {
+    public static void load(Resources res, int viewWidth, int viewHeight, float density) {
         if (res == null || viewWidth == 0 || viewHeight == 0) return;
 
         // HERO
-        Bitmap heroBitmap = decodeBitmap(res, R.drawable.hero1);
+        Bitmap heroBitmap = decodeBitmap(res, R.drawable.hero);
         PointF heroPos = new PointF(viewWidth/2 - heroBitmap.getWidth()/2,
                 viewHeight/2 - heroBitmap.getHeight()/2);
         Hero = new Hero(heroBitmap, heroPos);
         Hero.setPivotPoint(heroBitmap.getWidth()/4,
                 heroBitmap.getHeight());
-        Hero.initLimbs(res);
+        Hero.loadLimbs(res, density);
 
         // SCENE, MASK
         Scene = new Scene(decodeBitmap(res, R.drawable.scene), viewWidth, viewHeight);

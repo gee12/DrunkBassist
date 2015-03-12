@@ -31,18 +31,16 @@ public class Hero extends Body {
     public static final float ANGLE_OUT_OF_SCENE = 90;
     public static final int LEG_VERTICAL_OFFSET = 5;
     public static final int MIN_MOVE_DIST = 10;
+    public static final float TOUCH_SPEED = 0.2f;
     public Limb lLeg;
 
-    //    protected int moveCounter = MOVE_MAX_COUNTER;
-//    protected HeroFrames curFrame;
-//
-//    public static int MOVE_MAX_COUNTER = 50;
     public Limb rLeg;
     public Limb body;
     public Limb head;
 
     private Stands curHeroStand = Stands.STAND;
     private PointF moveMeter = new PointF();
+    private PointF touchOffset = new PointF();
     private boolean isCanMove = true;
 
     private int randomMoveCounter = 0;
@@ -79,17 +77,13 @@ public class Hero extends Body {
 
     }
 
-    public void initLimbs(Resources res) {
+    public void loadLimbs(Resources res, float density) {
         limbs = new ArrayList<>();
-        addLimb(lLeg = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_l_leg), new PointF(10, 69)));
-        addLimb(rLeg = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_r_leg), new PointF(25, 69)));
-        addLimb(body = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_body), new PointF(0, 30)));
-        addLimb(head = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_head), new PointF(3, 0)));
 
-//        DimensionF dim = getDestDimension();
-//        for(Limb limb : limbs) {
-//            limb.getPosition().offset(dim.width/6, dim.height/6);
-//        }
+        addLimb(lLeg = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_l_leg), new PointF(10 * density, 69 * density)));
+        addLimb(rLeg = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_r_leg), new PointF(25 * density, 69 * density)));
+        addLimb(body = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_body), new PointF(0, 30 * density)));
+        addLimb(head = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_head), new PointF(3 * density, 0)));
     }
 
     @Override
@@ -103,6 +97,26 @@ public class Hero extends Body {
 
     /////////////////////////////////////////////////////////////////////////
     //
+
+    public void setTouchOffset(float touchX, float touchY) {
+        if (touchX == 0 && touchY == 0) {
+            this.touchOffset.set(0, 0);
+        } else {
+            PointF pos = getAbsPivotPoint();
+            float dTouchX = touchX - pos.x;
+            float dTouchY = touchY - pos.y;
+            double angle = Math.atan2(dTouchY, dTouchX);
+
+            float dx = TOUCH_SPEED * (float)Math.cos(angle);
+            float dy = TOUCH_SPEED * (float)Math.sin(angle);
+            this.touchOffset.set(dx, dy);
+        }
+    }
+
+    public void onTouchOffset() {
+        if (touchOffset.x == 0 && touchOffset.y == 0) return;
+        setHeroOffset(touchOffset.x, touchOffset.y);
+    }
 
     public void heroOnScene() {
         if (positonStatus != SceneMask.PositionStatus.ON_SCENE) {
@@ -216,12 +230,16 @@ public class Hero extends Body {
             // Hero drinking !!
             int pointsInc = drink.getPoints() + IndicatorsManager.Bonus.getValue();
             int degreeInc = drink.getDegree();
-            IndicatorsManager.Points.addValue(pointsInc);
-            IndicatorsManager.Degree.addValue(degreeInc);
+            IndicatorsManager.Points.offsetValue(pointsInc);
+            IndicatorsManager.Degree.offsetValue(degreeInc);
             offsetStep += OFFSTEP_STEP_INC;
             //
-            IndicatorsManager.PointsInc.initBeforeDisplay(pointsInc, pauseTime);
-            IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc, pauseTime);
+            IndicatorsManager.PointsInc.setValue(pointsInc);
+            IndicatorsManager.DegreeInc.setValue(degreeInc);
+//            IndicatorsManager.PointsInc.initBeforeDisplay(pointsInc, pauseTime);
+//            IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc, pauseTime);
+            IndicatorsManager.PointsInc.startAnimation();
+            IndicatorsManager.DegreeInc.startAnimation();
             //
             ModelsManager.nextRandomDrink(pauseTime);
             // sound
@@ -238,10 +256,12 @@ public class Hero extends Body {
                 && BitmapModel.isSamePositions(getAbsPivotPoint(), food.getCenter(), POSITIONS_ROUND)) {
             // Hero eating !!
             int degreeInc = food.getDegree();
-            IndicatorsManager.Degree.addValue(degreeInc);
+            IndicatorsManager.Degree.offsetValue(degreeInc);
             offsetStep -= OFFSTEP_STEP_INC;
             //
-            IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc, pauseTime);
+            IndicatorsManager.DegreeInc.setValue(degreeInc);
+//            IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc, pauseTime);
+            IndicatorsManager.DegreeInc.startAnimation();
 
             Food.setFoodDisplay(pauseTime, false);
             // sound
