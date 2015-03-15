@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Body extends BitmapModel {
 
-    protected List<Limb> limbs;
+    protected List<FrameLimb> limbs;
     Bitmap split;
     Canvas bodyCanvas;
 
@@ -49,7 +49,7 @@ public class Body extends BitmapModel {
 //        bodyCanvas = new Canvas(split);
     }
 
-    public void addLimb(Limb limb) {
+    public void addLimb(FrameLimb limb) {
         this.limbs.add(limb);
     }
 
@@ -61,7 +61,7 @@ public class Body extends BitmapModel {
                 Bitmap.Config.ARGB_8888);
         bodyCanvas = new Canvas(split);
 
-        for(Limb limb : limbs) {
+        for(FrameLimb limb : limbs) {
             limb.drawModel(bodyCanvas);
         }
 

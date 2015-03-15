@@ -30,14 +30,26 @@
             android:text="@string/start"
             android:id="@+id/button_start"
             android:layout_gravity="center_horizontal"
-            android:onClick="onClickStartButton" />
+            android:onClick="onClickStartButton"
+                android:background="@color/buttons_color"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:textStyle="bold|italic"
+                android:layout_margin="3dp"
+                android:padding="15dp" />
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/records"
             android:id="@+id/button_records"
             android:layout_gravity="center_horizontal"
-            android:onClick="onClickRecordsButton" />
+            android:onClick="onClickRecordsButton"
+            android:background="@color/buttons_color"
+            android:textColor="@color/text_color"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            android:layout_margin="3dp"
+            android:padding="15dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -45,7 +57,13 @@
             android:text="@string/dev"
             android:id="@+id/button_developer"
             android:layout_gravity="center_horizontal"
-            android:onClick="onClickDevButton" />
+            android:onClick="onClickDevButton"
+            android:background="@color/buttons_color"
+            android:textColor="@color/text_color"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            android:layout_margin="3dp"
+            android:padding="15dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -53,7 +71,13 @@
             android:text="@string/exit"
             android:id="@+id/button_quit"
             android:layout_gravity="center_horizontal"
-            android:onClick="onClickExitButton" />
+            android:onClick="onClickExitButton"
+            android:background="@color/buttons_color"
+            android:textColor="@color/text_color"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            android:layout_margin="3dp"
+            android:padding="15dp" />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

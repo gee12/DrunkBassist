@@ -76,6 +76,8 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
 //                IndicatorsManager.load(getResources(), drawView.getWidth(), drawView.getHeight());
                 IndicatorsManager.load(getBaseContext(), findViewById(R.id.main_layout));
 
+                SoundManager.reinitTimerSounds();
+
                 //
                 mTimer = new Timer();
                 mGameTimerTask = new GameTimerTask(MainActivity.this);

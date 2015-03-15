@@ -37,7 +37,7 @@ public class ModelsManager {
         PointF heroPos = new PointF(viewWidth/2 - heroBitmap.getWidth()/2,
                 viewHeight/2 - heroBitmap.getHeight()/2);
         Hero = new Hero(heroBitmap, heroPos);
-        Hero.setPivotPoint(heroBitmap.getWidth()/4,
+        Hero.setPivotPoint(34 * density,
                 heroBitmap.getHeight());
         Hero.loadLimbs(res, density);
 
@@ -47,10 +47,13 @@ public class ModelsManager {
 
         // DRINKS
         Drinks = new ArrayList<>();
-        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_beer_light1), 5, 10, 4000));
-        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_beer_light2), 5, 10, 4000));
-        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_beer_dark1), 10, 15, 4000));
-        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_beer_dark2), 10, 15, 4000));
+        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_beer_light1), 5, 10, 3000));
+        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_beer_light2), 5, 10, 3000));
+        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_beer_dark1), 10, 15, 3000));
+        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_beer_dark2), 10, 15, 3000));
+        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_champagne), 15, 20, 3000));
+        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_vodka), 15, 20, 3000));
+        Drinks.add(new Drink(decodeBitmap(res, R.drawable.drink_cognac), 15, 20, 3000));
 
         // FOODS
         Foods = new ArrayList<>();

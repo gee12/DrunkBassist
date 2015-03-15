@@ -13,25 +13,25 @@ public class TimerSound extends Sound {
 
     public TimerSound(SoundPool sp, int resId) {
         super(sp, resId);
-        init(0, 0);
+        init(0, 0, false);
     }
 
     public TimerSound(SoundPool sp, int resId, float volume) {
         super(sp, resId, volume);
-        init(0, 0);
+        init(0, 0, false);
     }
 
     public TimerSound(SoundPool sp, int resId, float volume, int duration) {
         super(sp, resId, volume, duration);
-        init(0, 0);
+        init(0, 0, false);
     }
 
     public TimerSound(SoundPool sp, int resId, float volume, float rate, int duration) {
         super(sp, resId, volume, rate, duration);
-        init(0, 0);
+        init(0, 0, false);
     }
 
-    public void init(int msec, long startTime) {
+    public void init(int msec, long startTime, boolean isNeedToPlay) {
         this.msec = msec;
         this.startTime = startTime;
         this.isNeedToPlay = false;
@@ -43,11 +43,28 @@ public class TimerSound extends Sound {
         this.isNeedToPlay = true;
     }
 
-    public void onPlay(long gameTime) {
-        if (isNeedToPlay && gameTime - startTime >= msec) {
-            play();
-            isNeedToPlay = false;
+//    public void onPlay(long gameTime) {
+//        if (isNeedToPlay && gameTime - startTime >= msec) {
+//            play();
+//            isNeedToPlay = false;
+//        }
+//    }
+
+    public boolean onPlay(long gameTime) {
+        if (isNeedToPlay) {
+            if (gameTime - startTime >= msec) {
+                play();
+                return true;
+                // and play after random delay every time
+//                int msec = new Random().nextInt(RANDOM_SOUND_DELAY_MAX - RANDOM_SOUND_DELAY_MIN) + RANDOM_SOUND_DELAY_MIN;
+//                setTimer(msec, pauseTime);
+            }
         }
+        return false;
+    }
+
+    public void setNeedToPlay(boolean isNeedToPlay) {
+        this.isNeedToPlay = isNeedToPlay;
     }
 
     public void setMsec(int msec) {

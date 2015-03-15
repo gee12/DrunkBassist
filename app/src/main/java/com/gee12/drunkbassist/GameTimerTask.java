@@ -6,6 +6,7 @@ import com.gee12.drunkbassist.sound.Sound;
 import com.gee12.drunkbassist.sound.SoundManager;
 import com.gee12.drunkbassist.sound.TimerSound;
 import com.gee12.drunkbassist.struct.Food;
+import com.gee12.drunkbassist.struct.Hero;
 import com.gee12.drunkbassist.struct.SceneMask;
 
 import java.util.Random;
@@ -47,9 +48,6 @@ public class GameTimerTask extends TimerTask {
     public void run() {
         if (MainActivity.getInstance() == null) return;
 
-        MainActivity.getInstance().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
                 if (!isRunning) return;
 
                 long temp = System.currentTimeMillis() / 1000;
@@ -62,22 +60,27 @@ public class GameTimerTask extends TimerTask {
                 }
 //                DrawView.text = String.format("%d", old_fps);
 
-                long gameTime = System.currentTimeMillis() - pauseTime;
+        final long gameTime = System.currentTimeMillis() - pauseTime;
 
                 //
                 ModelsManager.Hero.randomHeroOffset();
                 ModelsManager.Hero.onTouchOffset();
                 onHeroPositionStatus();
 //                ModelsManager.Hero.onHeroStand();
-                ModelsManager.Hero.onHeroDrinking(pauseTime);
-                ModelsManager.Hero.onHeroEating(pauseTime);
                 onRandomSounds(gameTime, pauseTime);
 
+//                IndicatorsManager.PointsInc.onAnimate(gameTime);
+//                IndicatorsManager.DegreeInc.onAnimate(gameTime);
+
+        MainActivity.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 // animation
                 ModelsManager.getCurDrink().onAnimate(gameTime, pauseTime);
                 ModelsManager.getCurFood().onAnimate(gameTime, pauseTime);
-//                IndicatorsManager.PointsInc.onAnimate(gameTime);
-//                IndicatorsManager.DegreeInc.onAnimate(gameTime);
+
+                ModelsManager.Hero.onHeroDrinking(pauseTime);
+                ModelsManager.Hero.onHeroEating(pauseTime);
             }
         });
     }
@@ -118,33 +121,46 @@ public class GameTimerTask extends TimerTask {
         int degreeRound = (int)(degree / 10) * 10;
         switch (degreeRound) {
             case 200:
-                setTimerSound(SoundManager.IiiSound, pauseTime);
+                SoundManager.IiiSound.setNeedToPlay(true);
+                break;
             case 150:
-                setTimerSound(SoundManager.HicSound, pauseTime);
+                ModelsManager.Hero.onSetHeadFrame(Hero.HeadFrames.HEAD4);
+                SoundManager.HicSound.setNeedToPlay(true);
+                break;
             case 100:
-                setTimerSound(SoundManager.BunchSound, pauseTime);
+                ModelsManager.Hero.onSetHeadFrame(Hero.HeadFrames.HEAD3);
+                SoundManager.BunchSound.setNeedToPlay(true);
+                break;
             case 50:
-                setTimerSound(SoundManager.BurpSound, pauseTime);
+                ModelsManager.Hero.onSetHeadFrame(Hero.HeadFrames.HEAD2);
+                SoundManager.BurpSound.setNeedToPlay(true);
+                break;
         }
+
         for (Sound sound : SoundManager.getSounds()) {
             if (sound instanceof TimerSound) {
                 TimerSound timerSound = (TimerSound)sound;
-                if (timerSound.isNeedToPlay()) {
-                    timerSound.onPlay(gameTime);
+//                if (timerSound.isNeedToPlay()) {
+//                    timerSound.onPlay(gameTime);
+//                }
+                if (timerSound.onPlay(gameTime)) {
+                    // and play after random delay every time
+                    int msec = new Random().nextInt(RANDOM_SOUND_DELAY_MAX - RANDOM_SOUND_DELAY_MIN) + RANDOM_SOUND_DELAY_MIN;
+                    timerSound.setTimer(msec, pauseTime);
                 }
             }
         }
     }
 
-    public void setTimerSound(TimerSound timerSound, long pauseTime) {
-        if (!timerSound.isNeedToPlay()) {
-            // play right now
-            timerSound.play();
-            // and play after random delay every time
-            int msec = new Random().nextInt(RANDOM_SOUND_DELAY_MAX - RANDOM_SOUND_DELAY_MIN) + RANDOM_SOUND_DELAY_MIN;
-            timerSound.setTimer(msec, pauseTime);
-        }
-    }
+//    public void setTimerSound(TimerSound timerSound, long pauseTime) {
+//        if (!timerSound.isNeedToPlay()) {
+//            // play right now
+//            timerSound.play();
+//            // and play after random delay every time
+//            int msec = new Random().nextInt(RANDOM_SOUND_DELAY_MAX - RANDOM_SOUND_DELAY_MIN) + RANDOM_SOUND_DELAY_MIN;
+//            timerSound.setTimer(msec, pauseTime);
+//        }
+//    }
 
     public void setRunning(boolean isRun) {
         this.isRunning = isRun;

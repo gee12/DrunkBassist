@@ -29,24 +29,23 @@ public class BitmapModel extends Model {
         init(bitmap, bitmap.getWidth(), bitmap.getHeight(), pos, 0);
     }
 
-    public BitmapModel(Bitmap bitmap, int destWidth, int destHeight, int msec) {
-        init(bitmap, destWidth, destHeight, new PointF(), msec);
-    }
-
     public BitmapModel(Bitmap bitmap, int destWidth, int destHeight) {
         init(bitmap, destWidth, destHeight, new PointF(), 0);
     }
 
-    public BitmapModel(Bitmap bitmap, int destWidth, int destHeight, PointF pos, int msec) {
-        init(bitmap, destWidth, destHeight, pos, msec);
+    public BitmapModel(Bitmap bitmap, int destWidth, int destHeight, int msec) {
+        init(bitmap, destWidth, destHeight, new PointF(), msec);
     }
 
     public BitmapModel(Bitmap bitmap, int destWidth, int destHeight, PointF pos) {
         init(bitmap, destWidth, destHeight, pos, 0);
     }
 
+    public BitmapModel(Bitmap bitmap, int destWidth, int destHeight, PointF pos, int msec) {
+        init(bitmap, destWidth, destHeight, pos, msec);
+    }
+
     public void init(Bitmap bitmap, int destWidth, int destHeight, PointF pos, int msec) {
-//        this.pos = pos;
         this.bitmap = bitmap;
         this.matrix = new MyMatrix();
         matrix.srcRect.setDimension(getSrcDimension());

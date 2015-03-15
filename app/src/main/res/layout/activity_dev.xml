@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/scene"
+        android:scaleType="centerCrop"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+        <TableLayout
+            android:id="@+id/table_records"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TableRow android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_us"
+                    android:textColor="@color/text_color"
+                    android:textSize="30sp"
+                    android:id="@+id/label_about_us"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:minWidth="50dp"
+                    android:textStyle="bold|italic" />
+
+            </TableRow>
+
+            <TableRow android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="О себе..\n"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:id="@+id/label_about_us2"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:minWidth="50dp"
+                android:textStyle="bold|italic" />
+
+        </TableRow>
+
+            <TableRow android:layout_height="1px" android:background="#BBBBBB">
+                <View android:layout_width="match_parent"
+                    android:layout_height="2dp" />
+            </TableRow>
+
+            <TableRow android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/thanks"
+                    android:textColor="@color/text_color"
+                    android:textSize="30sp"
+                    android:id="@+id/label_thanks"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:minWidth="50dp"
+                    android:textStyle="bold|italic" />
+
+            </TableRow>
+
+            <TableRow android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Кому спасибо..\n"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp"
+                    android:id="@+id/label_thanks2"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:minWidth="50dp"
+                    android:textStyle="bold|italic" />
+
+            </TableRow>
+
+            <TableRow android:layout_height="1px" android:background="#BBBBBB">
+                <View android:layout_width="match_parent"
+                    android:layout_height="2dp" />
+            </TableRow>
+
+            <TableRow android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reward"
+                    android:textColor="@color/text_color"
+                    android:textSize="30sp"
+                    android:id="@+id/label_reward"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:minWidth="50dp"
+                    android:textStyle="bold|italic" />
+
+            </TableRow>
+
+            <TableRow android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Спасибо мне..\n"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp"
+                    android:id="@+id/label_reward2"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:minWidth="50dp"
+                    android:textStyle="bold|italic" />
+
+            </TableRow>
+        </TableLayout>
+
+    </ScrollView>
+</FrameLayout>

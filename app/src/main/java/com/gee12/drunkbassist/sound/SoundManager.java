@@ -94,6 +94,15 @@ public class SoundManager {
         }
     }
 
+    public static void reinitTimerSounds() {
+        for (Sound sound : SoundManager.getSounds()) {
+            if (sound instanceof TimerSound) {
+                TimerSound timerSound = (TimerSound)sound;
+                timerSound.init(0, 0, false);
+            }
+        }
+    }
+
     public static void startMainBackSound() {
         MainStartBackSound.play(Sound.DEF_RATE);
         MainBackSound.setRate(Sound.DEF_RATE);
@@ -119,7 +128,6 @@ public class SoundManager {
             h.postDelayed(loopBackSound, duration);
         }
     };
-
 
     public static void pauseAll() {
         if (h != null) {

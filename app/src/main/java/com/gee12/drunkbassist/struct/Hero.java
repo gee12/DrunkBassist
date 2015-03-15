@@ -3,7 +3,6 @@ package com.gee12.drunkbassist.struct;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.PointF;
 
 import com.gee12.drunkbassist.IndicatorsManager;
@@ -25,6 +24,34 @@ public class Hero extends Body {
         RIGHT_LEG_UP
     }
 
+    public enum HeadFrames {
+        HEAD1,
+        HEAD2,
+        HEAD3,
+        HEAD4;
+
+        public static HeadFrames getValue(int ordinal) {
+            for(HeadFrames frame : values()) {
+                if (frame.ordinal() == ordinal)
+                    return frame;
+            }
+            return HEAD1;
+        }
+    }
+
+    public enum BodyFrames {
+        WITH_BASS,
+        WITHOUT_BASS;
+
+        public static BodyFrames getValue(int ordinal) {
+            for(BodyFrames frame : values()) {
+                if (frame.ordinal() == ordinal)
+                    return frame;
+            }
+            return WITH_BASS;
+        }
+    }
+
     public static final float POSITIONS_ROUND = 15f;
     public static final float OFFSTEP_STEP_INC = 0.03f;
     public static final float ANGLE_AT_THE_EDGE = 15;
@@ -32,11 +59,11 @@ public class Hero extends Body {
     public static final int LEG_VERTICAL_OFFSET = 5;
     public static final int MIN_MOVE_DIST = 10;
     public static final float TOUCH_SPEED = 0.2f;
-    public Limb lLeg;
 
-    public Limb rLeg;
-    public Limb body;
-    public Limb head;
+    public FrameLimb lLeg;
+    public FrameLimb rLeg;
+    public FrameLimb body;
+    public FrameLimb head;
 
     private Stands curHeroStand = Stands.STAND;
     private PointF moveMeter = new PointF();
@@ -80,19 +107,24 @@ public class Hero extends Body {
     public void loadLimbs(Resources res, float density) {
         limbs = new ArrayList<>();
 
-        addLimb(lLeg = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_l_leg), new PointF(10 * density, 69 * density)));
-        addLimb(rLeg = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_r_leg), new PointF(25 * density, 69 * density)));
-        addLimb(body = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_body), new PointF(0, 30 * density)));
-        addLimb(head = new Limb(BitmapFactory.decodeResource(res, R.drawable.hero_head), new PointF(3 * density, 0)));
-    }
+        addLimb(lLeg = new FrameLimb(new Bitmap[]{BitmapFactory.decodeResource(res, R.drawable.hero_l_leg)},
+                new PointF(2 * density, 100 * density)));
+        addLimb(rLeg = new FrameLimb(new Bitmap[]{BitmapFactory.decodeResource(res, R.drawable.hero_r_leg)},
+                new PointF(32 * density, 100 * density)));
+        Bitmap[] bodyFrames = new Bitmap[] {
+                BitmapFactory.decodeResource(res, R.drawable.hero_body),
+                BitmapFactory.decodeResource(res, R.drawable.hero_body2)
+        };
+        addLimb(body = new FrameLimb(bodyFrames,
+            new PointF(0, 45 * density)));
 
-    @Override
-    public void drawModel(Canvas canvas) {
-        super.drawModel(canvas);
-
-//        Paint p = new Paint();
-//        p.setStyle(Paint.Style.STROKE);
-//        canvas.drawRect(matrix.getDestRect(), p);
+        Bitmap[] headFrames = new Bitmap[] {
+                BitmapFactory.decodeResource(res, R.drawable.hero_head),
+                BitmapFactory.decodeResource(res, R.drawable.hero_head2),
+                BitmapFactory.decodeResource(res, R.drawable.hero_head3),
+                BitmapFactory.decodeResource(res, R.drawable.hero_head4)
+        };
+        addLimb(head = new FrameLimb(headFrames, new PointF(1 * density, 0)));
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -138,6 +170,10 @@ public class Hero extends Body {
         if (positonStatus != SceneMask.PositionStatus.OUT_FROM_SCENE) {
             float angle = (getPosition().x < viewWidth/2) ? -ANGLE_OUT_OF_SCENE : ANGLE_OUT_OF_SCENE;
             rotate(angle);
+            body.setCurFrame(BodyFrames.WITHOUT_BASS.ordinal());
+
+            // BASS fly animation
+            // ...
 
             isCanMove = false;
 
@@ -187,6 +223,19 @@ public class Hero extends Body {
                     SoundManager.Step1Sound.play();
                     break;
             }
+        }
+    }
+
+    public void onSetHeadFrame(HeadFrames nextFrame) {
+        if (HeadFrames.getValue(head.getCurFrame()) != nextFrame) {
+            switch(nextFrame) {
+                case HEAD2:
+                    break;
+                case HEAD3:
+                    ModelsManager.Hero.head.offsetPosition(0, 10);
+                    break;
+            }
+            head.setCurFrame(nextFrame.ordinal());
         }
     }
 

@@ -15,7 +15,10 @@
         android:layout_height="match_parent"
         android:padding="25dp">
 
-        <TableRow android:layout_weight="3">
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="25dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -23,18 +26,21 @@
                     android:text="@string/string1"
                     android:id="@+id/label1"
                     android:layout_gravity="center_vertical|right"
-                    android:textSize="20sp" />
+                    android:textSize="30sp"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold|italic" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/string_points"
                     android:id="@+id/label_points"
                     android:layout_gravity="center"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:textSize="48sp" />
+                    android:textSize="60sp"
+                    android:textColor="@color/indicators_inc_color"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -42,7 +48,9 @@
                     android:text="@string/string2"
                     android:id="@+id/label2"
                     android:layout_gravity="left|center_vertical"
-                    android:textSize="20sp" />
+                    android:textSize="30sp"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold|italic" />
         </TableRow>
 
         <TableRow android:layout_weight="0">
@@ -53,7 +61,9 @@
             android:text="@string/string3"
             android:id="@+id/label3"
             android:layout_gravity="center_vertical|right"
-            android:textSize="16sp" />
+            android:textSize="24sp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold|italic" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -63,7 +73,9 @@
             android:id="@+id/label_degree"
             android:layout_gravity="center"
             android:padding="0dp"
-            android:textSize="24sp" />
+            android:textSize="40sp"
+            android:textColor="@color/indicators_inc_color"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -71,7 +83,9 @@
             android:text="@string/string4"
             android:id="@+id/label4"
             android:layout_gravity="left|center_vertical"
-            android:textSize="16sp" />
+            android:textSize="24sp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold|italic" />
         </TableRow>
 
         <TableRow android:layout_width="match_parent"
@@ -100,7 +114,13 @@
                 android:text="@string/replay"
                 android:id="@+id/button_replay"
                 android:onClick="onClickReplayButton"
-                android:layout_weight="3" />
+                android:layout_weight="3"
+                android:textStyle="bold|italic"
+                android:textSize="20dp"
+                android:textColor="@color/text_color"
+                android:background="@color/buttons_color"
+                android:layout_margin="3dp"
+                android:padding="15dp" />
 
             <Button
                 android:layout_width="match_parent"
@@ -108,7 +128,13 @@
                 android:text="@string/menu"
                 android:id="@+id/button_menu"
                 android:onClick="onClickMenuButton"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:textStyle="bold|italic"
+                android:background="@color/buttons_color"
+                android:textColor="@color/text_color"
+                android:layout_margin="3dp"
+                android:padding="15dp" />
 
         </TableRow>
     </TableLayout>

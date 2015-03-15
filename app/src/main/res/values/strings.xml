@@ -10,9 +10,9 @@
     <string name="cancel_name">ОТМЕНА</string>
     <string name="replay">ЕЩЕ РАЗ</string>
     <string name="menu">МЕНЮ</string>
-    <string name="string1">ВЫ НАБРАЛИ</string>
+    <string name="string1">НАБРАНО</string>
     <string name="string2">ОЧКОВ</string>
-    <string name="string3">ОПЬЯНЕВ НА</string>
+    <string name="string3">ОПЬЯНЕНИЕ НА</string>
     <string name="string4">%</string>
     <string name="string_points">N</string>
     <string name="empty_list">List is Empty</string>
@@ -24,5 +24,8 @@
     <string name="dev">РАЗРАБОТЧИК</string>
     <string name="exit">ВЫЙТИ</string>
     <string name="return_to_game">ВЕРНУТЬСЯ</string>
+    <string name="about_us">О СЕБЕ</string>
+    <string name="thanks">КОМУ СПАСИБО</string>
+    <string name="reward">СПАСИБО МНЕ</string>
 
 </resources>

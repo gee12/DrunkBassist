@@ -17,7 +17,7 @@
         <TableLayout
             android:id="@+id/table_records"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="10dp">
 
             <TableRow android:layout_width="match_parent"
@@ -26,50 +26,42 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:text="@string/header_name"
-                    android:textColor="@android:color/black"
-                    android:textSize="24sp"
-                    android:gravity="center_horizontal" />
+                    android:textColor="@color/text_color"
+                    android:textSize="30sp"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold|italic" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/header_points"
-                    android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textColor="@color/text_color"
+                    android:textSize="30sp"
                     android:id="@+id/textView"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:minWidth="50dp" />
+                    android:minWidth="50dp"
+                    android:textStyle="bold|italic" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/header_degree"
-                    android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textColor="@color/text_color"
+                    android:textSize="30sp"
                     android:id="@+id/textView2"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:minWidth="50dp" />
+                    android:minWidth="50dp"
+                    android:textStyle="bold|italic" />
+            </TableRow>
 
+            <TableRow android:layout_height="1px" android:background="#BBBBBB">
+                <View android:layout_width="match_parent"
+                    android:layout_height="2dp" />
             </TableRow>
 
         </TableLayout>
 
     </ScrollView>
-
-    <!--ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@android:id/list"
-        android:layout_gravity="left|center_vertical"/>
-
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/empty_list"
-        android:layout_gravity="center"
-        android:textSize="24sp" /-->
-
 </FrameLayout>

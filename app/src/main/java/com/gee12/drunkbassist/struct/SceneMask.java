@@ -10,7 +10,7 @@ import android.graphics.PointF;
 public class SceneMask extends Scene {
 
     public enum PositionStatus {
-        ON_SCENE(Color.GREEN),
+        ON_SCENE(Color.WHITE),
         AT_THE_EDGE(Color.RED),
         OUT_FROM_SCENE(Color.BLACK),
         OUT_FROM_SCREEN(-2),
