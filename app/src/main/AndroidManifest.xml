@@ -35,7 +35,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         <activity
-            android:name=".DevActivity"
+            android:name=".AboutActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/scene"
+        android:scaleType="centerCrop"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp"
+                    android:id="@+id/label_about_us2"
+                    android:textStyle="bold|italic"
+                    android:layout_gravity="fill"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/version"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp"
+                    android:id="@+id/label_version"
+                    android:textStyle="bold|italic"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about_us_full"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:id="@+id/label_name"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/github"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp"
+                    android:id="@+id/label_github"
+                    android:textStyle="bold|italic" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/github_link"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp"
+                    android:id="@+id/label_github_link"
+                    android:textStyle="bold|italic"
+                    android:autoLink="web" />
+             </LinearLayout>
+
+        <TextView android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#BBBBBB"
+            android:layout_marginTop="10dp"/>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <com.gee12.drunkbassist.struct.AnimTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/thanks"
+                android:textSize="25sp"
+                android:id="@+id/label_thanks"
+                android:gravity="center_horizontal"
+                android:textStyle="bold|italic"
+                android:paddingTop="10dp"
+                custom:textColor="@color/text_color"
+                custom:strokeColor="@color/indicators_stroke_color"
+                custom:strokeWidth="2" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/thanks_full1"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:id="@+id/label_thanks1"
+                android:gravity="center_horizontal"
+                android:textStyle="bold|italic"
+                android:paddingTop="5dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/thanks_full2"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:id="@+id/label_thanks2"
+                android:gravity="center_horizontal"
+                android:textStyle="bold|italic"
+                android:paddingTop="5dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/thanks_full3"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:id="@+id/label_thanks3"
+                android:gravity="center_horizontal"
+                android:textStyle="bold|italic"
+                android:paddingTop="5dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/thanks_full4"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:id="@+id/label_thanks4"
+                android:textStyle="bold|italic"
+                android:paddingTop="5dp" />
+
+        <TextView android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#BBBBBB"
+            android:layout_marginTop="10dp"/>
+
+        <com.gee12.drunkbassist.struct.AnimTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reward"
+                android:textSize="25sp"
+                android:id="@+id/label_reward"
+                android:gravity="center_horizontal"
+                android:textStyle="bold|italic"
+                android:paddingTop="10dp"
+            custom:textColor="@color/text_color"
+            custom:strokeColor="@color/indicators_stroke_color"
+            custom:strokeWidth="2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reward_full"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:id="@+id/label_reward2"
+                android:gravity="center_horizontal"
+                android:textStyle="bold|italic"
+                android:paddingTop="5dp"  />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/donate_link"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:id="@+id/label_reward_link"
+                android:gravity="center_horizontal"
+                android:textStyle="bold|italic"
+                android:autoLink="web" />
+    </LinearLayout>
+    </ScrollView>
+</FrameLayout>

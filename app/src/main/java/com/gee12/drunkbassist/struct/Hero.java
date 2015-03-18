@@ -329,7 +329,7 @@ public class Hero extends Body {
         } else {
             // Hero alcoholic intoxication (degree)
             int degree = IndicatorsManager.Degree.getValue() * 10;
-            if (degree > 0) {
+            if (degree > 0 && offsetStep > 0) {
                 Random rand = new Random();
                 // new random delay
                 randomMoveCounter = rand.nextInt(degree);

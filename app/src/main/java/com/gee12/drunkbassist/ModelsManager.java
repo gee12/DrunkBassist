@@ -28,9 +28,11 @@ public class ModelsManager {
     public static List<Food> Foods;
     private static int curDrinkIndex = 0;
     private static int curFoodIndex = 0;
+    private static boolean isLoaded;
 
     public static void load(Resources res, int viewWidth, int viewHeight, float density) {
         if (res == null || viewWidth == 0 || viewHeight == 0) return;
+        isLoaded = true;
 
         // HERO
         Bitmap heroBitmap = decodeBitmap(res, R.drawable.hero);
@@ -83,12 +85,6 @@ public class ModelsManager {
     public static void nextRandomDrink(long pauseTime) {
         curDrinkIndex = new Random().nextInt(Drinks.size());
         getCurDrink().resetFood(pauseTime);
-//        curDrink.setRandomPositionInScene(ModelsManager.Mask);
-//        //
-//        curDrink.resetDestDimension();
-//        curDrink.setScaleStepFromMsec(GameTimerTask.SCALE_KOEF);
-//        //
-//        curDrink.setStartTime(pauseTime);
 
         // sound
         SoundManager.DrinkSound.play();
@@ -97,16 +93,13 @@ public class ModelsManager {
     public static void nextRandomFood(long pauseTime) {
         curFoodIndex = new Random().nextInt(Foods.size());
         getCurFood().resetFood(pauseTime);
-//        curFood.setRandomPositionInScene(ModelsManager.Mask);
-//        //
-//        curFood.resetDestDimension();
-//        curFood.setScaleStepFromMsec(GameTimerTask.SCALE_KOEF);
-//        //
-//        curFood.setStartTime(pauseTime);
-//        curFood.setVisible(true);
 
         // sound
         SoundManager.FoodSound.play();
+    }
+
+    public static boolean isLoaded() {
+        return isLoaded;
     }
 
 }

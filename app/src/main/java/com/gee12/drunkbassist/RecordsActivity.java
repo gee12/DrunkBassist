@@ -12,14 +12,15 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.gee12.drunkbassist.struct.AnimTextView;
+
 /**
  *
  */
 public class RecordsActivity extends Activity/*extends ListActivity*/ {
 
-    public static final int ROW_TEXT_SIZE = 26;
+    public static final int ROW_TEXT_SIZE = 20;
     public static final int COL_MIN_WIDTH = 50;
-//    private ArrayAdapter<Record> arrayAdapter;
 
     private TableLayout tableLayout;
 
@@ -27,9 +28,6 @@ public class RecordsActivity extends Activity/*extends ListActivity*/ {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_records);
-
-//        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item_record, RecordsManager.getRecords());
-//        setListAdapter(arrayAdapter);
 
         tableLayout = (TableLayout) findViewById(R.id.table_records);
         Resources res = getResources();
@@ -43,55 +41,25 @@ public class RecordsActivity extends Activity/*extends ListActivity*/ {
     protected void addRow(Record rec, int num, Resources res) {
         TableRow tr = new TableRow(this);
         tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        // name
-//        TextView name = new TextView(this);
-//        name.setText(String.format("%d  %s", num, rec.getName()));
-//        name.setTextColor(Color.BLACK);
-//        name.setTextSize(ROW_TEXT_SIZE);
-//        name.setTextColor(res.getColor(R.color.text_color));
-//        name.setTypeface(null, Typeface.BOLD_ITALIC);
-//        name.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 4));
-//        tr.addView(name);
-//        // points
-//        TextView points = new TextView(this);
-//        points.setText(String.valueOf(rec.getPoints()));
-//        points.setTextColor(Color.BLACK);
-//        points.setTextSize(ROW_TEXT_SIZE);
-//        points.setGravity(Gravity.CENTER_HORIZONTAL);
-//        points.setMinWidth(COL_MIN_WIDTH);
-//        points.setTextColor(res.getColor(R.color.text_color));
-//        points.setTypeface(null, Typeface.BOLD_ITALIC);
-//        points.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1));
-//        tr.addView(points);
-//        // degree
-//        TextView degree = new TextView(this);
-//        degree.setText(String.valueOf(rec.getDegree()));
-//        degree.setTextColor(Color.BLACK);
-//        degree.setTextSize(ROW_TEXT_SIZE);
-//        degree.setGravity(Gravity.CENTER_HORIZONTAL);
-//        degree.setMinWidth(COL_MIN_WIDTH);
-//        degree.setTextColor(res.getColor(R.color.text_color));
-//        degree.setTypeface(null, Typeface.BOLD_ITALIC);
-//        degree.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1));
-//        tr.addView(degree);
 
-
-        tr.addView(createTextView(String.format("%d  %s", num, rec.getName()), res));
-        tr.addView(createTextView(String.valueOf(rec.getPoints()), res));
-        tr.addView(createTextView(String.valueOf(rec.getDegree()), res));
+        tr.addView(createTextView(String.format("%d  %s", num, rec.getName()), res, Gravity.LEFT, 5));
+        tr.addView(createTextView(String.valueOf(rec.getPoints()), res, Gravity.CENTER_HORIZONTAL, 1));
+        tr.addView(createTextView(String.valueOf(rec.getDegree()), res, Gravity.CENTER_HORIZONTAL, 1));
 
         tableLayout.addView(tr);
     }
 
-    private TextView createTextView(String text, Resources res) {
-        TextView view = new TextView(this);
+    private TextView createTextView(String text, Resources res, int gravity, int weight) {
+        AnimTextView view = new AnimTextView(this);
         view.setText(String.valueOf(text));
         view.setTextSize(ROW_TEXT_SIZE);
-        view.setGravity(Gravity.CENTER_HORIZONTAL);
+        view.setGravity(gravity);
         view.setMinWidth(COL_MIN_WIDTH);
-        view.setTextColor(res.getColor(R.color.text_color));
         view.setTypeface(null, Typeface.BOLD_ITALIC);
-        view.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1));
+        view.setCustomTextColor(res.getColor(R.color.text_color));
+        view.setStrokeColor(res.getColor(R.color.indicators_stroke_color));
+        view.setStrokeWidth(2);
+        view.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, weight));
         return view;
     }
 

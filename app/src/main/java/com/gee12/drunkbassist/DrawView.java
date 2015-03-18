@@ -22,11 +22,6 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     public DrawView(Context context) {
         super(context);
         getHolder().addCallback(this);
-
-//        ViewGroup lay = (ViewGroup)findViewById(R.id.main_layout2);
-//        TextView tv = new TextView(context);
-//        tv.setText("New textview");
-//        lay.addView(tv);
     }
 
     public DrawView(Context context, AttributeSet attrs) {
@@ -59,21 +54,23 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         if (canvas == null) return;
 
-        //scene
-        ModelsManager.Scene.drawModel(canvas);
-        // drink
-        ModelsManager.getCurDrink().drawModel(canvas);
-        // food
-        ModelsManager.getCurFood().drawModel(canvas);
-        // hero
-        ModelsManager.Hero.drawModel(canvas);
-        // indicators
+        if (ModelsManager.isLoaded()) {
+            //scene
+            ModelsManager.Scene.drawModel(canvas);
+            // drink
+            ModelsManager.getCurDrink().drawModel(canvas);
+            // food
+            ModelsManager.getCurFood().drawModel(canvas);
+            // hero
+            ModelsManager.Hero.drawModel(canvas);
+            // indicators
 //        IndicatorsManager.Points.drawModel(canvas);
 //        IndicatorsManager.Bonus.drawModel(canvas);
 //        IndicatorsManager.Degree.drawModel(canvas);
 
 //        IndicatorsManager.PointsInc.drawModel(canvas);
 //        IndicatorsManager.DegreeInc.drawModel(canvas);
+        }
 
         Paint p = new Paint();
         p.setStyle(Paint.Style.FILL);

@@ -135,6 +135,10 @@ public class GameTimerTask extends TimerTask {
                 ModelsManager.Hero.onSetHeadFrame(Hero.HeadFrames.HEAD2);
                 SoundManager.BurpSound.setNeedToPlay(true);
                 break;
+            default:
+                if (degreeRound < 50) {
+                    ModelsManager.Hero.onSetHeadFrame(Hero.HeadFrames.HEAD1);
+                }
         }
 
         for (Sound sound : SoundManager.getSounds()) {

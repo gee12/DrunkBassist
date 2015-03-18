@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Пьяный басист</string>
-    <string name="title_activity_start">Пьяный басист</string>
+    <string name="app_name">Пьяный басист </string>
     <string name="action_menu">Меню</string>
     <string name="action_clear_records">Очистить список</string>
     <string name="your_name">Ваше имя</string>
@@ -15,17 +14,27 @@
     <string name="string3">ОПЬЯНЕНИЕ НА</string>
     <string name="string4">%</string>
     <string name="string_points">N</string>
-    <string name="empty_list">List is Empty</string>
     <string name="header_name">ИМЯ</string>
     <string name="header_points">ОЧКИ</string>
     <string name="header_degree">ГРАДУС</string>
     <string name="start">СТАРТ</string>
     <string name="records">РЕКОРДЫ</string>
-    <string name="dev">РАЗРАБОТЧИК</string>
+    <string name="about">ОБ ЭТОМ</string>
+    <string name="version">, версия: </string>
     <string name="exit">ВЫЙТИ</string>
     <string name="return_to_game">ВЕРНУТЬСЯ</string>
-    <string name="about_us">О СЕБЕ</string>
+    <string name="about_us">О ПРОЕКТЕ</string>
     <string name="thanks">КОМУ СПАСИБО</string>
-    <string name="reward">СПАСИБО МНЕ</string>
+    <string name="reward">ДЛЯ ЭНТУЗИАСТОВ</string>
+    <string name="about_us_full">Бондарь Иван (gee12), 2015</string>
+    <string name="thanks_full1">Ребятам из MiniWorldGames за отличную flash <b>SOBER SANTA!</b></string>
+    <string name="thanks_full2"><b>ВИТЕ МЕЛЬНИКУ</b> за помощь в тестировании.</string>
+    <string name="thanks_full3"><b>БОГДАНУ ИЩУКУ</b> и <b>ДЭНУ КОВАЛЕНКО</b> за тестирование и музыкальное оформление.</string>
+    <string name="thanks_full4">Всем <b>БАСИСТАМ</b> за их весомый вклад в несокрушимой борьбе за уничтожение алкоголя!</string>
+    <string name="reward_full">Сделать свой вклад в фонд анонимных басистов и программистов (нужное подчеркнуть):</string>
+    <string name="github">GitHub:</string>
+    <string name="github_link">https://github.com/gee12/DrunkBassist</string>
+    <string name="donate_link">https://www.paypal.com/gee12</string>
+    <string name="vk_link">https://www.vk.com/drunk_bussist</string>
 
 </resources>

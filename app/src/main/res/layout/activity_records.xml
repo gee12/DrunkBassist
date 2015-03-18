@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
     
     <ImageView
         android:layout_width="match_parent"
@@ -21,42 +22,52 @@
             android:padding="10dp">
 
             <TableRow android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5pt">
+
+                <com.gee12.drunkbassist.struct.AnimTextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:text="@string/header_name"
-                    android:textColor="@color/text_color"
-                    android:textSize="30sp"
+                    android:textSize="25sp"
                     android:gravity="center_horizontal"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="bold|italic"
+                    custom:textColor="@color/text_color"
+                    custom:strokeColor="@color/indicators_stroke_color"
+                    custom:strokeWidth="2" />
 
-                <TextView
+                <com.gee12.drunkbassist.struct.AnimTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/header_points"
-                    android:textColor="@color/text_color"
-                    android:textSize="30sp"
+                    android:textSize="25sp"
                     android:id="@+id/textView"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:minWidth="50dp"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="bold|italic"
+                    custom:textColor="@color/text_color"
+                    custom:strokeColor="@color/indicators_stroke_color"
+                    custom:strokeWidth="2" />
 
-                <TextView
+                <com.gee12.drunkbassist.struct.AnimTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/header_degree"
-                    android:textColor="@color/text_color"
-                    android:textSize="30sp"
+                    android:textSize="25sp"
                     android:id="@+id/textView2"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:minWidth="50dp"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="bold|italic"
+                    custom:textColor="@color/text_color"
+                    custom:strokeColor="@color/indicators_stroke_color"
+                    custom:strokeWidth="2" />
             </TableRow>
 
-            <TableRow android:layout_height="1px" android:background="#BBBBBB">
+            <TableRow android:layout_height="wrap_content"
+                android:background="#BBBBBB">
                 <View android:layout_width="match_parent"
                     android:layout_height="2dp" />
             </TableRow>

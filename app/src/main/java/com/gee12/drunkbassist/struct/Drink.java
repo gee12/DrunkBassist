@@ -10,7 +10,7 @@ import com.gee12.drunkbassist.ModelsManager;
  */
 public class Drink extends BitmapModel {
 
-    public static final float SCALE_KOEF = 0.5f;
+    public static final float SCALE_KOEF = 0.4f;
 
     protected int degree;
     protected int points;
@@ -71,6 +71,7 @@ public class Drink extends BitmapModel {
     public void resetFood(long pauseTime) {
         setRandomPositionInScene(ModelsManager.Mask);
         resetDestDimension();
+        scaleKoef = SCALE_KOEF;
         setScaleStepFromMsec(scaleKoef);
         setStartTime(pauseTime);
         isNeedBonus = true;

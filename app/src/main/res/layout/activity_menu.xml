@@ -54,7 +54,7 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dev"
+            android:text="@string/about"
             android:id="@+id/button_developer"
             android:layout_gravity="center_horizontal"
             android:onClick="onClickDevButton"
