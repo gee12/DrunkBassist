@@ -52,13 +52,14 @@ public class Hero extends Body {
         }
     }
 
-    public static final float POSITIONS_ROUND = 15f;
+    public static  float POSITIONS_ROUND = 15f;
     public static final float OFFSTEP_STEP_INC = 0.03f;
     public static final float ANGLE_AT_THE_EDGE = 15;
     public static final float ANGLE_OUT_OF_SCENE = 90;
     public static final int LEG_VERTICAL_OFFSET = 5;
     public static final int MIN_MOVE_DIST = 10;
     public static final float TOUCH_SPEED = 0.2f;
+    public static final float LEGS_CROSS_ANGLE = 5;
 
     public FrameLimb lLeg;
     public FrameLimb rLeg;
@@ -74,37 +75,40 @@ public class Hero extends Body {
     private float offsetStep = 0;
     SceneMask.PositionStatus positonStatus;
 
+    private float density;
+
 
     public Hero() {
         super();
-        init();
+        init(1f);
     }
 
-    public Hero(Bitmap bitmap) {
+    public Hero(Bitmap bitmap, float density) {
         super(bitmap);
-        init();
+        init(density);
     }
 
-    public Hero(Bitmap bitmap, PointF pos) {
+    public Hero(Bitmap bitmap, PointF pos, float density) {
         super(bitmap, pos);
-        init();
+        init(density);
     }
 
-    public Hero(Bitmap bitmap, int destWidth, int destHeight) {
+    public Hero(Bitmap bitmap, int destWidth, int destHeight, float density) {
         super(bitmap, destWidth, destHeight);
-        init();
+        init(density);
     }
 
-    public Hero(Bitmap bitmap, int destWidth, int destHeight, PointF pos) {
+    public Hero(Bitmap bitmap, int destWidth, int destHeight, PointF pos, float density) {
         super(bitmap, destWidth, destHeight, pos);
-        init();
+        init(density);
     }
 
-    private void init() {
-
+    private void init(float density) {
+        this.density = density;
+        POSITIONS_ROUND *= density;
     }
 
-    public void loadLimbs(Resources res, float density) {
+    public void loadLimbs(Resources res) {
         limbs = new ArrayList<>();
 
         addLimb(lLeg = new FrameLimb(new Bitmap[]{BitmapFactory.decodeResource(res, R.drawable.hero_l_leg)},
@@ -142,6 +146,7 @@ public class Hero extends Body {
             float dx = TOUCH_SPEED * (float)Math.cos(angle);
             float dy = TOUCH_SPEED * (float)Math.sin(angle);
             this.touchOffset.set(dx, dy);
+            setSkew(dx, 0);
         }
     }
 
@@ -172,9 +177,6 @@ public class Hero extends Body {
             rotate(angle);
             body.setCurFrame(BodyFrames.WITHOUT_BASS.ordinal());
 
-            // BASS fly animation
-            // ...
-
             isCanMove = false;
 
             // sound
@@ -190,7 +192,7 @@ public class Hero extends Body {
 
         offsetPosition(dx, dy);
         // skew
-//        ModelsManager.Hero.offsetSkew(-dx/20.0f, 0);
+//        ModelsManager.Hero.setSkew(-dx/20.0f, 0);
         // on stand
 //        isSmallOffset = (Math.abs(dx) < SMALL_OFFSET_MAX && Math.abs(dy) < SMALL_OFFSET_MAX);
 
@@ -229,10 +231,12 @@ public class Hero extends Body {
     public void onSetHeadFrame(HeadFrames nextFrame) {
         if (HeadFrames.getValue(head.getCurFrame()) != nextFrame) {
             switch(nextFrame) {
+                case HEAD1:
                 case HEAD2:
-                    break;
                 case HEAD3:
-                    ModelsManager.Hero.head.offsetPosition(0, 10);
+                    break;
+                case HEAD4:
+                    head.offsetPosition(0, 10);
                     break;
             }
             head.setCurFrame(nextFrame.ordinal());
@@ -272,10 +276,15 @@ public class Hero extends Body {
         curHeroStand = Stands.STAND;
     }
 
+    public void setLegsCrossed(float angle) {
+        lLeg.rotate(-angle);
+        rLeg.rotate(angle);
+    }
+
     public void onHeroDrinking(long pauseTime) {
         Drink drink = ModelsManager.getCurDrink();
         // if (Hero.pos ~= Drink.pos)
-        if (BitmapModel.isSamePositions(getAbsPivotPoint(), drink.getCenter(), POSITIONS_ROUND)) {
+        if (BitmapModel.isNearPositions(getAbsPivotPoint(), drink.getCenter(), POSITIONS_ROUND)) {
             // Hero drinking !!
             int pointsInc = drink.getPoints() + IndicatorsManager.Bonus.getValue();
             int degreeInc = drink.getDegree();
@@ -302,10 +311,11 @@ public class Hero extends Body {
         Food food = ModelsManager.getCurFood();
         // if (Hero.pos ~= Food.pos)
         if (Food.isFoodDisplay()
-                && BitmapModel.isSamePositions(getAbsPivotPoint(), food.getCenter(), POSITIONS_ROUND)) {
+                && BitmapModel.isNearPositions(getAbsPivotPoint(), food.getCenter(), POSITIONS_ROUND)) {
             // Hero eating !!
             int degreeInc = food.getDegree();
             IndicatorsManager.Degree.offsetValue(degreeInc);
+            if (IndicatorsManager.Degree.getValue() < 0) IndicatorsManager.Degree.setValue(0);
             offsetStep -= OFFSTEP_STEP_INC;
             //
             IndicatorsManager.DegreeInc.setValue(degreeInc);
@@ -339,6 +349,10 @@ public class Hero extends Body {
                         rand.nextFloat() * offsetStep - offsetStep / 2.f));
             }
         }
+    }
+
+    public void setCanMove(boolean isCanMove) {
+        this.isCanMove = isCanMove;
     }
 
 }

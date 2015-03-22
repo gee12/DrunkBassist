@@ -19,13 +19,13 @@
             android:id="@+id/table_records"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp">
+            android:padding="15dp">
 
             <TableRow android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5pt">
+                android:paddingBottom="5dp">
 
-                <com.gee12.drunkbassist.struct.AnimTextView
+                <com.gee12.drunkbassist.control.AnimTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
@@ -34,10 +34,9 @@
                     android:gravity="center_horizontal"
                     android:textStyle="bold|italic"
                     custom:textColor="@color/text_color"
-                    custom:strokeColor="@color/indicators_stroke_color"
-                    custom:strokeWidth="2" />
+                    style="@style/MainFontStyle" />
 
-                <com.gee12.drunkbassist.struct.AnimTextView
+                <com.gee12.drunkbassist.control.AnimTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/header_points"
@@ -48,10 +47,9 @@
                     android:minWidth="50dp"
                     android:textStyle="bold|italic"
                     custom:textColor="@color/text_color"
-                    custom:strokeColor="@color/indicators_stroke_color"
-                    custom:strokeWidth="2" />
+                    style="@style/MainFontStyle" />
 
-                <com.gee12.drunkbassist.struct.AnimTextView
+                <com.gee12.drunkbassist.control.AnimTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/header_degree"
@@ -62,8 +60,7 @@
                     android:minWidth="50dp"
                     android:textStyle="bold|italic"
                     custom:textColor="@color/text_color"
-                    custom:strokeColor="@color/indicators_stroke_color"
-                    custom:strokeWidth="2" />
+                    style="@style/MainFontStyle" />
             </TableRow>
 
             <TableRow android:layout_height="wrap_content"

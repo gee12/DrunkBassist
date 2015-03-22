@@ -11,40 +11,47 @@
         android:src="@drawable/scene"
         android:scaleType="centerCrop"/>
 
-    <!--<TableLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:padding="25dp">-->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/scrollView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="25dp">
 
-        <!--<TableRow-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_marginTop="25dp">-->
+        <com.gee12.drunkbassist.control.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/finish_string1"
+            android:id="@+id/label1"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:textSize="24sp"
+            android:textStyle="bold|italic"
+            custom:textColor="@color/text_color"
+            style="@style/MainFontStyle" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="25dp"
             android:layout_gravity="center_horizontal">
 
-                <com.gee12.drunkbassist.struct.AnimTextView
+                <com.gee12.drunkbassist.control.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/string1"
-                    android:id="@+id/label1"
+                    android:text="@string/finish_string2"
+                    android:id="@+id/label2"
                     android:layout_gravity="center"
-                    android:textSize="30sp"
+                    android:textSize="24sp"
                     android:textStyle="bold|italic"
                     custom:textColor="@color/text_color"
-                    custom:strokeColor="@color/indicators_stroke_color"
-                    custom:strokeWidth="2" />
+                    style="@style/MainFontStyle" />
 
-                <com.gee12.drunkbassist.struct.AnimTextView
+                <com.gee12.drunkbassist.control.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/string_points"
@@ -52,77 +59,63 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:textSize="60sp"
-                    android:textStyle="bold"
                     custom:textColor="@color/indicators_inc_color"
-                    custom:strokeColor="@color/indicators_stroke_color"
-                    custom:strokeWidth="2" />
+                    style="@style/MainFontStyle" />
 
-                <com.gee12.drunkbassist.struct.AnimTextView
+                <com.gee12.drunkbassist.control.MyTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/string2"
-                    android:id="@+id/label2"
-                    android:textSize="30sp"
+                    android:text="@string/finish_string3"
+                    android:id="@+id/label3"
+                    android:textSize="24sp"
                     android:textStyle="bold|italic"
                     custom:textColor="@color/text_color"
-                    custom:strokeColor="@color/indicators_stroke_color"
-                    custom:strokeWidth="2"
-                    android:layout_gravity="center" />
-        <!--</TableRow>-->
+                    android:layout_gravity="center"
+                    style="@style/MainFontStyle" />
         </LinearLayout>
 
-        <!--<TableRow android:layout_weight="0">    -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal">
 
-            <com.gee12.drunkbassist.struct.AnimTextView
+            <com.gee12.drunkbassist.control.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string3"
-                android:id="@+id/label3"
+                android:text="@string/finish_string4"
+                android:id="@+id/label4"
                 android:layout_gravity="center_vertical|right"
                 android:textSize="24sp"
                 android:textStyle="bold|italic"
                 custom:textColor="@color/text_color"
-                custom:strokeColor="@color/indicators_stroke_color"
-                custom:strokeWidth="2" />
+                style="@style/MainFontStyle" />
 
-            <com.gee12.drunkbassist.struct.AnimTextView
+            <com.gee12.drunkbassist.control.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/string_points"
                 android:id="@+id/label_degree"
                 android:layout_gravity="center"
                 android:textSize="40sp"
-                android:textStyle="bold"
                 custom:textColor="@color/indicators_inc_color"
-                custom:strokeColor="@color/indicators_stroke_color"
-                custom:strokeWidth="2"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp" />
+                android:paddingRight="10dp"
+                style="@style/MainFontStyle" />
 
-            <com.gee12.drunkbassist.struct.AnimTextView
+            <com.gee12.drunkbassist.control.MyTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/string4"
-                android:id="@+id/label4"
+                android:text="@string/finish_string5"
+                android:id="@+id/label5"
                 android:layout_gravity="left|center_vertical"
                 android:textSize="24sp"
                 android:textStyle="bold|italic"
                 custom:textColor="@color/text_color"
-                custom:strokeColor="@color/indicators_stroke_color"
-                custom:strokeWidth="2" />
+                style="@style/MainFontStyle" />
 
-        <!--</TableRow>-->
         </LinearLayout>
 
-        <!--<TableRow android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="3">-->
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,17 +126,13 @@
                 android:visibility="invisible"
                 android:layout_weight="1" />
 
-        <!--</TableRow>-->
-
-        <!--<TableRow android:layout_height="match_parent"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_weight="1">-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom">
 
-            <Button
+            <com.gee12.drunkbassist.control.MyButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/replay"
@@ -155,9 +144,10 @@
                 android:background="@color/buttons_color"
                 android:layout_margin="3dp"
                 android:padding="15dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                style="@style/MainFontStyle" />
 
-            <Button
+            <com.gee12.drunkbassist.control.MyButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/menu"
@@ -169,11 +159,11 @@
                 android:textColor="@color/text_color"
                 android:layout_margin="3dp"
                 android:padding="15dp"
-                android:layout_weight="2" />
+                android:layout_weight="2"
+                style="@style/MainFontStyle" />
 
-        <!--</TableRow>-->
         </LinearLayout>
     </LinearLayout>
-    <!--</TableLayout>-->
+    </ScrollView>
 
 </FrameLayout>

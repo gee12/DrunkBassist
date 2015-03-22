@@ -6,10 +6,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 
 import com.gee12.drunkbassist.sound.SoundManager;
+import com.gee12.drunkbassist.struct.BitmapModel;
 import com.gee12.drunkbassist.struct.Drink;
 import com.gee12.drunkbassist.struct.Food;
 import com.gee12.drunkbassist.struct.Hero;
-import com.gee12.drunkbassist.struct.Scene;
 import com.gee12.drunkbassist.struct.SceneMask;
 
 import java.util.ArrayList;
@@ -21,31 +21,34 @@ import java.util.Random;
  */
 public class ModelsManager {
 
-    public static com.gee12.drunkbassist.struct.Hero Hero;
-    public static com.gee12.drunkbassist.struct.Scene Scene;
+    public static Hero Hero;
+    public static BitmapModel Scene;
     public static SceneMask Mask;
     public static List<Drink> Drinks;
     public static List<Food> Foods;
+    public static BitmapModel Bass;
     private static int curDrinkIndex = 0;
     private static int curFoodIndex = 0;
     private static boolean isLoaded;
+    public static boolean isBassFlyStarted;
 
     public static void load(Resources res, int viewWidth, int viewHeight, float density) {
         if (res == null || viewWidth == 0 || viewHeight == 0) return;
-        isLoaded = true;
 
         // HERO
         Bitmap heroBitmap = decodeBitmap(res, R.drawable.hero);
-        PointF heroPos = new PointF(viewWidth/2 - heroBitmap.getWidth()/2,
-                viewHeight/2 - heroBitmap.getHeight()/2);
-        Hero = new Hero(heroBitmap, heroPos);
+        PointF heroPos = new PointF(viewWidth/2 - heroBitmap.getWidth()/2 * density,
+                viewHeight/2 - heroBitmap.getHeight()/2 * density);
+        Hero = new Hero(heroBitmap, heroPos, density);
         Hero.setPivotPoint(34 * density,
-                heroBitmap.getHeight());
-        Hero.loadLimbs(res, density);
+                (heroBitmap.getHeight() - 10));
+        Hero.loadLimbs(res);
+        Hero.setCanMove(false);
 
         // SCENE, MASK
-        Scene = new Scene(decodeBitmap(res, R.drawable.scene), viewWidth, viewHeight);
         Mask = new SceneMask(decodeBitmap(res, R.drawable.mask), viewWidth, viewHeight);
+        Scene = new BitmapModel(decodeBitmap(res, R.drawable.scene), viewWidth, viewHeight);
+//        Scene = new BitmapModel(Mask.getBitmap(), viewWidth, viewHeight);
 
         // DRINKS
         Drinks = new ArrayList<>();
@@ -65,6 +68,15 @@ public class ModelsManager {
         Foods.add(new Food(decodeBitmap(res, R.drawable.food_cheese), -2, 3000));
         Foods.add(new Food(decodeBitmap(res, R.drawable.food_pizza_part), -2, 3000));
         Foods.add(new Food(decodeBitmap(res, R.drawable.food_pizza), -5, 2000));
+
+        // BASS
+        Bitmap bassBitmap = decodeBitmap(res, R.drawable.bass);
+        Bass = new BitmapModel(bassBitmap);
+        Bass.setPivotPoint(bassBitmap.getWidth()/2, bassBitmap.getHeight()/2);
+        Bass.setVisible(false);
+        isBassFlyStarted = false;
+
+        isLoaded = true;
     }
 
     public static Bitmap decodeBitmap(Resources res, int id) {
@@ -96,6 +108,38 @@ public class ModelsManager {
 
         // sound
         SoundManager.FoodSound.play();
+    }
+
+
+    /**
+     * Bass fly animation
+     *
+     * @param viewWidth
+     */
+    public static void onBassFly(int viewWidth) {
+        if (!isBassFlyStarted) {
+            isBassFlyStarted = true;
+
+            PointF heroPos = Hero.getPosition();
+            PointF pos = new PointF(heroPos.x + Hero.body.getPosition().x,
+                    heroPos.y + Hero.body.getPosition().y);
+            Bass.setPosition(pos);
+            // rotate
+            if (heroPos.x < viewWidth / 2) {
+                Bass.offsetRotate(-Hero.ANGLE_OUT_OF_SCENE);
+                Bass.setRotateStep(1);
+                Bass.setTransStep(new PointF(1, 0));
+            } else {
+                Bass.offsetRotate(Hero.ANGLE_OUT_OF_SCENE);
+                Bass.setRotateStep(-1);
+                Bass.setTransStep(new PointF(-1, 0));
+            }
+            Bass.setVisible(true);
+
+        } else {
+            Bass.offsetRotate();
+            Bass.offsetPosition();
+        }
     }
 
     public static boolean isLoaded() {

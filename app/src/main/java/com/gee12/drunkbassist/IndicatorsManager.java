@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 
-import com.gee12.drunkbassist.struct.AnimTextView;
+import com.gee12.drunkbassist.control.AnimTextView;
 
 /**
  * Created by Иван on 24.02.2015.

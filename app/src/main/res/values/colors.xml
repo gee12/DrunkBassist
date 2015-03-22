@@ -2,7 +2,7 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="indicators_color">#FF00FF00</color>
-    <color name="indicators_stroke_color">#FF000000</color>
+    <color name="text_stroke_color">#FF000000</color>
     <color name="indicators_inc_color">#FFFF0000</color>
     <color name="text_color">#FFFFFFFF</color>
     <color name="buttons_color">#AA222222</color>

@@ -2,7 +2,9 @@ package com.gee12.drunkbassist;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -16,7 +18,7 @@ public class AboutActivity extends Activity {
         setContentView(R.layout.activity_about);
 
         TextView versionLabel = (TextView)findViewById(R.id.label_version);
-        versionLabel.setText(getString(R.string.version) + Utils.getAppVersionName());
+        versionLabel.setText(getString(R.string.version) + Utils.getAppVersionName() + " ");
     }
 
     @Override
@@ -32,4 +34,8 @@ public class AboutActivity extends Activity {
         startActivity(menuIntent);
     }
 
+    public void onClickMarkButton(View view) {
+        Intent googlePlayIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.mark_link2)));
+        startActivity(googlePlayIntent);
+    }
 }

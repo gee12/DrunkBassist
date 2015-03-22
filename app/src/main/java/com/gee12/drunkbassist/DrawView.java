@@ -3,7 +3,6 @@ package com.gee12.drunkbassist;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -52,29 +51,22 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void draw(Canvas canvas) {
-        if (canvas == null) return;
+        if (canvas == null || !ModelsManager.isLoaded()) return;
 
-        if (ModelsManager.isLoaded()) {
-            //scene
-            ModelsManager.Scene.drawModel(canvas);
-            // drink
-            ModelsManager.getCurDrink().drawModel(canvas);
-            // food
-            ModelsManager.getCurFood().drawModel(canvas);
-            // hero
-            ModelsManager.Hero.drawModel(canvas);
-            // indicators
-//        IndicatorsManager.Points.drawModel(canvas);
-//        IndicatorsManager.Bonus.drawModel(canvas);
-//        IndicatorsManager.Degree.drawModel(canvas);
+        //scene
+        ModelsManager.Scene.drawModel(canvas);
+        // drink
+        ModelsManager.getCurDrink().drawModel(canvas);
+        // food
+        ModelsManager.getCurFood().drawModel(canvas);
+        // hero
+        ModelsManager.Hero.drawModel(canvas);
+        // bass
+        ModelsManager.Bass.drawModel(canvas);
 
-//        IndicatorsManager.PointsInc.drawModel(canvas);
-//        IndicatorsManager.DegreeInc.drawModel(canvas);
-        }
-
-        Paint p = new Paint();
-        p.setStyle(Paint.Style.FILL);
-        canvas.drawText(text, getWidth()/2, getHeight()/2, p);
+//        Paint p = new Paint();
+//        p.setStyle(Paint.Style.FILL);
+//        canvas.drawText(text, getWidth()/2, getHeight()/2, p);
     }
 
 

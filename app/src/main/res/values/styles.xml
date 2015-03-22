@@ -23,4 +23,21 @@
 
     <style name="ButtonBarButton" />
 
+    <style name="MainFontStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="strokeColor">@color/text_stroke_color</item>
+        <item name="strokeWidth">2</item>
+        <item name="customFont">@string/main_font_name</item>
+        <item name="textColor">@color/text_color</item>
+    </style>
+
+    <style name="ExtFontStyle">
+        <item name="android:textSize">@dimen/ext_text_size</item>
+        <item name="android:textStyle">bold|italic</item>
+        <item name="strokeColor">@color/text_stroke_color</item>
+        <item name="strokeWidth">2</item>
+        <item name="customFont">@string/ext_font_name</item>
+        <item name="textColor">@color/text_color</item>
+    </style>
+
 </resources>

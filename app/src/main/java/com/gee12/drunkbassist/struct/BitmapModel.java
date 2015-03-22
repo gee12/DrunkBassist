@@ -77,7 +77,7 @@ public class BitmapModel extends Model {
                 && Math.abs(this.centerF.y - other.getCenter().y) < exp);
     }
 
-    public static boolean isSamePositions(PointF pos1, PointF pos2, float exp) {
+    public static boolean isNearPositions(PointF pos1, PointF pos2, float exp) {
         return (Math.abs(pos1.x - pos2.x) < exp
                 && Math.abs(pos1.y - pos2.y) < exp);
     }
@@ -89,8 +89,6 @@ public class BitmapModel extends Model {
         Random rand = new Random();
         do {
             PointF newPos = new PointF(
-//                    rand.nextFloat() * mask.getDestDimension().width + mask.getPosition().x,
-//                    rand.nextFloat() * mask.getDestDimension().height + mask.getPosition().y
                     rand.nextFloat() * maskRect.width() + maskRect.left,
                     rand.nextFloat() * maskRect.height() + maskRect.top
             );
@@ -110,8 +108,6 @@ public class BitmapModel extends Model {
     // reset
 
     public void resetCenter() {
-//        RectF destRect = matrix.getDestRect();
-//        centerF = new PointF((destRect.left + destRect.right)/2.f, (destRect.top + destRect.bottom)/2.f);
         centerF = new PointF(matrix.destRect.centerX(), matrix.destRect.centerY());
     }
 
@@ -156,16 +152,9 @@ public class BitmapModel extends Model {
         resetCenter();
     }
 
-    public void setTransStep(PointF transStep) {
-        matrix.setTransStep(transStep);
+    public void setTransStep(PointF step) {
+        matrix.setTransStep(step);
     }
-
-//    public void setScaleStepFromMsec(int delta) {
-//        DimensionF srcDim = getSrcDimension();
-//        float dx = srcDim.width / (float)(msec + delta);
-//        float dy = srcDim.height / (float)(msec + delta);
-//        matrix.setScaleStep(dx, dy);
-//    }
 
     public void setScaleStepFromMsec(float koef) {
         DimensionF srcDim = getSrcDimension();
@@ -174,7 +163,19 @@ public class BitmapModel extends Model {
         matrix.setScaleStep(dx, dy);
     }
 
-    public void offsetSkew(float dx, float dy) {
+    public void setRotateStep(float step) {
+        matrix.setRotateStep(step);
+    }
+
+    public void offsetRotate(float da) {
+        matrix.offsetRotate(da);
+    }
+
+    public void offsetRotate() {
+        matrix.offsetRotate();
+    }
+
+    public void setSkew(float dx, float dy) {
         matrix.setSkew(dx, dy);
     }
 
@@ -207,6 +208,10 @@ public class BitmapModel extends Model {
 
     public MyMatrix getMatrix() {
         return matrix;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 
     public PointF getAbsPivotPoint() {

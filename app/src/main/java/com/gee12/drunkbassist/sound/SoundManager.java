@@ -19,6 +19,7 @@ public class SoundManager {
     protected static SoundPool soundPool = null;
     protected static int loadedSoundCount = 0;
     protected static Handler h;
+    protected static boolean isLoaded = false;
 
     private static List<Sound> sounds;
     public static Sound MainStartBackSound;
@@ -76,6 +77,7 @@ public class SoundManager {
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
                 if (status == 0 && loadedSoundCount++ == sounds.size()) {
                     // all sounds loaded
+                    isLoaded = true;
                 }
                 }
 //                if (loadedSoundCount == sounds.size()) {
@@ -84,6 +86,7 @@ public class SoundManager {
 //            }
         });
         loadSounds(context);
+
     }
 
     protected static void loadSounds(Context context) {
@@ -170,6 +173,10 @@ public class SoundManager {
 
     public static List<Sound> getSounds() {
         return sounds;
+    }
+
+    public static boolean isLoaded() {
+        return isLoaded;
     }
 
 }

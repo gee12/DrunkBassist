@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gee12.drunkbassist" >
+    android:installLocation="auto"
+    package="com.gee12.drunkbassist">
 
     <application
         android:allowBackup="true"

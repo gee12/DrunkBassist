@@ -7,7 +7,7 @@ import android.graphics.PointF;
 /**
  * Created by Иван on 19.02.2015.
  */
-public class SceneMask extends Scene {
+public class SceneMask extends BitmapModel {
 
     public enum PositionStatus {
         ON_SCENE(Color.WHITE),

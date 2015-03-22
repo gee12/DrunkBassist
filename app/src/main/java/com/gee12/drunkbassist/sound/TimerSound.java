@@ -34,7 +34,7 @@ public class TimerSound extends Sound {
     public void init(int msec, long startTime, boolean isNeedToPlay) {
         this.msec = msec;
         this.startTime = startTime;
-        this.isNeedToPlay = false;
+        this.isNeedToPlay = isNeedToPlay;
     }
 
     public void setTimer(int msec, long pauseTime) {
@@ -43,21 +43,11 @@ public class TimerSound extends Sound {
         this.isNeedToPlay = true;
     }
 
-//    public void onPlay(long gameTime) {
-//        if (isNeedToPlay && gameTime - startTime >= msec) {
-//            play();
-//            isNeedToPlay = false;
-//        }
-//    }
-
     public boolean onPlay(long gameTime) {
         if (isNeedToPlay) {
             if (gameTime - startTime >= msec) {
                 play();
                 return true;
-                // and play after random delay every time
-//                int msec = new Random().nextInt(RANDOM_SOUND_DELAY_MAX - RANDOM_SOUND_DELAY_MIN) + RANDOM_SOUND_DELAY_MIN;
-//                setTimer(msec, pauseTime);
             }
         }
         return false;

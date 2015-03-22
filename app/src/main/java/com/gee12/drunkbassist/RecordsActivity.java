@@ -12,14 +12,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.gee12.drunkbassist.struct.AnimTextView;
+import com.gee12.drunkbassist.control.MyTextView;
 
 /**
  *
  */
-public class RecordsActivity extends Activity/*extends ListActivity*/ {
+public class RecordsActivity extends Activity {
 
-    public static final int ROW_TEXT_SIZE = 20;
     public static final int COL_MIN_WIDTH = 50;
 
     private TableLayout tableLayout;
@@ -32,33 +31,38 @@ public class RecordsActivity extends Activity/*extends ListActivity*/ {
         tableLayout = (TableLayout) findViewById(R.id.table_records);
         Resources res = getResources();
 
+        Typeface tf = MyTextView.getCustomFont(getBaseContext(), getString(R.string.ext_font_name));
+        int textSize = (int)res.getDimension(R.dimen.ext_text_size);
+
         int i = 1;
         for(Record rec : RecordsManager.getRecords()) {
-            addRow(rec, i++, res);
+            addRow(rec, i++, res, textSize, tf);
         }
     }
 
-    protected void addRow(Record rec, int num, Resources res) {
+    protected void addRow(Record rec, int num, Resources res, int textSize, Typeface tf) {
         TableRow tr = new TableRow(this);
         tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
-        tr.addView(createTextView(String.format("%d  %s", num, rec.getName()), res, Gravity.LEFT, 5));
-        tr.addView(createTextView(String.valueOf(rec.getPoints()), res, Gravity.CENTER_HORIZONTAL, 1));
-        tr.addView(createTextView(String.valueOf(rec.getDegree()), res, Gravity.CENTER_HORIZONTAL, 1));
+        tr.addView(createTextView(String.format("%d  %s", num, rec.getName()), res, Gravity.LEFT, 5, textSize, tf));
+        tr.addView(createTextView(String.valueOf(rec.getPoints()), res, Gravity.CENTER_HORIZONTAL, 1, textSize, tf));
+        tr.addView(createTextView(String.valueOf(rec.getDegree()), res, Gravity.CENTER_HORIZONTAL, 1, textSize, tf));
 
         tableLayout.addView(tr);
     }
 
-    private TextView createTextView(String text, Resources res, int gravity, int weight) {
-        AnimTextView view = new AnimTextView(this);
+    private TextView createTextView(String text, Resources res, int gravity, int weight, int textSize, Typeface tf) {
+//        MyTextView view = new MyTextView(this, null, R.style.ExtFontStyle);
+//        view.setTextAppearance(getBaseContext(), R.style.ExtFontStyle);
+        MyTextView view = new MyTextView(this);
         view.setText(String.valueOf(text));
-        view.setTextSize(ROW_TEXT_SIZE);
+        view.setTextSize(textSize);
         view.setGravity(gravity);
         view.setMinWidth(COL_MIN_WIDTH);
-        view.setTypeface(null, Typeface.BOLD_ITALIC);
         view.setCustomTextColor(res.getColor(R.color.text_color));
-        view.setStrokeColor(res.getColor(R.color.indicators_stroke_color));
+        view.setStrokeColor(res.getColor(R.color.text_stroke_color));
         view.setStrokeWidth(2);
+        view.setTypeface(tf, Typeface.BOLD_ITALIC);
         view.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, weight));
         return view;
     }
@@ -76,7 +80,7 @@ public class RecordsActivity extends Activity/*extends ListActivity*/ {
         if (id == R.id.action_clear_records) {
 
             // CLEAR records !
-            tableLayout.removeViews(1, RecordsManager.getRecords().size());
+            tableLayout.removeViews(2, RecordsManager.getRecords().size() + 1);
             RecordsManager.clearRecords();
             return true;
         }

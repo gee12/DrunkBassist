@@ -88,8 +88,16 @@ public class MyMatrix extends Matrix {
     }
 
     @Override
-    public void setRotate(float rotate) {
-        this.rotate = rotate;
+    public void setRotate(float angle) {
+        this.rotate = angle;
+    }
+
+    public void offsetRotate(float da) {
+        this.rotate += da;
+    }
+
+    public void offsetRotate() {
+        this.rotate += rotateStep;
     }
 
     public void setRotateStep(float rotateStep) {

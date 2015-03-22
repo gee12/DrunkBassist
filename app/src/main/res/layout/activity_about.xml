@@ -27,55 +27,50 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <com.gee12.drunkbassist.control.MyTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
-                    android:textColor="@color/text_color"
-                    android:textSize="20sp"
                     android:id="@+id/label_about_us2"
-                    android:textStyle="bold|italic"
-                    android:layout_gravity="fill"/>
-                <TextView
+                    style="@style/ExtFontStyle" />
+
+                <com.gee12.drunkbassist.control.MyTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/version"
-                    android:textColor="@color/text_color"
-                    android:textSize="20sp"
                     android:id="@+id/label_version"
-                    android:textStyle="bold|italic"/>
+                    style="@style/ExtFontStyle" />
             </LinearLayout>
 
-            <TextView
+            <com.gee12.drunkbassist.control.MyTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/about_us_full"
-                android:textColor="@color/text_color"
-                android:textSize="20sp"
                 android:id="@+id/label_name"
-                android:textStyle="bold|italic" />
+                style="@style/ExtFontStyle" />
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <TextView
+
+                <com.gee12.drunkbassist.control.MyTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/github"
-                    android:textColor="@color/text_color"
-                    android:textSize="20sp"
                     android:id="@+id/label_github"
-                    android:textStyle="bold|italic" />
-                <TextView
+                    style="@style/ExtFontStyle" />
+
+                <com.gee12.drunkbassist.control.MyTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/github_link"
-                    android:textColor="@color/text_color"
-                    android:textSize="20sp"
                     android:id="@+id/label_github_link"
+                    android:autoLink="web"
+                    android:textSize="@dimen/ext_text_size"
                     android:textStyle="bold|italic"
-                    android:autoLink="web" />
+                    custom:customFont="@string/ext_font_name"
+                    android:textColorLink="#0000FF" />
              </LinearLayout>
 
         <TextView android:layout_width="match_parent"
@@ -88,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <com.gee12.drunkbassist.struct.AnimTextView
+            <com.gee12.drunkbassist.control.MyTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/thanks"
@@ -97,58 +92,24 @@
                 android:gravity="center_horizontal"
                 android:textStyle="bold|italic"
                 android:paddingTop="10dp"
-                custom:textColor="@color/text_color"
-                custom:strokeColor="@color/indicators_stroke_color"
-                custom:strokeWidth="2" />
+                style="@style/MainFontStyle" />
             </LinearLayout>
 
-            <TextView
+            <com.gee12.drunkbassist.control.MyTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/thanks_full1"
-                android:textColor="@color/text_color"
-                android:textSize="20sp"
+                android:text="@string/thanks_full"
                 android:id="@+id/label_thanks1"
                 android:gravity="center_horizontal"
-                android:textStyle="bold|italic"
-                android:paddingTop="5dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/thanks_full2"
-                android:textColor="@color/text_color"
-                android:textSize="20sp"
-                android:id="@+id/label_thanks2"
-                android:gravity="center_horizontal"
-                android:textStyle="bold|italic"
-                android:paddingTop="5dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/thanks_full3"
-                android:textColor="@color/text_color"
-                android:textSize="20sp"
-                android:id="@+id/label_thanks3"
-                android:gravity="center_horizontal"
-                android:textStyle="bold|italic"
-                android:paddingTop="5dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/thanks_full4"
-                android:gravity="center_horizontal"
-                android:textColor="@color/text_color"
-                android:textSize="20sp"
-                android:id="@+id/label_thanks4"
-                android:textStyle="bold|italic"
-                android:paddingTop="5dp" />
+                android:paddingTop="5dp"
+                style="@style/ExtFontStyle" />
 
-        <TextView android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#BBBBBB"
-            android:layout_marginTop="10dp"/>
+            <TextView android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#BBBBBB"
+                android:layout_marginTop="10dp"/>
 
-        <com.gee12.drunkbassist.struct.AnimTextView
+            <!--com.gee12.drunkbassist.control.MyTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/reward"
@@ -157,30 +118,43 @@
                 android:gravity="center_horizontal"
                 android:textStyle="bold|italic"
                 android:paddingTop="10dp"
-            custom:textColor="@color/text_color"
-            custom:strokeColor="@color/indicators_stroke_color"
-            custom:strokeWidth="2" />
+                style="@style/MainFontStyle" />
 
-            <TextView
+            <com.gee12.drunkbassist.control.MyTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/reward_full"
-                android:textColor="@color/text_color"
-                android:textSize="20sp"
+                android:text="@string/donate_text"
                 android:id="@+id/label_reward2"
                 android:gravity="center_horizontal"
-                android:textStyle="bold|italic"
-                android:paddingTop="5dp"  />
-            <TextView
+                android:paddingTop="5dp"
+                style="@style/ExtFontStyle"  />
+
+            <com.gee12.drunkbassist.control.MyTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/donate_link"
-                android:textColor="@color/text_color"
-                android:textSize="20sp"
                 android:id="@+id/label_reward_link"
                 android:gravity="center_horizontal"
+                android:autoLink="web"
+                android:textSize="@dimen/ext_text_size"
                 android:textStyle="bold|italic"
-                android:autoLink="web" />
+                custom:customFont="@string/ext_font_name"
+                android:textColorLink="#0000FF"  /-->
+
+            <com.gee12.drunkbassist.control.MyButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/assess_text"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onClickMarkButton"
+                android:textSize="20sp"
+                android:textStyle="bold|italic"
+                android:layout_marginTop="15dp"
+                android:padding="15dp"
+                android:background="@color/buttons_color"
+                custom:textColor="@color/text_color"
+                style="@style/MainFontStyle"/>
+
     </LinearLayout>
     </ScrollView>
 </FrameLayout>

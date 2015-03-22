@@ -16,8 +16,10 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.gee12.drunkbassist.sound.SoundManager;
 
@@ -73,7 +75,6 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
 
                 // load and init models
                 ModelsManager.load(getResources(), drawView.getWidth(), drawView.getHeight(), metrics.density);
-//                IndicatorsManager.load(getResources(), drawView.getWidth(), drawView.getHeight());
                 IndicatorsManager.load(getBaseContext(), findViewById(R.id.main_layout));
 
                 SoundManager.reinitTimerSounds();
@@ -138,7 +139,7 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (ModelsManager.Hero == null) return;
+        if (!ModelsManager.isLoaded()) return;
 
         float[] values = event.values;
         switch(event.sensor.getType()) {
@@ -154,9 +155,9 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
     public void onAccelerometerChanged(float accX, float accY) {
         float dAccX = oldAccX - accX;
         float dAccY = oldAccY - accY;
+        //
         ModelsManager.Hero.setHeroOffset(-dAccY, -dAccX);
-        // !
-        ModelsManager.Hero.offsetSkew(dAccY/15.0f, 0);
+        ModelsManager.Hero.setSkew(dAccY / 15.0f, 0);
     }
 
     public static final float STEP = 10f;
@@ -181,26 +182,6 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
                 || action == MotionEvent.ACTION_CANCEL) {
             ModelsManager.Hero.setTouchOffset(0, 0);
         }
-//        switch(action) {
-//            case MotionEvent.ACTION_DOWN:
-//                isTouchPressed = true;
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//
-//                break;
-//            case MotionEvent.ACTION_CANCEL:
-//
-//                break;
-//        }
-//        if (isTouchPressed) {
-//            int shotX = (int)event.getX();
-//            int shotY = (int)event.getY();
-//            // angle = Math.atan((double)(y - gameView.shotY) / (x - gameView.shotX));
-//            // x += mSpeed * Math.cos(angle);
-//            // y += mSpeed * Math.sin(angle);
-//            ModelsManager.Hero.setTouchOffset(dx, dy);
-//            return true;
-//        }
         return super.onTouchEvent(event);
     }
 
@@ -253,4 +234,10 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
         finish();
     }
 
+    public void onClickReadyButton(View view) {
+        ModelsManager.Hero.setCanMove(true);
+
+        Button readyButton = (Button)findViewById(R.id.button_ready);
+        readyButton.setVisibility(View.GONE);
+    }
 }

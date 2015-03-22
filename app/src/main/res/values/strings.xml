@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Пьяный басист </string>
+    <string name="app_name">Пьяный басист&#160;</string>
     <string name="action_menu">Меню</string>
     <string name="action_clear_records">Очистить список</string>
     <string name="your_name">Ваше имя</string>
@@ -9,32 +9,39 @@
     <string name="cancel_name">ОТМЕНА</string>
     <string name="replay">ЕЩЕ РАЗ</string>
     <string name="menu">МЕНЮ</string>
-    <string name="string1">НАБРАНО</string>
-    <string name="string2">ОЧКОВ</string>
-    <string name="string3">ОПЬЯНЕНИЕ НА</string>
-    <string name="string4">%</string>
+    <string name="finish_string1">БАСИСТ ИЗБАВИЛ МИР&#160;</string>
+    <string name="finish_string2">ОТ &#160;</string>
+    <string name="finish_string3">АЛК У.Е.&#160;</string>
+    <string name="finish_string4">ОПЬЯНЕВ НА&#160;</string>
+    <string name="finish_string5">%&#160;</string>
     <string name="string_points">N</string>
     <string name="header_name">ИМЯ</string>
     <string name="header_points">ОЧКИ</string>
-    <string name="header_degree">ГРАДУС</string>
+    <string name="header_degree">АЛК</string>
     <string name="start">СТАРТ</string>
     <string name="records">РЕКОРДЫ</string>
     <string name="about">ОБ ЭТОМ</string>
-    <string name="version">, версия: </string>
+    <string name="version">, версия:&#160;</string>
     <string name="exit">ВЫЙТИ</string>
     <string name="return_to_game">ВЕРНУТЬСЯ</string>
     <string name="about_us">О ПРОЕКТЕ</string>
     <string name="thanks">КОМУ СПАСИБО</string>
     <string name="reward">ДЛЯ ЭНТУЗИАСТОВ</string>
     <string name="about_us_full">Бондарь Иван (gee12), 2015</string>
-    <string name="thanks_full1">Ребятам из MiniWorldGames за отличную flash <b>SOBER SANTA!</b></string>
-    <string name="thanks_full2"><b>ВИТЕ МЕЛЬНИКУ</b> за помощь в тестировании.</string>
-    <string name="thanks_full3"><b>БОГДАНУ ИЩУКУ</b> и <b>ДЭНУ КОВАЛЕНКО</b> за тестирование и музыкальное оформление.</string>
-    <string name="thanks_full4">Всем <b>БАСИСТАМ</b> за их весомый вклад в несокрушимой борьбе за уничтожение алкоголя!</string>
-    <string name="reward_full">Сделать свой вклад в фонд анонимных басистов и программистов (нужное подчеркнуть):</string>
-    <string name="github">GitHub:</string>
+    <string name="thanks_full">Ребятам из MiniWorldGames за отличную flash <b>SOBER SANTA!</b>\n
+        <b>ВИТЕ МЕЛЬНИКУ</b> за помощь в тестировании.\n
+        <b>БОГДАНУ ИЩУКУ</b> и <b>ДЭНУ КОВАЛЕНКО</b> за тестирование и музыкальное оформление.\n
+        Всем <b>БАСИСТАМ</b> за их неоценимый вклад в борьбе за уничтожение алкоголя!</string>
+    <string name="donate_text">Сделать свой вклад в фонд анонимных басистов и программистов (нужное подчеркнуть):</string>
+    <string name="assess_text">Оценить на GooglePlay</string>
+    <string name="github">GitHub:&#160;</string>
+    <string name="ready">Готов!</string>
     <string name="github_link">https://github.com/gee12/DrunkBassist</string>
     <string name="donate_link">https://www.paypal.com/gee12</string>
+    <string name="mark_link">market://details?id=com.gee12.drunkbassist</string>
+    <string name="mark_link2">http://market.android.com/details?id=com.gee12.drunkbassist</string>
     <string name="vk_link">https://www.vk.com/drunk_bussist</string>
+    <string name="main_font_name">fonts/PitonAstroSity.ttf</string>
+    <string name="ext_font_name">fonts/Comic_Sans_MS_Regular.ttf</string>
 
 </resources>
