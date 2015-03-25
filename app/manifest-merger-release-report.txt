@@ -28,7 +28,7 @@ MERGED from com.android.support:support-v4:21.0.3:16:5
 		ADDED from AndroidManifest.xml:8:9
 	android:theme
 		ADDED from AndroidManifest.xml:10:9
-activity#com.gee12.drunkbassist.MenuActivity
+activity#com.gee12.drunkbassist.activity.MenuActivity
 ADDED from AndroidManifest.xml:11:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:15:13
@@ -52,7 +52,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:20:17
 	android:name
 		ADDED from AndroidManifest.xml:20:27
-activity#com.gee12.drunkbassist.MainActivity
+activity#com.gee12.drunkbassist.activity.MainActivity
 ADDED from AndroidManifest.xml:23:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:27:13
@@ -66,7 +66,7 @@ ADDED from AndroidManifest.xml:23:9
 		ADDED from AndroidManifest.xml:28:13
 	android:name
 		ADDED from AndroidManifest.xml:24:13
-activity#com.gee12.drunkbassist.RecordsActivity
+activity#com.gee12.drunkbassist.activity.RecordsActivity
 ADDED from AndroidManifest.xml:31:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:35:13
@@ -78,7 +78,7 @@ ADDED from AndroidManifest.xml:31:9
 		ADDED from AndroidManifest.xml:36:13
 	android:name
 		ADDED from AndroidManifest.xml:32:13
-activity#com.gee12.drunkbassist.AboutActivity
+activity#com.gee12.drunkbassist.activity.AboutActivity
 ADDED from AndroidManifest.xml:38:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:42:13
@@ -90,7 +90,7 @@ ADDED from AndroidManifest.xml:38:9
 		ADDED from AndroidManifest.xml:43:13
 	android:name
 		ADDED from AndroidManifest.xml:39:13
-activity#com.gee12.drunkbassist.FinishActivity
+activity#com.gee12.drunkbassist.activity.FinishActivity
 ADDED from AndroidManifest.xml:45:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:49:13

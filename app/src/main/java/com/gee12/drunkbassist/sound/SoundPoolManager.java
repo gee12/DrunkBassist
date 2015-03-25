@@ -10,7 +10,12 @@ import java.util.Map;
 /**
  * Created by Иван on 03.03.2015.
  */
+
 public class SoundPoolManager {
+
+    public interface ISoundPoolLoaded {
+        public void onSuccess();
+    }
 
         /*
     SoundPoolManager.CreateInstance();

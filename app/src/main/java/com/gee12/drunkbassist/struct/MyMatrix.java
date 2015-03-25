@@ -35,6 +35,8 @@ public class MyMatrix extends Matrix {
         this.destRect = destRect;
         this.transStep = new PointF();
         this.scaleStep = new PointF();
+        this.rotate = 0;
+        this.rotateStep = 0;
         this.skew = new PointF();
         this.skewStep = new PointF();
         this.pivot = pivot;
@@ -122,7 +124,7 @@ public class MyMatrix extends Matrix {
     }
 
     public void setPivot(float x, float y) {
-        this.pivot = new PointF(x, y);
+        this.pivot.set(x, y);
     }
 
     public PointF getPivot() {

@@ -12,7 +12,7 @@
         <!--android:src="@drawable/scene"-->
         <!--android:scaleType="centerCrop"/>-->
 
-    <com.gee12.drunkbassist.DrawView
+    <com.gee12.drunkbassist.game.DrawView
         android:id="@+id/draw_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

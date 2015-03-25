@@ -31,34 +31,38 @@ public class MyRectF extends RectF {
         init(r.left, r.top);
     }
 
+    public void init(float left, float top) {
+        leftTop = new PointF(left, top);
+    }
+
     @Override
     public void set(float left, float top, float right, float bottom) {
         super.set(left, top, right, bottom);
-        init(left, top);
+        setLeftTop(left, top);
     }
 
     @Override
     public void set(RectF src) {
         super.set(src);
-        init(left, top);
+        setLeftTop(left, top);
     }
 
     @Override
     public void set(Rect src) {
         super.set(src);
-        init(left, top);
+        setLeftTop(left, top);
     }
 
     @Override
     public void offset(float dx, float dy) {
         super.offset(dx, dy);
-        init(left, top);
+        setLeftTop(left, top);
     }
 
     @Override
     public void offsetTo(float newLeft, float newTop) {
         super.offsetTo(newLeft, newTop);
-        init(left, top);
+        setLeftTop(left, top);
     }
 
     public void setDimension(float width, float height) {
@@ -69,11 +73,12 @@ public class MyRectF extends RectF {
         set(left, top, left + dim.width, top + dim.height);
     }
 
+    protected void setLeftTop(float left, float top) {
+        this.leftTop = new PointF(left, top);
+    }
+
     public DimensionF getDimension() {
         return new DimensionF(width(), height());
     }
 
-    public void init(float left, float top) {
-        leftTop = new PointF(left, top);
-    }
 }
