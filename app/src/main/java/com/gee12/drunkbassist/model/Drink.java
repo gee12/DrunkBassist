@@ -2,6 +2,7 @@ package com.gee12.drunkbassist.model;
 
 import android.graphics.Bitmap;
 
+import com.gee12.drunkbassist.game.GameTimerTask;
 import com.gee12.drunkbassist.mng.IndicatorsManager;
 import com.gee12.drunkbassist.mng.ModelsManager;
 
@@ -10,7 +11,7 @@ import com.gee12.drunkbassist.mng.ModelsManager;
  */
 public class Drink extends BitmapModel {
 
-    public static final float SCALE_KOEF = 0.4f;
+    public static final float SCALE_KOEF = 0.2f * GameTimerTask.MSEC_PER_TICK;
 
     protected int degree;
     protected int points;

@@ -1,9 +1,12 @@
 package com.gee12.drunkbassist.model;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Typeface;
+
+import com.gee12.drunkbassist.game.GameTimerTask;
 
 /**
  * Created by Иван on 24.02.2015.
@@ -15,20 +18,36 @@ public class TextModel extends Model {
     protected String format;
     protected PointF step;
     protected float accumulation;
+    protected int alpha;
 
-    public TextModel(int value, String format, PointF pos, Paint p, int msec) {
-        init(value, format, pos, p, msec);
+    protected int textColor;
+    protected int strokeColor;
+    protected float strokeWidth;
+
+    public TextModel(int value, String format, PointF pos, Paint p) {
+        init(value, format, pos, p.getColor(), 0, 0, p, 0);
     }
 
-    public TextModel(int value, String format, PointF pos, float textSize, int col, int msec) {
+    public TextModel(int value, String format, PointF pos, float textSize, int col) {
         Paint p = new Paint();
         p.setTextSize(textSize);
-        p.setColor(col);
-        init(value, format, pos, p, msec);
+        p.setAntiAlias(true);
+        init(value, format, pos, col, 0, 0, p, 0);
     }
 
-    public void init(int value, String format, PointF pos, Paint p, int msec) {
+    public TextModel(int value, String format, PointF pos, float textSize, int col,
+                     int strokeCol, float strokeWidth, Typeface tf, int msec) {
+        Paint p = new Paint();
+        p.setTextSize(textSize);
+        p.setAntiAlias(true);
+        p.setTypeface(tf);
+        init(value, format, pos, col, strokeCol, strokeWidth, p, msec);
+    }
+
+    public void init(int value, String format, PointF pos, int col,
+                     int strokeCol, float strokeWidth, Paint p, int msec) {
         this.pos = pos;
+        this.textColor = col;
         this.value = value;
         this.format = format;
         this.paint = p;
@@ -36,6 +55,9 @@ public class TextModel extends Model {
         this.msec = msec;
         this.step = new PointF(0, 0);
         this.accumulation = 0;
+        this.strokeColor = strokeCol;
+        this.strokeWidth = strokeWidth;
+        this.alpha = 255;
     }
 
     public void initBeforeDisplay(int value, long pauseTime) {
@@ -52,10 +74,40 @@ public class TextModel extends Model {
     @Override
     public void drawModel(Canvas canvas) {
         if (canvas == null || !isVisible) return;
-        Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
-        paint.setTypeface(tf);
-        canvas.drawText(String.format(format, value), pos.x, pos.y, paint);
+
+        String s = String.format(format, value);
+        // stroke
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(strokeColor);
+        paint.setAlpha(alpha);
+        paint.setStrokeMiter(10);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeWidth(strokeWidth);
+        canvas.drawText(s, pos.x, pos.y, paint);
+        // fill
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(textColor);
+        paint.setAlpha(alpha);
+
+        canvas.drawText(s, pos.x, pos.y, paint);
     }
+
+    public void setStroke(int col, float width) {
+        this.strokeColor = col;
+        this.strokeWidth = width;
+    }
+
+    public boolean setCustomFont(Context context, String asset, int style) {
+        Typeface tf = null;
+        try {
+            tf = Typeface.createFromAsset(context.getAssets(), asset);
+        } catch (Exception e) {
+            return false;
+        }
+        paint.setTypeface(Typeface.create(tf, style));
+        return true;
+    }
+
     public void setPosition(PointF pos) {
         this.pos = pos;
     }
@@ -68,7 +120,7 @@ public class TextModel extends Model {
     }
 
     public float getStepFromMsec(int divident) {
-        return divident / (float) (msec);
+        return (msec != 0) ? (divident * GameTimerTask.MSEC_PER_TICK) / (float) (msec) : 0;
     }
 
     public void incAccumulation(float step) {
@@ -85,7 +137,8 @@ public class TextModel extends Model {
     */
     public void setTextAlpha(int alpha) {
         if (alpha < 0 || alpha > 255) return;
-        paint.setAlpha(alpha);
+//        paint.setAlpha(alpha);
+        this.alpha = alpha;
     }
 
     public void offsetTextSize(float dSize) {
@@ -103,7 +156,7 @@ public class TextModel extends Model {
         this.value = value;
     }
 
-    public void addValue(int value) {
+    public void offsetValue(int value) {
         this.value += value;
     }
 
@@ -127,38 +180,13 @@ public class TextModel extends Model {
         return step;
     }
 
-
-//    public static void onPointsIncAnimate(long gameTime) {
-//        TextModel pointsInc = IndicatorsManager.PointsInc;
-//        if (pointsInc.isVisible()) {
-//            if (gameTime - pointsInc.getStartTime() >= pointsInc.getMsec()) {
-//                pointsInc.setVisible(false);
-//            } else {
-//                pointsInc.incAccumulation(pointsInc.getStep().x);
-//                pointsInc.setTextAlpha((int)pointsInc.getAccumulation());
-//            }
-//        }
-//    }
-//
-//    public static void onDegreeIncAnimate(long gameTime) {
-//        TextModel degreeInc = IndicatorsManager.DegreeInc;
-//        if (degreeInc.isVisible()) {
-//            if (gameTime - degreeInc.getStartTime() >= degreeInc.getMsec()) {
-//                degreeInc.setVisible(false);
-//            } else {
-//                degreeInc.incAccumulation(degreeInc.getStep().x);
-//                degreeInc.setTextAlpha((int) degreeInc.getAccumulation());
-//            }
-//        }
-//    }
-
     public void onAnimate(long gameTime) {
         if (isVisible) {
             if (gameTime - startTime >= msec) {
                 setVisible(false);
             } else {
                 incAccumulation(step.x);
-                setTextAlpha((int) accumulation);
+                setTextAlpha((int)accumulation);
             }
         }
     }

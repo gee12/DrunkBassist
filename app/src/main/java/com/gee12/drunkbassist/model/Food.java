@@ -2,9 +2,9 @@ package com.gee12.drunkbassist.model;
 
 import android.graphics.Bitmap;
 
+import com.gee12.drunkbassist.Utils;
+import com.gee12.drunkbassist.game.GameTimerTask;
 import com.gee12.drunkbassist.mng.ModelsManager;
-
-import java.util.Random;
 
 /**
  * Created by Иван on 19.02.2015.
@@ -13,7 +13,7 @@ public class Food extends BitmapModel {
 
     public final static int BETWEEN_DELAY_MAX_MSEC = 10000;
     public final static int BETWEEN_DELAY_MIN_MSEC = 5000;
-    public final static float SCALE_KOEF = 0.7f;
+    public final static float SCALE_KOEF = 0.7f * GameTimerTask.MSEC_PER_TICK;
 
     private static int delayBetweenFoods;
     private static long delayBetweenFoodStartTime;
@@ -69,7 +69,7 @@ public class Food extends BitmapModel {
     public static void setRandomDelayBetweenFoods() {
         int interval = Food.BETWEEN_DELAY_MAX_MSEC - Food.BETWEEN_DELAY_MIN_MSEC;
         delayBetweenFoods = (interval > 0)
-                ? new Random().nextInt(interval) + Food.BETWEEN_DELAY_MIN_MSEC
+                ? Utils.Random.nextInt(interval) + Food.BETWEEN_DELAY_MIN_MSEC
                 : Food.BETWEEN_DELAY_MIN_MSEC;
     }
 

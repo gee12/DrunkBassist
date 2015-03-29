@@ -2,6 +2,7 @@ package com.gee12.drunkbassist.game;
 
 import android.os.Handler;
 
+import com.gee12.drunkbassist.Utils;
 import com.gee12.drunkbassist.activity.MainActivity;
 import com.gee12.drunkbassist.mng.IndicatorsManager;
 import com.gee12.drunkbassist.mng.ModelsManager;
@@ -11,7 +12,6 @@ import com.gee12.drunkbassist.model.Hero;
 import com.gee12.drunkbassist.model.SceneMask;
 import com.gee12.drunkbassist.sound.TimerSound;
 
-import java.util.Random;
 import java.util.TimerTask;
 
 /**
@@ -19,9 +19,12 @@ import java.util.TimerTask;
  */
 public class GameTimerTask extends TimerTask {
 
-    public final static int DELAY_BEFORE_FINISH = 2000;
-    public final static int RANDOM_SOUND_DELAY_MIN = 5000;
-    public final static int RANDOM_SOUND_DELAY_MAX = 15000;
+    public static final int TICKS_PER_SECOND = 40;
+    public static final int MSEC_PER_TICK = 1000 / TICKS_PER_SECOND;
+
+    public static final int DELAY_BEFORE_FINISH = 2000;
+    public static final int RANDOM_SOUND_DELAY_MIN = 10000;
+    public static final int RANDOM_SOUND_DELAY_MAX = 15000;
 
 
     private boolean isRunning;
@@ -30,11 +33,12 @@ public class GameTimerTask extends TimerTask {
     private long tempTime;
     private int viewWidth;
     private Handler handler;
-    private int lastDegreeRound = 0;
+    private int lastDegree = 0;
+    private boolean isHeroFalled = false;
 
-//    long seconds = 0;
-//    long fps = 0;
-//    long old_fps = 0;
+    long seconds = 0;
+    long fps = 0;
+    long old_fps = 0;
 
     public GameTimerTask(GameListener listener) {
         this.gameListener = listener;
@@ -49,9 +53,8 @@ public class GameTimerTask extends TimerTask {
 
     @Override
     public void run() {
-        if (MainActivity.getInstance() == null) return;
-
-        if (!isRunning || !ModelsManager.isLoaded()) return;
+        if (MainActivity.getInstance() == null || !isRunning
+                || !ModelsManager.isLoaded()) return;
 
 //        long temp = System.currentTimeMillis() / 1000;
 //        if (temp > seconds) {
@@ -66,73 +69,64 @@ public class GameTimerTask extends TimerTask {
         final long gameTime = System.currentTimeMillis() - pauseTime;
 
         //
-        ModelsManager.Hero.randomHeroOffset();
+        ModelsManager.Hero.randomOffset();
         ModelsManager.Hero.onTouchOffset();
         onHeroPositionStatus();
 //        ModelsManager.Hero.onHeroStand();
-        onRandomSounds(gameTime, pauseTime);
+        onHeroDrunkStage(gameTime);
+        ModelsManager.Hero.onEyes();
 
-//        IndicatorsManager.PointsInc.onAnimate(gameTime);
-//        IndicatorsManager.DegreeInc.onAnimate(gameTime);
+        IndicatorsManager.PointsInc.onAnimate(gameTime);
+        IndicatorsManager.DegreeInc.onAnimate(gameTime);
 
-        MainActivity.getInstance().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+//        MainActivity.getInstance().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
                 // animation
                 ModelsManager.getCurDrink().onAnimate(gameTime, pauseTime);
                 ModelsManager.getCurFood().onAnimate(gameTime, pauseTime);
 
-                ModelsManager.Hero.onHeroDrinking(pauseTime);
-                ModelsManager.Hero.onHeroEating(pauseTime);
-            }
-        });
+                ModelsManager.Hero.onDrinking(pauseTime);
+                ModelsManager.Hero.onEating(pauseTime);
+//            }
+//        });
     }
 
     public void onHeroPositionStatus() {
-        SceneMask.PositionStatus status = ModelsManager.Mask.getHitStatus(ModelsManager.Hero.getAbsPivotPoint());
-        switch(status) {
-            case ON_SCENE:
-                ModelsManager.Hero.heroOnScene();
-                break;
+        if (!isHeroFalled && ModelsManager.Hero.onPositionStatus(viewWidth) == SceneMask.PositionStatus.OUT_FROM_SCENE) {
+            isHeroFalled = true;
 
-            case AT_THE_EDGE:
-                ModelsManager.Hero.heroAtTheEdge(viewWidth);
-                break;
+            // sound
+            SoundManager.DownSound.play();
+            SoundManager.SnoreSound.play();
+            // finish game after delay
+            handler.postDelayed(finishGame, DELAY_BEFORE_FINISH);
+        }
 
-            case OUT_FROM_SCENE:
-                ModelsManager.Hero.heroOutOfScene(viewWidth);
-                ModelsManager.onBassFly(viewWidth);
-                // finish game after delay
-                handler.postDelayed(finishGame, DELAY_BEFORE_FINISH);
-
-                break;
+        if (isHeroFalled) {
+            ModelsManager.onBassFly(viewWidth);
         }
     }
 
-    public void onRandomSounds(long gameTime, long pauseTime) {
+    public void onHeroDrunkStage(long gameTime) {
         int degree = IndicatorsManager.Degree.getValue();
-        int degreeRound = (int)(degree / 10) * 10;
-
-        if (degreeRound != lastDegreeRound) {
-
-            if (degreeRound >= 200) {
-                ModelsManager.Hero.setLegsCrossed(13);
+        if (degree != lastDegree) {
+            if (degree >= 300) {
+                ModelsManager.Hero.onNextDrunkStage(Hero.DrunkStages.DRUNK4);
                 SoundManager.IiiSound.setNeedToPlay(true);
-            } else if (degreeRound >= 150) {
-                ModelsManager.Hero.onSetHeadFrame(Hero.HeadFrames.HEAD4);
-                ModelsManager.Hero.setLegsCrossed(10);
+            } else if (degree >= 200) {
+                ModelsManager.Hero.onNextDrunkStage(Hero.DrunkStages.DRUNK3);
                 SoundManager.HicSound.setNeedToPlay(true);
-            } else if (degreeRound >= 100) {
-                ModelsManager.Hero.onSetHeadFrame(Hero.HeadFrames.HEAD3);
-                ModelsManager.Hero.setLegsCrossed(7);
+            } else if (degree >= 100) {
+                ModelsManager.Hero.onNextDrunkStage(Hero.DrunkStages.DRUNK2);
                 SoundManager.BunchSound.setNeedToPlay(true);
-            } else if (degreeRound >= 50) {
-                ModelsManager.Hero.onSetHeadFrame(Hero.HeadFrames.HEAD2);
-                ModelsManager.Hero.setLegsCrossed(4);
+            } else if (degree >= 50) {
+                ModelsManager.Hero.onNextDrunkStage(Hero.DrunkStages.DRUNK1);
                 SoundManager.BurpSound.setNeedToPlay(true);
             } else {
-                ModelsManager.Hero.onSetHeadFrame(Hero.HeadFrames.HEAD1);
+                ModelsManager.Hero.onNextDrunkStage(Hero.DrunkStages.DRUNK0);
             }
+            lastDegree = degree;
         }
 
         onPlayTimerSound(SoundManager.BurpSound, gameTime);
@@ -140,13 +134,12 @@ public class GameTimerTask extends TimerTask {
         onPlayTimerSound(SoundManager.HicSound, gameTime);
         onPlayTimerSound(SoundManager.IiiSound, gameTime);
 
-        lastDegreeRound = degreeRound;
     }
 
     private void onPlayTimerSound(TimerSound timerSound, long gameTime) {
         if (timerSound.onPlay(gameTime)) {
             // and play after random delay every time
-            int msec = new Random().nextInt(RANDOM_SOUND_DELAY_MAX - RANDOM_SOUND_DELAY_MIN) + RANDOM_SOUND_DELAY_MIN;
+            int msec = Utils.Random.nextInt(RANDOM_SOUND_DELAY_MAX - RANDOM_SOUND_DELAY_MIN) + RANDOM_SOUND_DELAY_MIN;
             timerSound.setTimer(msec, pauseTime);
         }
     }

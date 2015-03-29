@@ -6,10 +6,9 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import com.gee12.drunkbassist.Utils;
 import com.gee12.drunkbassist.struct.DimensionF;
 import com.gee12.drunkbassist.struct.MyMatrix;
-
-import java.util.Random;
 
 /**
  * Created by Иван on 19.02.2015.
@@ -59,26 +58,17 @@ public class BitmapModel extends Model {
         this.isVisible = true;
         this.paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
         this.msec = msec;
     }
 
     /////////////////////////////////////////////////////////////////////////
     //
 
+    @Override
     public void drawModel(Canvas canvas) {
         if (canvas == null || !isVisible) return;
-        canvas.drawBitmap(bitmap, matrix.createMatrix(), paint);
-
-    }
-
-    public boolean isSamePositions(BitmapModel other, float exp) {
-        return (Math.abs(this.getPosition().x - other.getPosition().x) < exp
-                && Math.abs(this.getPosition().y - other.getPosition().y) < exp);
-    }
-
-    public boolean isSameCentres(BitmapModel other, float exp) {
-        return (Math.abs(this.centerF.x - other.getCenter().x) < exp
-                && Math.abs(this.centerF.y - other.getCenter().y) < exp);
+        canvas.drawBitmap(bitmap, matrix.buildMatrix(), paint);
     }
 
     public static boolean isNearPositions(PointF pos1, PointF pos2, float exp) {
@@ -86,15 +76,18 @@ public class BitmapModel extends Model {
                 && Math.abs(pos1.y - pos2.y) < exp);
     }
 
+    /**
+     *
+     * @param mask
+     */
     public void setRandomPositionInScene(SceneMask mask) {
         if (mask == null) return;
 
         RectF maskRect = mask.getMatrix().getDestRect();
-        Random rand = new Random();
         do {
             PointF newPos = new PointF(
-                    rand.nextFloat() * maskRect.width() + maskRect.left,
-                    rand.nextFloat() * maskRect.height() + maskRect.top
+                    Utils.Random.nextFloat() * maskRect.width() + maskRect.left,
+                    Utils.Random.nextFloat() * maskRect.height() + maskRect.top
             );
             setPosition(newPos);
         } while (mask.getHitStatus(centerF) != SceneMask.PositionStatus.ON_SCENE);
@@ -112,16 +105,11 @@ public class BitmapModel extends Model {
     // reset
 
     public void resetCenter() {
-//        centerF = new PointF(matrix.destRect.centerX(), matrix.destRect.centerY());
         centerF.set(matrix.destRect.centerX(), matrix.destRect.centerY());
     }
 
     public void resetDestDimension() {
         matrix.setDestRectDimension(getSrcDimension());
-    }
-
-    public DimensionF getSrcDimension() {
-        return new DimensionF(bitmap.getWidth(), bitmap.getHeight());
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -161,6 +149,10 @@ public class BitmapModel extends Model {
         matrix.setTransStep(step);
     }
 
+    /**
+     *
+     * @param koef
+     */
     public void setScaleStepFromMsec(float koef) {
         DimensionF srcDim = getSrcDimension();
         float dx = srcDim.width / (float)(msec) * koef;
@@ -184,7 +176,7 @@ public class BitmapModel extends Model {
         matrix.setSkew(dx, dy);
     }
 
-    /*
+    /**
     * Offset model with center position
     */
     public void makeCenterScale() {
@@ -194,6 +186,10 @@ public class BitmapModel extends Model {
 
     /////////////////////////////////////////////////////////////////////////
     // get
+
+    public DimensionF getSrcDimension() {
+        return new DimensionF(bitmap.getWidth(), bitmap.getHeight());
+    }
 
     public PointF getPivotPoint() {
         return matrix.getPivot();

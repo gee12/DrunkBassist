@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 
 import com.gee12.drunkbassist.R;
+import com.gee12.drunkbassist.Utils;
+import com.gee12.drunkbassist.game.GameTimerTask;
 import com.gee12.drunkbassist.model.BitmapModel;
 import com.gee12.drunkbassist.model.Drink;
 import com.gee12.drunkbassist.model.Food;
@@ -14,7 +16,6 @@ import com.gee12.drunkbassist.model.SceneMask;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Иван on 19.02.2015.
@@ -33,8 +34,6 @@ public class ModelsManager {
     public static boolean isBassFlyStarted;
 
     public static void load(Resources res, int viewWidth, int viewHeight, float density) {
-        if (res == null || viewWidth == 0 || viewHeight == 0) return;
-
         // HERO
         Bitmap heroBitmap = decodeBitmap(res, R.drawable.hero);
         PointF heroPos = new PointF(viewWidth/2 - heroBitmap.getWidth()/2 * density,
@@ -48,7 +47,6 @@ public class ModelsManager {
         // SCENE, MASK
         Mask = new SceneMask(decodeBitmap(res, R.drawable.mask), viewWidth, viewHeight);
         Scene = new BitmapModel(decodeBitmap(res, R.drawable.scene), viewWidth, viewHeight);
-//        Scene = new BitmapModel(Mask.getBitmap(), viewWidth, viewHeight);
 
         // DRINKS
         Drinks = new ArrayList<>();
@@ -72,7 +70,7 @@ public class ModelsManager {
         // BASS
         Bitmap bassBitmap = decodeBitmap(res, R.drawable.bass);
         Bass = new BitmapModel(bassBitmap);
-        Bass.setPivotPoint(bassBitmap.getWidth()/2, bassBitmap.getHeight()/2);
+        Bass.setPivotPoint(bassBitmap.getWidth()*0.5f, bassBitmap.getHeight()*0.5f);
         Bass.setVisible(false);
         isBassFlyStarted = false;
 
@@ -95,7 +93,7 @@ public class ModelsManager {
 
 
     public static void nextRandomDrink(long pauseTime) {
-        curDrinkIndex = new Random().nextInt(Drinks.size());
+        curDrinkIndex = Utils.Random.nextInt(Drinks.size());
         getCurDrink().resetFood(pauseTime);
 
         // sound
@@ -103,7 +101,7 @@ public class ModelsManager {
     }
 
     public static void nextRandomFood(long pauseTime) {
-        curFoodIndex = new Random().nextInt(Foods.size());
+        curFoodIndex = Utils.Random.nextInt(Foods.size());
         getCurFood().resetFood(pauseTime);
 
         // sound
@@ -127,12 +125,12 @@ public class ModelsManager {
             // rotate
             if (heroPos.x < viewWidth / 2) {
                 Bass.offsetRotate(-Hero.ANGLE_OUT_OF_SCENE);
-                Bass.setRotateStep(1);
-                Bass.setTransStep(new PointF(1, 0));
+                Bass.setRotateStep(GameTimerTask.MSEC_PER_TICK);
+                Bass.setTransStep(new PointF(0.5f * GameTimerTask.MSEC_PER_TICK, 0));
             } else {
                 Bass.offsetRotate(Hero.ANGLE_OUT_OF_SCENE);
-                Bass.setRotateStep(-1);
-                Bass.setTransStep(new PointF(-1, 0));
+                Bass.setRotateStep(-1 * GameTimerTask.MSEC_PER_TICK);
+                Bass.setTransStep(new PointF(-0.5f * GameTimerTask.MSEC_PER_TICK, 0));
             }
             Bass.setVisible(true);
 

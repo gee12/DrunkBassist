@@ -39,8 +39,8 @@ public class FinishActivity extends Activity {
         record.setPoints(intent.getExtras().getInt(MainActivity.EXTRA_POINTS, 0));
         record.setDegree(intent.getExtras().getInt(MainActivity.EXTRA_DEGREE, 0));
         // set values
-        pointsLabel.setText(String.valueOf(record.getPoints()));
-        degreeLabel.setText(String.valueOf(record.getDegree()));
+        pointsLabel.setText(String.valueOf(record.getPoints()) + " ");
+        degreeLabel.setText(String.valueOf(record.getDegree()) + " ");
 
         if (RecordsManager.isRecord(record.getPoints())) {
             // RECORD !
@@ -49,9 +49,6 @@ public class FinishActivity extends Activity {
 
             nameTextField.setVisibility(View.VISIBLE);
         }
-
-        //
-//        SoundManager.playSound(SoundManager.MenuBackSound);
     }
 
     public String getUserName() {

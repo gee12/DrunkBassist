@@ -10,7 +10,8 @@ import android.view.SurfaceView;
  */
 public class DrawThread extends Thread {
 
-//    static final long FPS = 10;
+    static final long FPS = 10;
+    static final int MS_PER_FRAME = 16; // ~60 fps
 
     private boolean isRunning = false;
     private SurfaceView view;
@@ -23,14 +24,15 @@ public class DrawThread extends Thread {
     @Override
     public void run() {
 //        long ticksPS = 1000 / FPS;
-        long startTime = 0;
-//        long sleepTime;
+        long startTime;
+        long sleepTime;
 //        long seconds = 0;
 //        long fps = 0;
 //        long old_fps = 0;
 
         while (isRunning) {
             Canvas canvas = null;
+            startTime = System.currentTimeMillis();
 
 //            long temp = System.currentTimeMillis() / 1000;
 //            if (temp > seconds) {
@@ -41,7 +43,6 @@ public class DrawThread extends Thread {
 //                fps++;
 //            }
 //            view.text = String.format("%d", old_fps);
-//            startTime = System.currentTimeMillis();
 
             SurfaceHolder holder = view.getHolder();
             try {
@@ -62,6 +63,11 @@ public class DrawThread extends Thread {
 //                else
 //                    sleep(10);
 //            } catch (Exception e) {}
+
+            try {
+                if ((sleepTime = (startTime + MS_PER_FRAME - System.currentTimeMillis())) > 0)
+                    sleep(sleepTime);
+            } catch (InterruptedException e) {}
         }
     }
 

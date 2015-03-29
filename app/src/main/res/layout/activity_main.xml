@@ -28,7 +28,18 @@
         custom:textColor="@color/indicators_color"
         style="@style/MainFontStyle" />
 
-    <com.gee12.drunkbassist.control.AnimTextView
+    <com.gee12.drunkbassist.control.MyTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="АЛК           %"
+        android:id="@+id/label2"
+        android:layout_gravity="right|top"
+        android:textSize="20sp"
+        android:padding="10dp"
+        custom:textColor="@color/indicators_color"
+        style="@style/MainFontStyle" />
+
+    <!--com.gee12.drunkbassist.control.AnimTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
@@ -66,17 +77,6 @@
         style="@style/MainFontStyle" />
 
 
-    <com.gee12.drunkbassist.control.MyTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="АЛК           %"
-        android:id="@+id/label2"
-        android:layout_gravity="right|top"
-        android:textSize="20sp"
-        android:padding="10dp"
-        custom:textColor="@color/indicators_color"
-        style="@style/MainFontStyle" />
-
     <com.gee12.drunkbassist.control.AnimTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
         android:paddingRight="10dp"
         android:paddingTop="35dp"
         custom:textColor="@color/indicators_inc_color"
-        style="@style/MainFontStyle" />
+        style="@style/MainFontStyle" /-->
 
     <com.gee12.drunkbassist.control.MyButton
         android:layout_width="match_parent"

@@ -42,7 +42,7 @@ public class MyMatrix extends Matrix {
         this.pivot = pivot;
     }
 
-    public Matrix createMatrix() {
+    public Matrix buildMatrix() {
         reset();
         setRectToRect(srcRect, destRect, ScaleToFit.FILL);
         preRotate(rotate, pivot.x, pivot.y);

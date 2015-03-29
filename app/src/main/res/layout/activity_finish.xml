@@ -57,7 +57,6 @@
                     android:text="@string/string_points"
                     android:id="@+id/label_points"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
                     android:textSize="60sp"
                     custom:textColor="@color/indicators_inc_color"
                     style="@style/MainFontStyle" />
@@ -100,7 +99,6 @@
                 android:textSize="40sp"
                 custom:textColor="@color/indicators_inc_color"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 style="@style/MainFontStyle" />
 
             <com.gee12.drunkbassist.control.MyTextView

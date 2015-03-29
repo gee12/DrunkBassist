@@ -4,15 +4,19 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.Display;
+
+import java.util.Random;
 
 /**
  * Created by Иван on 12.03.2015.
  */
 public class Utils {
 
+    public static Random Random = new Random();
 
     /**
      *
@@ -63,4 +67,23 @@ public class Utils {
         }
         return "";
     }
+
+    /**
+     *
+     * @param context
+     * @param asset
+     * @param style
+     * @return
+     */
+    public static Typeface getTypeface(Context context, String asset, int style) {
+        Typeface tf = null;
+        try {
+            tf = Typeface.createFromAsset(context.getAssets(), asset);
+        } catch (Exception e) {
+            tf = Typeface.DEFAULT;
+        } finally {
+            return Typeface.create(tf, style);
+        }
+    }
+
 }

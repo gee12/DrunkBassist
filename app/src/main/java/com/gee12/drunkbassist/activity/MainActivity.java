@@ -39,8 +39,9 @@ import java.util.Timer;
  */
 public class MainActivity extends Activity implements SensorEventListener, GameListener {
 
-    public final static String EXTRA_POINTS = "com.gee12.drunkbassist.POINTS";
-    public final static String EXTRA_DEGREE = "com.gee12.drunkbassist.DEGREE";
+    public static final String EXTRA_POINTS = "com.gee12.drunkbassist.POINTS";
+    public static final String EXTRA_DEGREE = "com.gee12.drunkbassist.DEGREE";
+    public static final float KEYBOARD_MOVE_STEP = 10f;
 
     private static Activity instance;
     public static Activity getInstance() {
@@ -82,15 +83,16 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
 
                 // load and init models
                 ModelsManager.load(getResources(), drawView.getWidth(), drawView.getHeight(), metrics.density);
-                IndicatorsManager.load(getBaseContext(), findViewById(R.id.main_layout));
+                IndicatorsManager.load(getBaseContext(), /*findViewById(R.id.main_layout), */
+                        drawView.getWidth(), drawView.getHeight(), metrics.density);
 
                 SoundManager.reinitTimerSounds();
 
                 //
                 mTimer = new Timer();
                 mGameTimerTask = new GameTimerTask(MainActivity.this);
-                // start delay 0 ms and repeat even 1 ms
-                mTimer.schedule(mGameTimerTask, 0, 1);
+                // start delay 0 ms and repeat even MSEC_PER_TICK ms
+                mTimer.schedule(mGameTimerTask, 0, GameTimerTask.MSEC_PER_TICK);
             }
         });
 
@@ -163,19 +165,16 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
         float dAccX = oldAccX - accX;
         float dAccY = oldAccY - accY;
         //
-        ModelsManager.Hero.setHeroOffset(-dAccY, -dAccX);
+        ModelsManager.Hero.setOffset(-dAccY, -dAccX);
         ModelsManager.Hero.setSkew(dAccY / 15.0f, 0);
     }
-
-    public static final float STEP = 10f;
-
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         int keyCode = event.getKeyCode();
-        float dy = (keyCode == KeyEvent.KEYCODE_W) ? -STEP : (keyCode == KeyEvent.KEYCODE_S) ? STEP : 0;
-        float dx = (keyCode == KeyEvent.KEYCODE_A) ? -STEP : (keyCode == KeyEvent.KEYCODE_D) ? STEP : 0;
-        ModelsManager.Hero.setHeroOffset(dx, dy);
+        float dy = (keyCode == KeyEvent.KEYCODE_W) ? -KEYBOARD_MOVE_STEP : (keyCode == KeyEvent.KEYCODE_S) ? KEYBOARD_MOVE_STEP : 0;
+        float dx = (keyCode == KeyEvent.KEYCODE_A) ? -KEYBOARD_MOVE_STEP : (keyCode == KeyEvent.KEYCODE_D) ? KEYBOARD_MOVE_STEP : 0;
+        ModelsManager.Hero.setOffset(dx, dy);
         return super.dispatchKeyEvent(event);
     }
 

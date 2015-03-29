@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.gee12.drunkbassist.mng.IndicatorsManager;
 import com.gee12.drunkbassist.mng.ModelsManager;
 
 
@@ -65,6 +66,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         ModelsManager.Hero.drawModel(canvas);
         // bass
         ModelsManager.Bass.drawModel(canvas);
+        // indicators
+        IndicatorsManager.Points.drawModel(canvas);
+        IndicatorsManager.Bonus.drawModel(canvas);
+        IndicatorsManager.PointsInc.drawModel(canvas);
+        IndicatorsManager.Degree.drawModel(canvas);
+        IndicatorsManager.DegreeInc.drawModel(canvas);
 
 //        Paint p = new Paint();
 //        p.setStyle(Paint.Style.FILL);

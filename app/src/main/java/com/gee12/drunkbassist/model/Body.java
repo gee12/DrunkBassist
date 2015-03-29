@@ -2,7 +2,9 @@ package com.gee12.drunkbassist.model;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
 
 import com.gee12.drunkbassist.struct.DimensionF;
 
@@ -45,10 +47,10 @@ public class Body extends BitmapModel {
 
     private void init() {
         this.limbs = new ArrayList<>();
-//        DimensionF destDim = getDestDimension();
-//        split = Bitmap.createBitmap((int)destDim.width, (int)destDim.height,
-//                Bitmap.Config.ARGB_8888);
-//        bodyCanvas = new Canvas(split);
+        DimensionF destDim = getDestDimension();
+        split = Bitmap.createBitmap((int)destDim.width, (int)destDim.height,
+                Bitmap.Config.ARGB_8888);
+        bodyCanvas = new Canvas(split);
     }
 
     public void addLimb(FrameLimb limb) {
@@ -58,16 +60,14 @@ public class Body extends BitmapModel {
     public void drawModel(Canvas canvas) {
         if (canvas == null || !isVisible) return;
 
-        DimensionF destDim = getDestDimension();
-        split = Bitmap.createBitmap((int)destDim.width, (int)destDim.height,
-                Bitmap.Config.ARGB_8888);
-        bodyCanvas = new Canvas(split);
+        bodyCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        // Mode.MULTIPLY
 
         for(FrameLimb limb : limbs) {
             limb.drawModel(bodyCanvas);
         }
 
-        canvas.drawBitmap(split, matrix.createMatrix(), paint);
+        canvas.drawBitmap(split, matrix.buildMatrix(), paint);
     }
 
 }
