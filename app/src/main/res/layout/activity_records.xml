@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
     
     <ImageView
         android:layout_width="match_parent"
@@ -25,41 +24,35 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp">
 
-                <com.gee12.drunkbassist.control.AnimTextView
+                <com.gee12.drunkbassist.control.TextViewIndicator
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:text="@string/header_name"
-                    android:textSize="25sp"
                     android:gravity="center_horizontal"
                     android:textStyle="bold|italic"
-                    custom:textColor="@color/text_color"
                     style="@style/MainFontStyle" />
 
-                <com.gee12.drunkbassist.control.AnimTextView
+                <com.gee12.drunkbassist.control.TextViewIndicator
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/header_points"
-                    android:textSize="25sp"
                     android:id="@+id/textView"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:minWidth="50dp"
                     android:textStyle="bold|italic"
-                    custom:textColor="@color/text_color"
                     style="@style/MainFontStyle" />
 
-                <com.gee12.drunkbassist.control.AnimTextView
+                <com.gee12.drunkbassist.control.TextViewIndicator
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/header_degree"
-                    android:textSize="25sp"
                     android:id="@+id/textView2"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:minWidth="50dp"
                     android:textStyle="bold|italic"
-                    custom:textColor="@color/text_color"
                     style="@style/MainFontStyle" />
             </TableRow>
 
@@ -68,6 +61,17 @@
                 <View android:layout_width="match_parent"
                     android:layout_height="2dp" />
             </TableRow>
+
+            <include layout="@layout/tablerow_record"/>
+            <include layout="@layout/tablerow_record"/>
+            <include layout="@layout/tablerow_record"/>
+            <include layout="@layout/tablerow_record"/>
+            <include layout="@layout/tablerow_record"/>
+            <include layout="@layout/tablerow_record"/>
+            <include layout="@layout/tablerow_record"/>
+            <include layout="@layout/tablerow_record"/>
+            <include layout="@layout/tablerow_record"/>
+            <include layout="@layout/tablerow_record"/>
 
         </TableLayout>
 

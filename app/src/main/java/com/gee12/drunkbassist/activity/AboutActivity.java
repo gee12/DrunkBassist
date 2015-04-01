@@ -18,12 +18,29 @@ public class AboutActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        if (Utils.SDK_VERSION >= Build.VERSION_CODES.HONEYCOMB)
+//            // Preparing the 2 images to be split
+//            SplitAnimation.prepareAnimation(this);
+
         setContentView(R.layout.activity_about);
+
+//        if (Utils.SDK_VERSION >= Build.VERSION_CODES.HONEYCOMB)
+//            // Animating the items to be open, revealing the new activity
+//            SplitAnimation.animate(this, 2000);
 
         TextView versionLabel = (TextView)findViewById(R.id.label_version);
         versionLabel.setText(getString(R.string.version) + Utils.getAppVersionName() + " ");
+
     }
 
+    @Override
+    protected void onStop() {
+        // If we're currently running the entrance animation - cancel it
+//        SplitAnimation.cancel();
+
+        super.onStop();
+    }
     @Override
     public void onBackPressed(){
         super.onBackPressed();

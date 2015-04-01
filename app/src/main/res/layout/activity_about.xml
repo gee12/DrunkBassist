@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
     
     <ImageView
         android:layout_width="match_parent"
@@ -27,14 +26,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <com.gee12.drunkbassist.control.MyTextView
+                <com.gee12.drunkbassist.control.TextViewOutline
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
                     android:id="@+id/label_about_us2"
                     style="@style/ExtFontStyle" />
 
-                <com.gee12.drunkbassist.control.MyTextView
+                <com.gee12.drunkbassist.control.TextViewOutline
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/version"
@@ -42,7 +41,7 @@
                     style="@style/ExtFontStyle" />
             </LinearLayout>
 
-            <com.gee12.drunkbassist.control.MyTextView
+            <com.gee12.drunkbassist.control.TextViewOutline
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/about_us_full"
@@ -54,23 +53,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <com.gee12.drunkbassist.control.MyTextView
+                <com.gee12.drunkbassist.control.TextViewOutline
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/github"
                     android:id="@+id/label_github"
+                    android:text="@string/github"
                     style="@style/ExtFontStyle" />
 
-                <com.gee12.drunkbassist.control.MyTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/github_link"
                     android:id="@+id/label_github_link"
+                    android:text="@string/github_link"
                     android:autoLink="web"
-                    android:textSize="@dimen/ext_text_size"
-                    android:textStyle="bold|italic"
-                    custom:customFont="@string/ext_font_name"
-                    android:textColorLink="#0000FF" />
+                    android:textColorLink="#0000FF"
+                    style="@style/ExtFontStyle" />
              </LinearLayout>
 
         <TextView android:layout_width="match_parent"
@@ -83,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <com.gee12.drunkbassist.control.MyTextView
+            <com.gee12.drunkbassist.control.TextViewOutline
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/thanks"
@@ -95,13 +92,14 @@
                 style="@style/MainFontStyle" />
             </LinearLayout>
 
-            <com.gee12.drunkbassist.control.MyTextView
+            <com.gee12.drunkbassist.control.TextViewOutline
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/thanks_full"
                 android:id="@+id/label_thanks1"
                 android:gravity="center_horizontal"
                 android:paddingTop="5dp"
+                android:paddingBottom="7dp"
                 style="@style/ExtFontStyle" />
 
             <TextView android:layout_width="match_parent"
@@ -145,15 +143,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/assess_text"
-                android:layout_gravity="center_horizontal"
                 android:onClick="onClickMarkButton"
-                android:textSize="20sp"
-                android:textStyle="bold|italic"
                 android:layout_marginTop="15dp"
-                android:padding="15dp"
-                android:background="@color/buttons_color"
-                custom:textColor="@color/text_color"
-                style="@style/MainFontStyle"/>
+                style="@style/ButtonStyle"/>
 
     </LinearLayout>
     </ScrollView>

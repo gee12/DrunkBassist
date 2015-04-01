@@ -11,6 +11,8 @@ import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Build;
 
+import com.gee12.drunkbassist.Utils;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -25,7 +27,7 @@ public class SoundUtility {
      * @return
      */
     public static SoundPool createSoundPool(int maxStreams) {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        return (Utils.SDK_VERSION >= Build.VERSION_CODES.LOLLIPOP)
                 ? createNewSoundPool() : createOldSoundPool(maxStreams);
     }
 

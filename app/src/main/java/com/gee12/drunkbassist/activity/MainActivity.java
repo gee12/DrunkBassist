@@ -83,8 +83,8 @@ public class MainActivity extends Activity implements SensorEventListener, GameL
 
                 // load and init models
                 ModelsManager.load(getResources(), drawView.getWidth(), drawView.getHeight(), metrics.density);
-                IndicatorsManager.load(getBaseContext(), /*findViewById(R.id.main_layout), */
-                        drawView.getWidth(), drawView.getHeight(), metrics.density);
+                IndicatorsManager.load(getBaseContext(), findViewById(R.id.main_layout)/*,
+                        drawView.getWidth(), drawView.getHeight(), metrics.density*/);
 
                 SoundManager.reinitTimerSounds();
 

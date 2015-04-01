@@ -10,27 +10,27 @@ import android.view.animation.Animation;
 /**
  * Created by Иван on 12.03.2015.
  */
-public class AnimTextView extends MyTextView implements Animation.AnimationListener {
+public class TextViewIndicator extends TextViewOutline implements Animation.AnimationListener {
 
     protected int value;
     protected String format;
     protected Animation animation;
 
-    public AnimTextView(Context context) {
+    public TextViewIndicator(Context context) {
         super(context);
     }
 
-    public AnimTextView(Context context, AttributeSet attrs) {
+    public TextViewIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public AnimTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TextViewIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressWarnings("deprecation")
-    public AnimTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public TextViewIndicator(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

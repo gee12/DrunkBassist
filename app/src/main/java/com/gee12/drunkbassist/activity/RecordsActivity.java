@@ -2,10 +2,7 @@ package com.gee12.drunkbassist.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TableLayout;
@@ -13,7 +10,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.gee12.drunkbassist.R;
-import com.gee12.drunkbassist.control.MyTextView;
 import com.gee12.drunkbassist.mng.RecordsManager;
 import com.gee12.drunkbassist.struct.Record;
 
@@ -32,43 +28,46 @@ public class RecordsActivity extends Activity {
         setContentView(R.layout.activity_records);
 
         tableLayout = (TableLayout) findViewById(R.id.table_records);
-        Resources res = getResources();
 
-        Typeface tf = MyTextView.getCustomFont(getBaseContext(), getString(R.string.ext_font_name));
-        int textSize = (int)res.getDimension(R.dimen.ext_text_size);
+//        Typeface tf = Utils.getTypeface(getBaseContext(), getString(R.string.ext_font_name), Typeface.BOLD_ITALIC);
 
         int i = 1;
         for(Record rec : RecordsManager.getRecords()) {
-            addRow(rec, i++, res, textSize, tf);
+//            addRow(rec, i++, tf);
+            setRowText(rec, i++);
         }
     }
 
-    protected void addRow(Record rec, int num, Resources res, int textSize, Typeface tf) {
-        TableRow tr = new TableRow(this);
-        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-        tr.addView(createTextView(String.format("%d  %s", num, rec.getName()), res, Gravity.LEFT, 5, textSize, tf));
-        tr.addView(createTextView(String.valueOf(rec.getPoints()), res, Gravity.CENTER_HORIZONTAL, 1, textSize, tf));
-        tr.addView(createTextView(String.valueOf(rec.getDegree()), res, Gravity.CENTER_HORIZONTAL, 1, textSize, tf));
-
-        tableLayout.addView(tr);
+    protected void setRowText(Record rec, int num) {
+        TableRow row = (TableRow)tableLayout.getChildAt(num + 1);
+        ((TextView)row.getChildAt(0)).setText(String.format("%d  %s", num, rec.getName()));
+        ((TextView)row.getChildAt(1)).setText(String.valueOf(rec.getPoints()));
+        ((TextView)row.getChildAt(2)).setText(String.valueOf(rec.getDegree()));
     }
 
-    private TextView createTextView(String text, Resources res, int gravity, int weight, int textSize, Typeface tf) {
-//        MyTextView view = new MyTextView(this, null, R.style.ExtFontStyle);
-//        view.setTextAppearance(getBaseContext(), R.style.ExtFontStyle);
-        MyTextView view = new MyTextView(this);
-        view.setText(String.valueOf(text));
-        view.setTextSize(textSize);
-        view.setGravity(gravity);
-        view.setMinWidth(COL_MIN_WIDTH);
-        view.setCustomTextColor(res.getColor(R.color.text_color));
-        view.setStrokeColor(res.getColor(R.color.text_stroke_color));
-        view.setStrokeWidth(2);
-        view.setTypeface(tf, Typeface.BOLD_ITALIC);
-        view.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, weight));
-        return view;
-    }
+//    protected void addRow(Record rec, int num, Typeface tf) {
+//        TableRow tr = new TableRow(this);
+//        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+//
+//        tr.addView(createTextView(0, String.format("%d  %s", num, rec.getName()), Gravity.LEFT, 5, tf));
+//        tr.addView(createTextView(1, String.valueOf(rec.getPoints()), Gravity.CENTER_HORIZONTAL, 1, tf));
+//        tr.addView(createTextView(2, String.valueOf(rec.getDegree()), Gravity.CENTER_HORIZONTAL, 1, tf));
+//
+//        tableLayout.addView(tr);
+//    }
+
+//    private TextView createTextView(int col, String text, int gravity, int weight, Typeface tf) {
+//        TextViewOutline view = new TextViewOutline(new ContextThemeWrapper(this, R.style.ExtFontStyle), null, 0);
+//        if (col == 1) {
+//            view.setTextSize(view.getTextSize() + 5);
+//        }
+//        view.setText(String.valueOf(text));
+//        view.setGravity(gravity);
+//        view.setMinWidth(COL_MIN_WIDTH);
+//        view.setTypeface(tf, Typeface.BOLD_ITALIC);
+//        view.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, weight));
+//        return view;
+//    }
 
 
     @Override

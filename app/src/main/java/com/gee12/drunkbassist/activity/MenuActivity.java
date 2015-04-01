@@ -138,6 +138,9 @@ public class MenuActivity extends Activity {
     private void toAboutActivity() {
         Intent aboutIntent = new Intent(this, AboutActivity.class);
         aboutIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        if (Utils.SDK_VERSION >= Build.VERSION_CODES.HONEYCOMB)
+//            SplitAnimation.startActivity(this, new Intent(this, AboutActivity.class));
+//        else startActivity(aboutIntent);
         startActivity(aboutIntent);
     }
 }

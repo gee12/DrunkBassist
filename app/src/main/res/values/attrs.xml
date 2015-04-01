@@ -10,7 +10,8 @@
     </declare-styleable>
 
     <declare-styleable name="MyFont">
-        <attr name="textColor" format="color" />
+        <attr name="android:textStyle" />
+        <attr name="underline" format="boolean" />
         <attr name="strokeColor" format="color" />
         <attr name="strokeWidth" format="float" />
         <attr name="customFont" format="string" />

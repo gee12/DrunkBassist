@@ -23,21 +23,35 @@
 
     <style name="ButtonBarButton" />
 
-    <style name="MainFontStyle">
-        <item name="android:textStyle">bold</item>
+    <style name="ButtonStyle">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
         <item name="strokeColor">@color/text_stroke_color</item>
-        <item name="strokeWidth">2</item>
+        <item name="strokeWidth">4</item>
+        <item name="android:textStyle">bold|italic</item>
         <item name="customFont">@string/main_font_name</item>
-        <item name="textColor">@color/text_color</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:background">@color/buttons_color</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="MainFontStyle">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/main_text_size</item>
+        <item name="strokeColor">@color/text_stroke_color</item>
+        <item name="strokeWidth">4</item>
+        <item name="android:textStyle">bold</item>
+        <item name="customFont">@string/main_font_name</item>
     </style>
 
     <style name="ExtFontStyle">
+        <item name="android:textColor">@color/text_color</item>
         <item name="android:textSize">@dimen/ext_text_size</item>
-        <item name="android:textStyle">bold|italic</item>
         <item name="strokeColor">@color/text_stroke_color</item>
-        <item name="strokeWidth">2</item>
+        <item name="strokeWidth">4</item>
+        <item name="android:textStyle">bold|italic</item>
         <item name="customFont">@string/ext_font_name</item>
-        <item name="textColor">@color/text_color</item>
     </style>
 
 </resources>

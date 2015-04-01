@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
     
     <ImageView
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
         android:orientation="vertical"
         android:padding="25dp">
 
-        <com.gee12.drunkbassist.control.MyTextView
+        <com.gee12.drunkbassist.control.TextViewOutline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/finish_string1"
@@ -31,7 +30,7 @@
             android:layout_gravity="center"
             android:textSize="24sp"
             android:textStyle="bold|italic"
-            custom:textColor="@color/text_color"
+            android:textColor="@color/text_color"
             style="@style/MainFontStyle" />
 
         <LinearLayout
@@ -40,7 +39,7 @@
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal">
 
-                <com.gee12.drunkbassist.control.MyTextView
+                <com.gee12.drunkbassist.control.TextViewOutline
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/finish_string2"
@@ -48,27 +47,27 @@
                     android:layout_gravity="center"
                     android:textSize="24sp"
                     android:textStyle="bold|italic"
-                    custom:textColor="@color/text_color"
+                    android:textColor="@color/text_color"
                     style="@style/MainFontStyle" />
 
-                <com.gee12.drunkbassist.control.MyTextView
+                <com.gee12.drunkbassist.control.TextViewOutline
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/string_points"
                     android:id="@+id/label_points"
                     android:paddingLeft="10dp"
                     android:textSize="60sp"
-                    custom:textColor="@color/indicators_inc_color"
+                    android:textColor="@color/indicators_inc_color"
                     style="@style/MainFontStyle" />
 
-                <com.gee12.drunkbassist.control.MyTextView
+                <com.gee12.drunkbassist.control.TextViewOutline
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/finish_string3"
                     android:id="@+id/label3"
                     android:textSize="24sp"
                     android:textStyle="bold|italic"
-                    custom:textColor="@color/text_color"
+                    android:textColor="@color/text_color"
                     android:layout_gravity="center"
                     style="@style/MainFontStyle" />
         </LinearLayout>
@@ -79,7 +78,7 @@
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal">
 
-            <com.gee12.drunkbassist.control.MyTextView
+            <com.gee12.drunkbassist.control.TextViewOutline
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/finish_string4"
@@ -87,21 +86,21 @@
                 android:layout_gravity="center_vertical|right"
                 android:textSize="24sp"
                 android:textStyle="bold|italic"
-                custom:textColor="@color/text_color"
+                android:textColor="@color/text_color"
                 style="@style/MainFontStyle" />
 
-            <com.gee12.drunkbassist.control.MyTextView
+            <com.gee12.drunkbassist.control.TextViewOutline
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/string_points"
                 android:id="@+id/label_degree"
                 android:layout_gravity="center"
                 android:textSize="40sp"
-                custom:textColor="@color/indicators_inc_color"
+                android:textColor="@color/indicators_inc_color"
                 android:paddingLeft="10dp"
                 style="@style/MainFontStyle" />
 
-            <com.gee12.drunkbassist.control.MyTextView
+            <com.gee12.drunkbassist.control.TextViewOutline
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/finish_string5"
@@ -109,7 +108,7 @@
                 android:layout_gravity="left|center_vertical"
                 android:textSize="24sp"
                 android:textStyle="bold|italic"
-                custom:textColor="@color/text_color"
+                android:textColor="@color/text_color"
                 style="@style/MainFontStyle" />
 
         </LinearLayout>
@@ -136,14 +135,9 @@
                 android:text="@string/replay"
                 android:id="@+id/button_replay"
                 android:onClick="onClickReplayButton"
-                android:textStyle="bold|italic"
-                android:textSize="20dp"
-                android:textColor="@color/text_color"
-                android:background="@color/buttons_color"
                 android:layout_margin="3dp"
-                android:padding="15dp"
                 android:layout_weight="1"
-                style="@style/MainFontStyle" />
+                style="@style/ButtonStyle" />
 
             <com.gee12.drunkbassist.control.MyButton
                 android:layout_width="match_parent"
@@ -151,14 +145,9 @@
                 android:text="@string/menu"
                 android:id="@+id/button_menu"
                 android:onClick="onClickMenuButton"
-                android:textSize="20dp"
-                android:textStyle="bold|italic"
-                android:background="@color/buttons_color"
-                android:textColor="@color/text_color"
                 android:layout_margin="3dp"
-                android:padding="15dp"
                 android:layout_weight="2"
-                style="@style/MainFontStyle" />
+                style="@style/ButtonStyle" />
 
         </LinearLayout>
     </LinearLayout>

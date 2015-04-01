@@ -341,10 +341,10 @@ public class Hero extends Body {
             //
             IndicatorsManager.PointsInc.setValue(pointsInc);
             IndicatorsManager.DegreeInc.setValue(degreeInc);
-            IndicatorsManager.PointsInc.initBeforeDisplay(pointsInc, pauseTime);
-            IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc, pauseTime);
-//            IndicatorsManager.PointsInc.startAnimation();
-//            IndicatorsManager.DegreeInc.startAnimation();
+//            IndicatorsManager.PointsInc.initBeforeDisplay(pointsInc, pauseTime);
+//            IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc, pauseTime);
+            IndicatorsManager.PointsInc.startAnimation();
+            IndicatorsManager.DegreeInc.startAnimation();
             //
             ModelsManager.nextRandomDrink(pauseTime);
             // sound
@@ -367,8 +367,8 @@ public class Hero extends Body {
             offsetStep -= OFFSTEP_STEP_INC;
             //
             IndicatorsManager.DegreeInc.setValue(degreeInc);
-            IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc, pauseTime);
-//            IndicatorsManager.DegreeInc.startAnimation();
+//            IndicatorsManager.DegreeInc.initBeforeDisplay(degreeInc, pauseTime);
+            IndicatorsManager.DegreeInc.startAnimation();
 
             Food.setFoodDisplay(pauseTime, false);
             // sound

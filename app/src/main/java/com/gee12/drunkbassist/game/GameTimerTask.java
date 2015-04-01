@@ -76,20 +76,20 @@ public class GameTimerTask extends TimerTask {
         onHeroDrunkStage(gameTime);
         ModelsManager.Hero.onEyes();
 
-        IndicatorsManager.PointsInc.onAnimate(gameTime);
-        IndicatorsManager.DegreeInc.onAnimate(gameTime);
+//        IndicatorsManager.PointsInc.onAnimate(gameTime);
+//        IndicatorsManager.DegreeInc.onAnimate(gameTime);
 
-//        MainActivity.getInstance().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
+        MainActivity.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 // animation
                 ModelsManager.getCurDrink().onAnimate(gameTime, pauseTime);
                 ModelsManager.getCurFood().onAnimate(gameTime, pauseTime);
 
                 ModelsManager.Hero.onDrinking(pauseTime);
                 ModelsManager.Hero.onEating(pauseTime);
-//            }
-//        });
+            }
+        });
     }
 
     public void onHeroPositionStatus() {

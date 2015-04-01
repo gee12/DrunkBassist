@@ -16,6 +16,7 @@ import java.util.Random;
  */
 public class Utils {
 
+    public static int SDK_VERSION = Build.VERSION.SDK_INT;
     public static Random Random = new Random();
 
     /**
