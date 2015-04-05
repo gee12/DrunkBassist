@@ -36,8 +36,8 @@ public class ModelsManager {
     public static void load(Resources res, int viewWidth, int viewHeight, float density) {
         // HERO
         Bitmap heroBitmap = decodeBitmap(res, R.drawable.hero);
-        PointF heroPos = new PointF(viewWidth/2 - heroBitmap.getWidth()/2 * density,
-                viewHeight/2 - heroBitmap.getHeight()/2 * density);
+        PointF heroPos = new PointF(viewWidth/2 - heroBitmap.getWidth()/2,
+                viewHeight/2 - heroBitmap.getHeight()/2);
         Hero = new Hero(heroBitmap, heroPos, density);
         Hero.setPivotPoint(34 * density,
                 (heroBitmap.getHeight() - 10));

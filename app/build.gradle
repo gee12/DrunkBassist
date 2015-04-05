@@ -7,12 +7,12 @@ android {
         applicationId "com.gee12.drunkbassist"
         minSdkVersion 9
         targetSdkVersion 21
-        versionCode 105
-        versionName '1.0.5'
+        versionCode 107
+        versionName '1.0.7'
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -22,6 +22,4 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:support-v4:21.0.3'
 }

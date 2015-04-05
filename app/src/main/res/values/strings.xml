@@ -43,5 +43,6 @@
     <string name="vk_link">https://www.vk.com/drunk_bussist</string>
     <string name="main_font_name">fonts/PitonAstroSity.ttf</string>
     <string name="ext_font_name">fonts/Comic_Sans_MS_Regular.ttf</string>
+    <string name="unknown">Басюган</string>
 
 </resources>

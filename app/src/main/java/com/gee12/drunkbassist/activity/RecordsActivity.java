@@ -18,8 +18,6 @@ import com.gee12.drunkbassist.struct.Record;
  */
 public class RecordsActivity extends Activity {
 
-    public static final int COL_MIN_WIDTH = 50;
-
     private TableLayout tableLayout;
 
     @Override
@@ -29,11 +27,8 @@ public class RecordsActivity extends Activity {
 
         tableLayout = (TableLayout) findViewById(R.id.table_records);
 
-//        Typeface tf = Utils.getTypeface(getBaseContext(), getString(R.string.ext_font_name), Typeface.BOLD_ITALIC);
-
         int i = 1;
         for(Record rec : RecordsManager.getRecords()) {
-//            addRow(rec, i++, tf);
             setRowText(rec, i++);
         }
     }
@@ -44,31 +39,6 @@ public class RecordsActivity extends Activity {
         ((TextView)row.getChildAt(1)).setText(String.valueOf(rec.getPoints()));
         ((TextView)row.getChildAt(2)).setText(String.valueOf(rec.getDegree()));
     }
-
-//    protected void addRow(Record rec, int num, Typeface tf) {
-//        TableRow tr = new TableRow(this);
-//        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-//
-//        tr.addView(createTextView(0, String.format("%d  %s", num, rec.getName()), Gravity.LEFT, 5, tf));
-//        tr.addView(createTextView(1, String.valueOf(rec.getPoints()), Gravity.CENTER_HORIZONTAL, 1, tf));
-//        tr.addView(createTextView(2, String.valueOf(rec.getDegree()), Gravity.CENTER_HORIZONTAL, 1, tf));
-//
-//        tableLayout.addView(tr);
-//    }
-
-//    private TextView createTextView(int col, String text, int gravity, int weight, Typeface tf) {
-//        TextViewOutline view = new TextViewOutline(new ContextThemeWrapper(this, R.style.ExtFontStyle), null, 0);
-//        if (col == 1) {
-//            view.setTextSize(view.getTextSize() + 5);
-//        }
-//        view.setText(String.valueOf(text));
-//        view.setGravity(gravity);
-//        view.setMinWidth(COL_MIN_WIDTH);
-//        view.setTypeface(tf, Typeface.BOLD_ITALIC);
-//        view.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, weight));
-//        return view;
-//    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,7 +52,7 @@ public class RecordsActivity extends Activity {
         if (id == R.id.action_clear_records) {
 
             // CLEAR records !
-            tableLayout.removeViews(2, RecordsManager.getRecords().size() + 1);
+            tableLayout.removeViews(2, RecordsManager.getRecords().size());
             RecordsManager.clearRecords();
             return true;
         }

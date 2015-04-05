@@ -98,11 +98,11 @@ public class TextViewOutline extends TextView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.save();
+//        canvas.save();
         canvas.translate(getPaddingLeft(), getPaddingTop());
         strokeLayout.draw(canvas);
         fillLayout.draw(canvas);
-        canvas.restore();
+//        canvas.restore();
     }
 
     public boolean setTypeface(Context context, String asset) {

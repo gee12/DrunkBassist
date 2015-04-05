@@ -17,8 +17,6 @@ import com.gee12.drunkbassist.struct.Record;
  */
 public class FinishActivity extends Activity {
 
-    public static final String DEFAULT_USER_NAME = "Неизвестный";
-
     private EditText nameTextField;
     private TextView pointsLabel;
     private TextView degreeLabel;
@@ -53,7 +51,7 @@ public class FinishActivity extends Activity {
 
     public String getUserName() {
         String name = nameTextField.getText().toString();
-        return (name.isEmpty()) ? DEFAULT_USER_NAME : name;
+        return (name.isEmpty()) ? getString(R.string.unknown) : name;
     }
 
     public void onClickReplayButton(View view) {

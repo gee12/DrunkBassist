@@ -26,9 +26,10 @@
             android:layout_height="wrap_content"
             android:text="@string/finish_string1"
             android:id="@+id/label1"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:textSize="24sp"
+            android:padding="5dp"
             android:textStyle="bold|italic"
             android:textColor="@color/text_color"
             style="@style/MainFontStyle" />
@@ -46,6 +47,7 @@
                     android:id="@+id/label2"
                     android:layout_gravity="center"
                     android:textSize="24sp"
+                    android:padding="5dp"
                     android:textStyle="bold|italic"
                     android:textColor="@color/text_color"
                     style="@style/MainFontStyle" />
@@ -66,6 +68,7 @@
                     android:text="@string/finish_string3"
                     android:id="@+id/label3"
                     android:textSize="24sp"
+                    android:padding="5dp"
                     android:textStyle="bold|italic"
                     android:textColor="@color/text_color"
                     android:layout_gravity="center"
@@ -85,6 +88,7 @@
                 android:id="@+id/label4"
                 android:layout_gravity="center_vertical|right"
                 android:textSize="24sp"
+                android:padding="5dp"
                 android:textStyle="bold|italic"
                 android:textColor="@color/text_color"
                 style="@style/MainFontStyle" />
@@ -107,6 +111,7 @@
                 android:id="@+id/label5"
                 android:layout_gravity="left|center_vertical"
                 android:textSize="24sp"
+                android:padding="5dp"
                 android:textStyle="bold|italic"
                 android:textColor="@color/text_color"
                 style="@style/MainFontStyle" />
@@ -121,6 +126,7 @@
                 android:id="@+id/textfield_name"
                 android:hint="@string/your_name"
                 android:visibility="invisible"
+                android:maxLength="20"
                 android:layout_weight="1" />
 
         <LinearLayout
